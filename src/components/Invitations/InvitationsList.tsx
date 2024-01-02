@@ -1,4 +1,4 @@
-const InvitesList = ()=>{
+export const InvitationsList = ()=>{
     return (
         <ul>
             <li>invite 1<button>confirm</button><button>Decline</button></li>
@@ -6,5 +6,3 @@ const InvitesList = ()=>{
         </ul>
     )
 }
-
-export default InvitesList
