@@ -1,4 +1,10 @@
-const MeetingForm = ()=>{
+type locationFuncProp = {
+    setLocation : string 
+}
+
+
+const MeetingForm = (props : locationFuncProp)=>{
+console.log(props)
 return (
     <section>
         <form>

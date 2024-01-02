@@ -1,15 +1,15 @@
-// import { useState } from "react"
+import { useState } from "react"
 import MeetingForm from "./MeetPage/MeetingForm"
-import {MeetingMap} from "./MeetPage/MeetingMap"
+import MeetingMap from "./MeetPage/MeetingMap"
 
 
 const MeetingPage = () =>{
-    // const [locations, setLocations] = useState<string>('')
+    const [locations, setLocations] = useState()
 
     return (
         <>
-        <MeetingForm />
-        <MeetingMap />
+        <MeetingForm setLocations={setLocations}/>
+        <MeetingMap locations={locations} />
         </>
     )
 }

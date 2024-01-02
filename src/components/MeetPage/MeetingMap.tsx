@@ -1,6 +1,6 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
-export const MeetingMap = ()=>{
+const MeetingMap = ()=>{
     const containerStyle = {
         width: '400px',
         height: '400px'
@@ -12,7 +12,7 @@ export const MeetingMap = ()=>{
       };
  const {isLoaded} = useJsApiLoader({
     id : 'google-map-script',
-    googleMapsApiKey: process.env.APIkey
+    // googleMapsApiKey:import.meta.env.VITE_GOOGLE_API_KEY
   })
     return isLoaded ?(
         <> <h3>Map View</h3>
@@ -28,3 +28,4 @@ export const MeetingMap = ()=>{
    ) :<p>Oops, something's wrong</p>
 }
 
+export default MeetingMap
