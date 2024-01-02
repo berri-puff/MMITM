@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { convertTime } from "../../utils/utils";
 import { Invite } from "../../types";
 
-const InvitesList: React.FC = () => {
+export const InvitationsList: React.FC = () => {
   const [invites, setInvites] = useState<Invite[]>([]);
   const getInvites = async () => {
     try {
@@ -58,5 +58,3 @@ const InvitesList: React.FC = () => {
     </ul>
   );
 };
-
-export default InvitesList;

@@ -1,4 +1,4 @@
-const InviteForm = ()=>{
+export const InviteForm = ()=>{
 return (
     <form>
         <label>Search for 2nd user<input type = 'text'/></label>
@@ -7,4 +7,3 @@ return (
 )
 }
 
-export default InviteForm 

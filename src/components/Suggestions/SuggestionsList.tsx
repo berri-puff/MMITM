@@ -1,4 +1,4 @@
-const SuggestLists = ()=>{
+export const SuggestionsList = ()=>{
 return (
     <ul>
         <li>place 1 holder</li>
@@ -7,5 +7,3 @@ return (
     </ul>
 )
 }
-
-export default SuggestLists
