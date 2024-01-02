@@ -1,3 +1,5 @@
+import InviteForm from "./InviteUser/InviteUserForm";
+import ItineraryView from "./InviteUser/ItineraryView";
 import MeetingForm from "./MeetPage/MeetingForm";
 import MeetingMap from "./MeetPage/MeetingMap";
 import SuggestLists from "./Suggestions/SuggestList";
@@ -17,6 +19,11 @@ const Home = () => {
      </p>
      <SuggestLists/>
      <SuggestMap/>
+     <p>
+      Inviting 2nd user page with summary
+     </p>
+     <ItineraryView/>
+     <InviteForm/>
     </>
   )
 
