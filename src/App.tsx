@@ -8,11 +8,13 @@ import { Suggestions } from "./components/Suggestions";
 import { InviteUser } from "./components/InviteUser";
 import { LogIn } from "./components/LogIn";
 import { Invitations } from "./components/Invitations";
+import { UserProvider } from "./contexts/UserContext";
 
 
 function App() {
   return (
     <>
+    <UserProvider>
       <Header />
       <Navigation/>
       <Routes>
@@ -23,6 +25,7 @@ function App() {
         <Route path="/setup_meeting/:username/invitations" element={<Invitations />} />
         <Route path="/log_in" element={<LogIn />} />
       </Routes>
+    </UserProvider>
     </>
   );
 }
