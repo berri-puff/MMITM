@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
+import { useContext } from 'react';
+import { UserContext } from "../../contexts/UserContext";
+
 export const NavBar =()=>{
+    const { user }:any = useContext(UserContext)
 return <div>
     
     <nav>
@@ -12,7 +16,7 @@ return <div>
             <li><Link to={`/invitations/user1`}>Invitations</Link></li>
         </ul>
     </nav>
-    <p>??? is logged in (use userContext)</p>
+    <p>{user} is logged in</p>
 </div>
     
 }

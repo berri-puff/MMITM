@@ -7,11 +7,13 @@ import { Suggestions } from "./components/Suggestions";
 import { InviteUser } from "./components/InviteUser";
 import { LogIn } from "./components/Header/LogIn";
 import { Invitations } from "./components/Invitations";
+import { UserProvider } from "./contexts/UserContext";
 
 
 function App() {
   return (
     <>
+    <UserProvider>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -21,6 +23,7 @@ function App() {
         <Route path="/invitations/:username" element={<Invitations />} />
         <Route path="/log_in" element={<LogIn />} />
       </Routes>
+    </UserProvider>
     </>
   );
 }
