@@ -1,14 +1,14 @@
-import { collection, getDocs } from "firebase/firestore";
-import db from "../../../firebaseConfig";
-import { useEffect, useState } from "react";
-import { convertTime } from "../../utils/utils";
-import { Invite } from "../../types";
+import { collection, getDocs } from 'firebase/firestore';
+import db from '../../lib/fireBaseConfig';
+import { useEffect, useState } from 'react';
+import { convertTime } from '../../utils/utils';
+import { Invite } from '../../types';
 
 export const InvitationsList: React.FC = () => {
   const [invites, setInvites] = useState<Invite[]>([]);
   const getInvites = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, "itineraries"));
+      const querySnapshot = await getDocs(collection(db, 'itineraries'));
       const data: Invite[] = querySnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() } as Invite;
       });
@@ -25,7 +25,7 @@ export const InvitationsList: React.FC = () => {
   return (
     <ul>
       {invites.map((invite) => {
-        console.log(invite.meeting_time)
+        console.log(invite.meeting_time);
         return (
           <li key={invite.id} className="meeting-card">
             <h3>Creator</h3>
