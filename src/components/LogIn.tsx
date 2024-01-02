@@ -1,4 +1,4 @@
-const Login = ()=>{
+export const LogIn = ()=>{
     return (
         <ul>
             <li>user 1 login</li>
@@ -6,4 +6,3 @@ const Login = ()=>{
         </ul>
     )
 }
-export default Login
