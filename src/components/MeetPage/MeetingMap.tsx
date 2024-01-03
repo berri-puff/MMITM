@@ -1,6 +1,7 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { convertToNumberCoord } from '../../utils/utils';
 
-const MeetingMap = ()=>{
+export const MeetingMap = ({userCoord, friendCoord})=>{
     const containerStyle = {
         width: '400px',
         height: '400px'
@@ -12,20 +13,21 @@ const MeetingMap = ()=>{
       };
  const {isLoaded} = useJsApiLoader({
     id : 'google-map-script',
-    // googleMapsApiKey:import.meta.env.VITE_GOOGLE_API_KEY
+    googleMapsApiKey:import.meta.env.VITE_GOOGLE_API_KEY
   })
+
+
     return isLoaded ?(
         <> <h3>Map View</h3>
         <div>
             <GoogleMap 
             mapContainerStyle={containerStyle}
-            zoom={10}
+            zoom={7}
             center={center}>
-                <Marker position={center}/>
+             {userCoord.length !== 0 ? <Marker position={convertToNumberCoord(userCoord)}/>  : <Marker position={center}/>}
+             {friendCoord.length !== 0? <Marker position={convertToNumberCoord(friendCoord)}/> : null}
             </GoogleMap>
         </div>
         </>
    ) :<p>Oops, something's wrong</p>
 }
-
-export default MeetingMap

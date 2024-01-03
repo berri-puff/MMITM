@@ -21,3 +21,8 @@ export interface Invite {
   venue: Venue;
   meeting_time: number;
 }
+
+export interface Coordinates {
+  lat: number,
+  lng: number
+}
