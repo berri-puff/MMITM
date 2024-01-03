@@ -1,6 +1,6 @@
-import { useState } from "react"
+import React, { useState } from "react"
 
-export const MeetingForm = ({setUserCoord, setFriendCoord})=>{
+export const MeetingForm: React.FC = ({setUserCoord, setFriendCoord})=>{
 
     const [userLocation, setUserLocation] = useState<string>('')
     const [friendLocation, setFriendLocation] = useState<string>('')

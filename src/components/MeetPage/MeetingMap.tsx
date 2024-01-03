@@ -1,7 +1,8 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { convertToNumberCoord } from '../../utils/utils';
+import React from 'react';
 
-export const MeetingMap = ({userCoord, friendCoord})=>{
+export const MeetingMap : React.FC = ({userCoord, friendCoord})=>{
     const containerStyle = {
         width: '400px',
         height: '400px'

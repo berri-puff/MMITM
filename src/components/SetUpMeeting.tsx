@@ -1,10 +1,10 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import {MeetingForm} from "./MeetPage/MeetingForm"
 import {MeetingMap} from "./MeetPage/MeetingMap"
 
 
 
-export const SetUpMeeting = () => {
+export const SetUpMeeting : React.FC = () => {
     const [userCoord, setUserCoord] = useState<string[]>([])
     const [friendCoord, setFriendCoord] = useState<string[]>([])
 
