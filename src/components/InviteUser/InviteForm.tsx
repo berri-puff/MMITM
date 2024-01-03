@@ -53,7 +53,7 @@ console.log(foundUser)
       <section>
         <form onSubmit={searchForUser}>
           <label htmlFor="invite-user">
-            Search by firstname:{" "}
+            Search by firstname:
             <input
               id="searchUserInput"
               type="text"
