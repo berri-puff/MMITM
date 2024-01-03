@@ -21,3 +21,7 @@ export interface Invite {
   venue: Venue;
   meeting_time: number;
 }
+
+export interface Place {
+  
+}
