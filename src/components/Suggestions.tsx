@@ -3,12 +3,18 @@ import { SuggestionsList } from "./Suggestions/SuggestionsList";
 import { SuggestionsMap } from "./Suggestions/SuggestionsMap";
 import { useEffect, useState } from "react";
 import { sortPlaces } from "../utils/utils";
+import { Place } from "../types";
 
 export const Suggestions = () => {
-  const [places, setPlaces] = useState([]);
-  const coordinates = "53.7767590187112, -2.2348233608134205";
+  const [places, setPlaces] = useState<Place[]>([]);
+  console.log(places);
+  const [isSorted, setIsSorted] = useState(false);
+  const coordinates = "53.7767, -2.2348";
+  const lat: string = "53.7767";
+  const lng: string = "-2.2348";
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   const getPlaces = async () => {
     let resultsCount = 0;
@@ -19,13 +25,13 @@ export const Suggestions = () => {
         if (nextPageToken) {
           url += `&pagetoken=${nextPageToken}`;
         }
-        console.log(url)
-        let { results, next_page_token: newNextPageToken } = await getMorePlaces(url);
+        let { results, next_page_token: newNextPageToken } =
+          await getMorePlaces(url);
 
         setPlaces((currPlaces) => [...currPlaces, ...results]);
         resultsCount += results.length;
         nextPageToken = newNextPageToken;
-        await delay(3000)
+        await delay(3000);
       }
     } catch (err) {
       console.log(err);
@@ -46,13 +52,15 @@ export const Suggestions = () => {
         const sortedPlaces = sortPlaces(currPlaces);
         return sortedPlaces;
       });
+      setIsSorted(true);
     }
   }, [places]);
-  console.log(places);
-  return (
-    <div>
-      <SuggestionsList />
-      <SuggestionsMap />
-    </div>
-  );
+  if (isSorted) {
+    return (
+      <div>
+        <SuggestionsList places={places} />
+        <SuggestionsMap lat={lat} lng={lng} places={places} />
+      </div>
+    );
+  }
 };

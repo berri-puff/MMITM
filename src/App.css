@@ -1,4 +1,11 @@
 .meeting-card {
   border: 1px solid black;
   margin-bottom: 1rem;
+  list-style-type: none;
+}
+
+.suggested-place {
+  border: 1px solid black;
+  margin-bottom: 1rem;
+  list-style-type: none;
 }

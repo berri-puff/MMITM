@@ -23,5 +23,29 @@ export interface Invite {
 }
 
 export interface Place {
-  
+  geometry: Geometry;
+  name: string;
+  place_id: string;
+  rating: number;
+  user_ratings_total: number;
+  vicinity: string;
+}
+
+export interface SuggestionsMapProps {
+  lat: string;
+  lng: string;
+  places: Place[];
+}
+
+export interface SuggestionsListProps {
+  places: Place[];
+}
+
+export interface Geometry {
+  location: Location;
+}
+
+export interface Location {
+  lat: number;
+  lng: number;
 }
