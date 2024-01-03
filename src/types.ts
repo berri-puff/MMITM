@@ -26,3 +26,10 @@ export interface Coordinates {
   lat: number,
   lng: number
 }
+
+export interface Users {
+  id: string 
+  first_name : string,
+  preferences : string[],
+  username: string
+}
