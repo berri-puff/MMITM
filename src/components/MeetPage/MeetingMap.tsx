@@ -1,6 +1,6 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { convertToNumberCoord } from '../../utils/utils';
 import React from 'react';
+import { MeetingMapProps } from '../../types';
 
 export const MeetingMap : React.FC = (props: MeetingMapProps)=>{
     const containerStyle = {

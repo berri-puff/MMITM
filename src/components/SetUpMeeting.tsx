@@ -10,12 +10,7 @@ export const SetUpMeeting : React.FC = () => {
     const [friendCoord, setFriendCoord] = useState<string[]>([])
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
     
-    if (userCoord) {
-        console.log(userCoord)
-    }
-    if (friendCoord) {
-        console.log(friendCoord)
-    }
+ 
     if(isSubmitted) {
         return <Suggestions userCoord={userCoord} friendCoord={friendCoord}/>
     } else {
