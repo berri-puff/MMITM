@@ -8,6 +8,7 @@ export const Playground = () => {
       {/* <Matrix /> */}
       {/* <Matrix2 /> */}
       {/* <Matrix3 /> */}
+      <Matrix4 />
     </div>
   );
 };
