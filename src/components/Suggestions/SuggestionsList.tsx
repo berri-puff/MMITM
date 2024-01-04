@@ -1,9 +1,18 @@
-export const SuggestionsList = ()=>{
-return (
+import { SuggestionsListProps } from "../../types";
+
+export const SuggestionsList: React.FC<SuggestionsListProps> = ({ places }) => {
+  return (
     <ul>
-        <li>place 1 holder</li>
-        <li>place 2 holder</li>
-        <li>place 3 holder</li>
+      {places.map((place) => {
+        return (
+          <li key={place.place_id} className="suggested-place">
+            <h3>{place.name}</h3>
+            <p>Rating: {place.rating}/5</p>
+            <p># of Ratings: {place.user_ratings_total}</p>
+            <p>Address: {place.vicinity}</p>
+          </li>
+        );
+      })}
     </ul>
-)
-}
+  );
+};
