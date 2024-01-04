@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-export const MeetingForm: React.FC = ({setUserCoord, setFriendCoord})=>{
+export const MeetingForm: React.FC = ({setUserCoord, setFriendCoord, setIsSubmitted})=>{
 
     const [userLocation, setUserLocation] = useState<string>('')
     const [friendLocation, setFriendLocation] = useState<string>('')
@@ -24,6 +24,7 @@ event.preventDefault()
         event.preventDefault()
         setUserLocation('')
         setFriendLocation('')
+        setIsSubmitted(true)
     }
     
 return (
