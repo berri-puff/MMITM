@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getDistance } from '../../utils/api-ak';
-
+// need to pass in the orirgins from context (if this is where we store them) and the destinations from Michael's work
+// Destinations currently in tuple format
 // take 2 origins and 25 destinations
 // call the google matrix api
 // sort the results based on best travel times for each person
@@ -70,6 +71,7 @@ function Matrix4() {
     getDistance(coordinates.origins, coordinates.destinations)
       .then((data: DistanceData) => {
         // Calculate travel time diffs
+        console.log(data, '<---------data');
         const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
           index,
           difference: Math.abs(
