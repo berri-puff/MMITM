@@ -6,6 +6,7 @@ import { getDistance } from '../../utils/api-ak';
 // call the google matrix api
 // sort the results based on best travel times for each person
 
+// define what the data looks like when it comes back from API for typescript
 // individual distance calc - from one origin to 1 destination
 interface DistanceElement {
   distance: { text: string; value: number };
@@ -73,6 +74,7 @@ function Matrix4() {
         // Calculate travel time diffs
         console.log(data, '<---------data');
         const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
+          // returns array of objects with the index and the travel time difference
           index,
           difference: Math.abs(
             data.rows[0].elements[index].duration.value -
@@ -83,16 +85,22 @@ function Matrix4() {
         // Sort dests based on differences in travel times
         const sortedDestinations = travelTimeDifferences
           .sort((a, b) => a.difference - b.difference)
-          .slice(0, 10); // Step 3: Select Top 10 destinations
+          .slice(0, 10); // Slice top 10 destinations
 
+        //sorted destinations has the index of the dest from data and the difference in time taken
+        // looks like this {index: 24, difference: 65}
+        console.log(sortedDestinations, '<------sorted destinations');
         // Update state with sorted data
         setDistances(
+          //For each dest in sortedDestinations, a new object is created
           sortedDestinations.map((dest) => ({
+            // so we set the distances using the index returned from sorted destinations and combine with the data from the API call returned in an object
             elements: data.rows.map((row) => row.elements[dest.index]),
           }))
         );
         setAddresses(
           sortedDestinations.map(
+            // updates the addresses state with a sorted list of addresses using the index from sortedDestinatoins. mapp over the sorted indexes in sortedDestinations and get the corresponding addresses from the data.destination_addresses from api call
             (dest) => data.destination_addresses[dest.index]
           )
         );

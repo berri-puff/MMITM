@@ -30,7 +30,6 @@ export const getDistance = (origins: string, destination: string) => {
       `/json?destinations=${destination}&origins=${origins}&units=metric&mode=${mode}&key=${apiKey}`
     )
     .then((response) => {
-      console.log(response.data, 'res');
       return response.data;
     });
 };
