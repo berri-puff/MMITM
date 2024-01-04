@@ -15,7 +15,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
     lat: +lat,
     lng: +lng,
   };
-  console.log(places);
+
   return (
     <>
       <h3>map view of suggestioned palces with pins here</h3>

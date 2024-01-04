@@ -80,3 +80,14 @@ export type MeetingMapProps = {
       lng: number
   }
 }
+
+export type CrosshairProps = {
+  friendCoord: {
+    lat: number,
+    lng: number
+},
+userCoord: {
+    lat: number,
+    lng: number
+}
+}
