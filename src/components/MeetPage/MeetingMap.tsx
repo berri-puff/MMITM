@@ -2,7 +2,7 @@ import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { convertToNumberCoord } from '../../utils/utils';
 import React from 'react';
 
-export const MeetingMap : React.FC = ({userCoord, friendCoord})=>{
+export const MeetingMap : React.FC = (props: MeetingMapProps)=>{
     const containerStyle = {
         width: '400px',
         height: '400px'
@@ -25,8 +25,8 @@ export const MeetingMap : React.FC = ({userCoord, friendCoord})=>{
             mapContainerStyle={containerStyle}
             zoom={7}
             center={center}>
-             {userCoord.length !== 0 ? <Marker position={convertToNumberCoord(userCoord)}/>  : <Marker position={center}/>}
-             {friendCoord.length !== 0? <Marker position={convertToNumberCoord(friendCoord)}/> : null}
+             {props.userCoord.lat ? <Marker position={props.userCoord}/>  : <Marker position={center}/>}
+             {props.friendCoord.lat ? <Marker position={props.friendCoord}/> : null}
             </GoogleMap>
         </div>
         </>

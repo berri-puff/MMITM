@@ -3,9 +3,10 @@ import { SuggestionsList } from "./Suggestions/SuggestionsList";
 import { SuggestionsMap } from "./Suggestions/SuggestionsMap";
 import { useEffect, useState } from "react";
 import { sortPlaces } from "../utils/utils";
-import { Place } from "../types";
+import { Place, SuggestionsProps } from "../types";
 
-export const Suggestions = () => {
+export const Suggestions = (props: SuggestionsProps) => {
+    console.log(props)
   const [places, setPlaces] = useState<Place[]>([]);
   console.log(places);
   const [isSorted, setIsSorted] = useState(false);
