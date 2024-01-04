@@ -124,12 +124,14 @@ function Matrix4() {
             {distanceRow.elements.map((element, elementIndex) => (
               <div key={elementIndex}>
                 <p>
-                  Travel Time from Origin {elementIndex + 1}:{' '}
-                  {element.duration.text}
+                  Travel Time from Origin {elementIndex}
+                  <br /> {origins[elementIndex]}: <br />
+                  <strong> {element.duration.text}</strong>
                 </p>
                 <p>
-                  Travel Distance from Origin {elementIndex + 1}:{' '}
-                  {element.distance.text}
+                  Travel Distance from Origin {elementIndex}
+                  <br /> {origins[elementIndex]}: <br />{' '}
+                  <strong> {element.distance.text}</strong>
                 </p>
               </div>
             ))}
