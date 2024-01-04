@@ -8,20 +8,27 @@ import { InviteUser } from './components/InviteUser';
 import { LogIn } from './components/Header/LogIn';
 import { Invitations } from './components/Invitations';
 import { UserProvider } from './contexts/UserContext';
+import { Playground } from './components/ak-stuff/playground';
 
 function App() {
   return (
     <>
       <UserProvider>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/setup_meeting" element={<SetUpMeeting />} />
-          <Route path="/setup_meeting/suggestions" element={<Suggestions />} />
-          <Route path="/setup_meeting/invite" element={<InviteUser />} />
-          <Route path="/invitations/:username" element={<Invitations />} />
-          <Route path="/log_in" element={<LogIn />} />
-        </Routes>
+        <div className="container mx-auto">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/setup_meeting" element={<SetUpMeeting />} />
+            <Route
+              path="/setup_meeting/suggestions"
+              element={<Suggestions />}
+            />
+            <Route path="/setup_meeting/invite" element={<InviteUser />} />
+            <Route path="/invitations/:username" element={<Invitations />} />
+            <Route path="/log_in" element={<LogIn />} />
+            <Route path="/playground" element={<Playground />} />
+          </Routes>
+        </div>
       </UserProvider>
     </>
   );
