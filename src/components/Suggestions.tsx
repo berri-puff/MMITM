@@ -1,49 +1,21 @@
-import axios from "axios";
 import { SuggestionsList } from "./Suggestions/SuggestionsList";
 import { SuggestionsMap } from "./Suggestions/SuggestionsMap";
 import { useEffect, useState } from "react";
 import { sortPlaces } from "../utils/utils";
 import { Place } from "../types";
+import { getAllPlaces, getPlaces } from "../utils/api-ma";
 
 export const Suggestions = () => {
   const [places, setPlaces] = useState<Place[]>([]);
-  console.log(places);
   const [isSorted, setIsSorted] = useState(false);
+  const coordinatesArr = ['53.31021296380358, -1.267900019270819', '53.17276291450375, -1.261083628609555', '53.25840402161476, -1.4630509181253877', '53.252622852967264, -0.9992025977062506', '53.24587716867708, -1.2485210699315368']
   const coordinates = "53.7767, -2.2348";
   const lat: string = "53.7767";
   const lng: string = "-2.2348";
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
-  const getPlaces = async () => {
-    let resultsCount = 0;
-    let nextPageToken = null;
-    try {
-      while (resultsCount < 60) {
-        let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coordinates}&type=cafe&opennow&rankby=distance&key=${apiKey}`;
-        if (nextPageToken) {
-          url += `&pagetoken=${nextPageToken}`;
-        }
-        let { results, next_page_token: newNextPageToken } =
-          await getMorePlaces(url);
-
-        setPlaces((currPlaces) => [...currPlaces, ...results]);
-        resultsCount += results.length;
-        nextPageToken = newNextPageToken;
-        await delay(3000);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const getMorePlaces = async (url: string) => {
-    const { data } = await axios.get(url);
-    return data;
-  };
 
   useEffect(() => {
-    getPlaces();
+    getAllPlaces(coordinatesArr, setPlaces, apiKey);
   }, []);
 
   useEffect(() => {
@@ -55,6 +27,7 @@ export const Suggestions = () => {
       setIsSorted(true);
     }
   }, [places]);
+
   if (isSorted) {
     return (
       <div>
