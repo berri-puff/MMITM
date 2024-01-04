@@ -118,10 +118,3 @@ function Matrix3() {
 }
 
 export default Matrix3;
-
-// places call on midpoint
-// distance on top 10 from M result
-// rank with get distance
-// not workable - spread out by x miles
-// spread in square, should end up with 4x results
-// return best places to go from this search
