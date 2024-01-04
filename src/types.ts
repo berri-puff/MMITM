@@ -60,3 +60,23 @@ export interface Users {
   preferences : string[],
   username: string
 }
+export type SuggestionsProps = {
+  friendCoord: {
+      lat: number,
+      lng: number
+  },
+  userCoord: {
+      lat: number,
+      lng: number
+  }
+}
+export type MeetingMapProps = {
+  friendCoord: {
+      lat: number,
+      lng: number
+  },
+  userCoord: {
+      lat: number,
+      lng: number
+  }
+}
