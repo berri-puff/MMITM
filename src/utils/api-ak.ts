@@ -23,8 +23,8 @@ const api = axios.create({
 
 export const getDistance = (origins: string, destination: string) => {
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const mode = 'walking';
-
+  const mode = 'driving';
+  console.log(origins, 'origins');
   return api
     .get(
       `/json?destinations=${destination}&origins=${origins}&units=metric&mode=${mode}&key=${apiKey}`
