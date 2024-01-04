@@ -2,19 +2,16 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import db from "../../lib/fireBaseConfig";
-import {
-  collection,
-  getDocs,
-} from "@firebase/firestore";
+import { collection, getDocs } from "@firebase/firestore";
 import { Users } from "../../types";
 
 export const InviteForm: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [foundUser, setFoundUser] = useState<Users[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useContext(UserContext);
 
   const retrieveUsers = async (searchUser: string) => {
-    console.log(searchUser, "in async");
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
       const data: Users[] = querySnapshot.docs.map((person) => {
@@ -22,11 +19,12 @@ export const InviteForm: React.FC = () => {
       });
       setFoundUser(
         data.filter((person) => {
-          if (person.first_name === searchUser) {
+          if (person.first_name === searchUser || person.username === searchUser) {
             return { ...person };
           }
         })
       );
+      setIsLoading(false);
     } catch (err: unknown) {
       console.log(err);
     }
@@ -39,15 +37,34 @@ export const InviteForm: React.FC = () => {
   function searchForUser(event: any): void {
     event.preventDefault();
     setSearchInput("");
+    setIsLoading(true);
     retrieveUsers(searchInput);
   }
-console.log(foundUser)
+
   if (user === "Nobody") {
     return (
       <p>
         Please <Link to={`/log_in`}>LogIn</Link> to invite someone
       </p>
     );
+  }
+  if (isLoading) {
+  return (  <section>
+      <form onSubmit={searchForUser}>
+        <label htmlFor="invite-user">
+          Search by firstname:
+          <input
+            id="searchUserInput"
+            type="text"
+            placeholder="second"
+            onChange={handleSearchUser}
+            value={searchInput}
+          />
+        </label>
+        <button>Search</button>
+      </form>
+      <p>Loading!</p>
+    </section>)
   } else {
     return (
       <section>
