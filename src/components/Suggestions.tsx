@@ -5,7 +5,7 @@ import { sortPlaces } from "../utils/utils";
 import { Place } from "../types";
 import { getAllPlaces, getPlaces } from "../utils/api-ma";
 
-export const Suggestions = () => {
+export const Suggestions = (props: SuggestionsProps) => {
   const [places, setPlaces] = useState<Place[]>([]);
   const [isSorted, setIsSorted] = useState(false);
   const coordinatesArr = ['53.31021296380358, -1.267900019270819', '53.17276291450375, -1.261083628609555', '53.25840402161476, -1.4630509181253877', '53.252622852967264, -0.9992025977062506', '53.24587716867708, -1.2485210699315368']

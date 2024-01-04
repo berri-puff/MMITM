@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { convertToNumberCoord } from "../../utils/utils"
 
 export const MeetingForm: React.FC = ({setUserCoord, setFriendCoord, setIsSubmitted})=>{
 
@@ -14,11 +15,11 @@ export const MeetingForm: React.FC = ({setUserCoord, setFriendCoord, setIsSubmit
     }
     function confirmUserPosition (event : any) : void {
         event.preventDefault()
-        setUserCoord(userLocation)
+        setUserCoord(convertToNumberCoord(userLocation))
     }
     function confirmFriendPosition (event : any) : void {
-event.preventDefault()
-        setFriendCoord(friendLocation)
+        event.preventDefault()
+        setFriendCoord(convertToNumberCoord(friendLocation))
     }
   function handleSubmit (event : any) :void {
         event.preventDefault()
