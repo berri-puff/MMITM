@@ -66,13 +66,13 @@ export const InviteForm: React.FC = () => {
         meeting_creator: {
           accepted: true,
           start_location: [55.98234946928965, -3.1774646553803034],
-          transportation: "swimming",
+          transportation: "walking",
           travel_time: "9m",
           username: user,
         },
       },
     };
-    const docRef = doc(db, "itineraries", "change to the proper doc id");
+    const docRef = doc(db, "Test-sendData", "2I8Nn4RIbgi3r01EBwFK");
     updateDoc(docRef, updateInviteBody)
       .then(() => {
         setDisableButton(false);
@@ -174,13 +174,6 @@ export const InviteForm: React.FC = () => {
                     disabled={disableButton}
                   >
                     Invite!
-                  </button>
-                  <button
-                    onClick={() => {
-                      postItinerary(person);
-                    }}
-                  >
-                    posting
                   </button>
                 </ul>
               );
