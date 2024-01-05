@@ -28,7 +28,7 @@ export const MeetingForm: React.FC = ({setUserCoord, setFriendCoord, setIsSubmit
         setIsSubmitted(true)
 
     }
-    function handleSortChange (event) {
+    function handleSortChange (event: any) {
         setValue(event.target.value)
         setTransportation(event.target.value)
     }

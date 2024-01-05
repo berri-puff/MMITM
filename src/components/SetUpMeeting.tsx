@@ -9,7 +9,7 @@ export const SetUpMeeting : React.FC = () => {
     const [userCoord, setUserCoord] = useState<string[]>([])
     const [friendCoord, setFriendCoord] = useState<string[]>([])
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
-    const [transportation, setTransportation] = useState<string>('driving')
+    const [transportation, setTransportation] = useState<string>('walking')
     
  
     if(isSubmitted) {
