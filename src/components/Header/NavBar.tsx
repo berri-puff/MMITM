@@ -29,9 +29,7 @@ export const NavBar = () => {
           <li>
             <Link to={`/invitations/user1`}>Invitations</Link>
           </li>
-          <li>
-            <Link to={`/playground`}>AK</Link>
-          </li>
+          <li>{/* <Link to={`/playground`}>AK</Link> */}</li>
           <li>
             <Link to={`/log_in`}>{user} is logged in</Link>
           </li>

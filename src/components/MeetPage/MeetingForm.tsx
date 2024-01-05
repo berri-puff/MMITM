@@ -39,48 +39,59 @@ export const MeetingForm: React.FC = ({
   return (
     <section>
       <form onSubmit={handleSubmit}>
-        <label>
-          Your Location
-          <input
-            type="text"
-            id="host-location"
-            placeholder="34.543, -1.354"
-            onChange={handleUserLocation}
-            value={userLocation}
-            required
-          />
+        <label className="label">Your Location </label>
+        <input
+          type="text"
+          id="host-location"
+          placeholder="34.543, -1.354"
+          onChange={handleUserLocation}
+          value={userLocation}
+          required
+          className="input input-bordered w-full max-w-xs"
+        />
+
+        <button onClick={confirmUserPosition} className="btn btn-primary mx-5">
+          Confirm my place
+        </button>
+        <label className="label">Friend's Location </label>
+        <input
+          type="text"
+          id="second-location"
+          placeholder="12.534, -3.5344"
+          onChange={handleFriendLocation}
+          value={friendLocation}
+          required
+          className="input input-bordered w-full max-w-xs"
+        />
+
+        <button
+          onClick={confirmFriendPosition}
+          className="btn btn-primary mx-5"
+        >
+          Confirm friend's place
+        </button>
+        <label htmlFor="Transportation" className="label">
+          {' '}
+          Choose transportation
         </label>
-        <button onClick={confirmUserPosition}>Confirm my place</button>
-        <label>
-          Friend's Location
-          <input
-            type="text"
-            id="second-location"
-            placeholder="12.534, -3.5344"
-            onChange={handleFriendLocation}
-            value={friendLocation}
-            required
-          />
-        </label>
-        <button onClick={confirmFriendPosition}>Confirm friend's place</button>
-        <label htmlFor="Transportation">
-          <div>
-            <select
-              id="Transportation"
-              name="Transportation"
-              value={value}
-              onChange={handleSortChange}
-            >
-              <option value={'walking'}>Walking</option>
-              <option value={'driving'}>Driving</option>
-            </select>
-          </div>
-        </label>
-        <p>
+        <div>
+          <select
+            id="Transportation"
+            name="Transportation"
+            value={value}
+            onChange={handleSortChange}
+            className="dropdown"
+          >
+            <option value={'walking'}>Walking</option>
+            <option value={'driving'}>Driving</option>
+          </select>
+        </div>
+
+        <p className="py-5">
           Does the places look correct? If so, click the button to find a
           meeting spot!
         </p>
-        <button>Find Meeting Spot!</button>
+        <button className="btn btn-primary mx-5">Find Meeting Spot!</button>
       </form>
     </section>
   );
