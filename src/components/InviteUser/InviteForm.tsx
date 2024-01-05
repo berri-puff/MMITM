@@ -42,18 +42,29 @@ export const InviteForm: React.FC = () => {
     setIsLoading(true);
     retrieveUsers(searchInput);
   }
-
+console.log(user)
   const sendIntinerary = async(invitee : Users[]) : Promise<void> => {
     console.log(invitee.username, 'in the function')
     const patchMessage = {
         attendees : {
             invitee_1 : {
-            transportation : invitee.username
+            accepted: true,
+            start_location : [55.96935528255473, -3.179227758736596],
+            transportation: 'driving',
+            travel_time : '1h30m',
+            username: invitee.username
+            },
+            meeting_creator : {
+                accepted: true,
+                start_location : [55.98234946928965, -3.1774646553803034],
+                transportation: 'driving',
+                travel_time: '9m',
+                username: user
             }
         }
        
     }
-    const docRef = doc(db, 'itineraries', 'uvT1e8fJHxSQb3x3LWOF')
+    const docRef = doc(db, 'itineraries', 'sSokx32X71ZYy69n4AwJ')
 updateDoc(docRef, patchMessage)
   
   }
