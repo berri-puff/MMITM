@@ -57,15 +57,15 @@ export const InviteForm: React.FC = () => {
     const updateInviteBody = {
       attendees: {
         invitee_1: {
-          accepted: true,
-          start_location: [55.96935528255473, -3.179227758736596],
+          accepted: false,
+          start_location: new GeoPoint(55.96935528255473, -3.179227758736596),
           transportation: "driving",
           travel_time: "1h30m",
           username: invitee.username,
         },
         meeting_creator: {
           accepted: true,
-          start_location: [55.98234946928965, -3.1774646553803034],
+          start_location: new GeoPoint(55.98234946928965, -3.1774646553803034),
           transportation: "walking",
           travel_time: "9m",
           username: user,
