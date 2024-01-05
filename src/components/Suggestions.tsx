@@ -12,7 +12,7 @@ export const Suggestions = (props: SuggestionsProps) => {
   const [isSorted, setIsSorted] = useState(false);
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const [loading, setLoading] = useState(true);
-  console.log(props.transportation, '<<><><><<<<<<<<')
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,14 +44,13 @@ export const Suggestions = (props: SuggestionsProps) => {
   //// for const loop of props and push each prop to new array
   /// call function with array
   /// Formatting for Matrix stuff
-  function formatOriginCoords(props) {
+  function formatOriginCoords(userCoord, friendCoord) {
     const arrayToReturn = [];
-    for (const key in props) {
-      arrayToReturn.push(props[key]);
-    }
+    arrayToReturn.push(userCoord);
+    arrayToReturn.push(friendCoord);
     return arrayToReturn;
   }
-  formatOriginCoords(props);
+
   //////// changes props of friends coords and user coords
   function coordsToString(arrayToReturn: any): string {
     let finalCoords = '';
@@ -61,7 +60,9 @@ export const Suggestions = (props: SuggestionsProps) => {
     return finalCoords.slice(0, -1);
   }
 
-  const finalCoordsOrigins = coordsToString(formatOriginCoords(props));
+  const finalCoordsOrigins = coordsToString(
+    formatOriginCoords(props.userCoord, props.friendCoord)
+  );
 
   //////////////////// Matrix stuff
   function placesToPlacesID(finalPlaces) {
@@ -95,6 +96,7 @@ export const Suggestions = (props: SuggestionsProps) => {
           places={finalPlaces}
           placesCoords={placesCoords}
           finalCoordsOrigins={finalCoordsOrigins}
+          transportation={props.transportation}
         />
       </div>
     );

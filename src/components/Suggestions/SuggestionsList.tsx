@@ -2,29 +2,23 @@ import { SuggestionsListProps } from '../../types';
 import { useEffect, useState } from 'react';
 import { getDistance } from '../../utils/api-ak';
 
-interface TravelDetail {
-  origin: string;
-  travelTime: string;
-  travelDistance: string;
-}
-
-interface DetailedDestination {
-  address: string;
-  travelDetails: TravelDetail[];
-}
-
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
   placesCoords,
   finalCoordsOrigins,
+  transportation,
 }) => {
   const [detailedTravelInfo, setDetailedTravelInfo] = useState<
     DetailedDestination[]
   >([]);
 
+  const getFirstPartOfAddress = (address) => {
+    return address.split(',')[0].trim();
+  };
+
   useEffect(() => {
-    getDistance(finalCoordsOrigins, placesCoords)
-      .then((data: DistanceData) => {
+    getDistance(finalCoordsOrigins, placesCoords, transportation)
+      .then((data) => {
         const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
           index,
           difference: Math.abs(
@@ -49,18 +43,8 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           return destinationDetails;
         });
 
-        const mergedData = detailedDestinations.map((destination) => {
-          const placeMatch = places.find(
-            (place) => place.vicinity === destination.address
-          );
-          return placeMatch
-            ? { ...destination, placeInfo: placeMatch }
-            : destination;
-        });
-
-        setDetailedTravelInfo(mergedData);
+        setDetailedTravelInfo(detailedDestinations);
       })
-
       .catch((error) => {
         console.log(error);
       });
@@ -70,6 +54,17 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
     <>
       {console.log(detailedTravelInfo, 'detailedTravelInfo')}
       {console.log(places, 'places')}
+      <ul>
+        {places.map((place) => (
+          <li key={place.place_id} className="suggested-place">
+            <h3>{place.name}</h3>
+            <p>Rating: {place.rating}/5</p>
+            <p># of Ratings: {place.user_ratings_total}</p>
+            <p>Address: {place.vicinity}</p>
+          </li>
+        ))}
+      </ul>
+
       <div>
         {detailedTravelInfo.map((destination, index) => (
           <div key={index} className="destination-details">
@@ -86,6 +81,8 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           </div>
         ))}
       </div>
+
+      <hr />
     </>
   );
 };
