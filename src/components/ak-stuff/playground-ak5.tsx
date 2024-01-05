@@ -24,43 +24,23 @@ interface DistanceData {
   destination_addresses: string[];
   origin_addresses: string[];
 }
-function coordsToString(coords: [number, number][]): string {
-  return coords.map((coord) => `${coord[0]}, ${coord[1]}`).join('|');
+
+//////// changes props of friends coords and user coords
+function coordsToString(coords: any): string {
+  let finalCoords = '';
+  coords.forEach((coord) => {
+    finalCoords = finalCoords + coord.lat + ', ' + coord.lng + '|';
+  });
+  finalCoords = finalCoords.slice(0, -1);
+  console.log(finalCoords, '<<<<<<<<<final coordas string');
 }
 
-//array of objects
-
 const stringCoordinates = coordsToString([
-  [51.597630976683575, -0.2732336792288419],
-  [51.4923195147037, -0.12049658430727044],
-  [51.59984722532381, 0.23544105610424687],
-  [51.32584128084675, -0.7654959892267881],
-  [51.4041750397602, -0.6621698702399466],
-  [51.301553422081504, 0.47211920978824123],
-  [51.22460516621709, -0.45217983514793625],
-  [51.33252809300577, 0.4937865920980126],
-  [51.84439821825004, 0.1795058813367564],
-  [51.496323311602374, -0.13455019701245272],
-  [51.506261518661226, -0.12608687839467908],
-  [51.66432952633861, -0.059211097884884226],
-  [51.11731366814202, -0.4664466401889335],
-  [51.61765095806744, 0.09415305471862002],
-  [51.333858310104894, -0.15524317422617034],
-  [51.58370474642532, 0.09898213228432408],
-  [51.48415935290426, -0.2378025392886295],
-  [51.863975641701884, 0.2007219118677326],
-  [51.497266678327485, -0.09501438422623514],
-  [51.88564190154513, -0.35538841301412005],
-  [51.59685001326861, 0.0479775724547812],
-  [51.20554639447207, -0.17117985958384682],
-  [51.57676104357755, -0.15098578993357703],
-  [51.48765079167082, -0.11365151010382107],
-  [51.184390846793995, -0.12227437052191713],
+  { lat: 53.480317250638684, lng: -2.249571489866583 },
+  { lat: 53.80039855665654, lng: -1.5487809266636416 },
 ]);
 
-console.log(stringCoordinates, '<------------string for destinations');
-
-function Matrix4() {
+function Matrix5() {
   const [distances, setDistances] = useState<DistanceRow[]>([]);
   const [addresses, setAddresses] = useState<string[]>([]);
   const [origins, setOrigins] = useState<string[]>([]);
@@ -144,4 +124,4 @@ function Matrix4() {
   );
 }
 
-export default Matrix4;
+export default Matrix5;
