@@ -39,7 +39,7 @@ export const Suggestions = (props: SuggestionsProps) => {
       setLoading(false);
     }
   }, [places]);
-
+  console.log(places)
   if (loading) {
     return <h3>Loading....</h3>;
   } else if (isSorted && !loading) {
