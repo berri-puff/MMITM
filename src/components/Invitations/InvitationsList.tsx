@@ -1,39 +1,35 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
-import db from "../../lib/fireBaseConfig";
 import { useContext, useEffect, useState } from "react";
 import { convertTime } from "../../utils/utils";
 import { Invite } from "../../types";
 import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
+import { getInvites } from "../../utils/api-ma";
 
 export const InvitationsList: React.FC = () => {
   const { user } = useContext(UserContext);
   const [invites, setInvites] = useState<Invite[]>([]);
-  const getInvites = async () => {
-    try {
-      const q = query(
-        collection(db, "itineraries"),
-        where("attendees.invitee_1.username", "==", user)
-      );
-      const querySnapshot = await getDocs(q);
-      const data: Invite[] = querySnapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() } as Invite;
-      });
-      setInvites(data);
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
+  const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState("");
 
   useEffect(() => {
-    getInvites();
-  }, []);
-  if (user === "Nobody" || user === undefined) {
+    const fetchInvites = async () => {
+      const data = await getInvites(user);
+      setInvites(data);
+    };
+    fetchInvites();
+    setHasFetchedInvites(true);
+  }, [hasFetchedInvites]);
+  console.log("in invitationslist");
+  if (!hasFetchedInvites) {
+    return <p>loading....</p>;
+  } else if (user === "Nobody" || user === undefined) {
     return (
       <Link to={"/Log_in"}>
         <p>Please log in to see your invites</p>
       </Link>
     );
+  } else if (!invites.length) {
+    return <p>No invites</p>;
   } else {
     return (
       <ul>
@@ -48,7 +44,6 @@ export const InvitationsList: React.FC = () => {
                       Invitation from{" "}
                       {invite.attendees.meeting_creator.username}
                     </p>
-
                     <div className="badge badge-error gap-2">Not Accepted</div>
                   </div>
                   <div className="collapse-content">
@@ -56,8 +51,7 @@ export const InvitationsList: React.FC = () => {
                       {invite.attendees.meeting_creator.username} has invited
                       you for a meet up, see below for details.
                     </p>
-                    <h3 className="invitation-header">WHO</h3>
-
+                    <h3 className="invitation-header">WHAT</h3>
                     <p>
                       Transportation:{" "}
                       {invite.attendees.meeting_creator.transportation}
@@ -69,7 +63,6 @@ export const InvitationsList: React.FC = () => {
                     <p>
                       Your travel time: {invite.attendees.invitee_1.travel_time}
                     </p>
-                    <h3>Invitee</h3>
                     <h3 className="invitation-header">WHERE</h3>
                     <p>
                       Venue: {invite.venue.name} ({invite.venue.type})
@@ -92,8 +85,11 @@ export const InvitationsList: React.FC = () => {
                 <div className="collapse bg-base-200 collapse-arrow invitation-accepted">
                   <input type="radio" name="my-accordion-1" />
                   <div className="collapse-title text-xl font-medium non-collapsed-content">
-                    <p>                    Invitation from {invite.attendees.meeting_creator.username}</p>
-
+                    <p>
+                      {" "}
+                      Invitation from{" "}
+                      {invite.attendees.meeting_creator.username}
+                    </p>
                     <div className="badge badge-success gap-2">Accepted</div>
                   </div>
                   <div className="collapse-content">
@@ -101,7 +97,7 @@ export const InvitationsList: React.FC = () => {
                       {invite.attendees.meeting_creator.username} has invited
                       you for a meet up, see below for details.
                     </p>
-                    <h3 className="invitation-header">WHO</h3>
+                    <h3 className="invitation-header">WHAT</h3>
                     <p>
                       Transportation:{" "}
                       {invite.attendees.meeting_creator.transportation}
@@ -113,7 +109,6 @@ export const InvitationsList: React.FC = () => {
                     <p>
                       Your travel time: {invite.attendees.invitee_1.travel_time}
                     </p>
-                    <h3>Invitee</h3>
                     <h3 className="invitation-header">WHERE</h3>
                     <p>
                       Venue: {invite.venue.name} ({invite.venue.type})
