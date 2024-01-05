@@ -12,13 +12,14 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
     DetailedDestination[]
   >([]);
 
-  const getFirstPartOfAddress = (address) => {
-    return address.split(',')[0].trim();
-  };
+  // const getFirstPartOfAddress = (address) => {
+  //   return address.split(',')[0].trim();
+  // };
 
   useEffect(() => {
     getDistance(finalCoordsOrigins, placesCoords, transportation)
       .then((data) => {
+        console.log(data, 'data');
         const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
           index,
           difference: Math.abs(
@@ -67,22 +68,22 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
 
       <div>
         {detailedTravelInfo.map((destination, index) => (
-          <div key={index} className="destination-details">
-            <h3>
-              Destination {index + 1}: {destination.address}
-            </h3>
-            {destination.travelDetails.map((detail, detailIndex) => (
-              <div key={detailIndex} className="travel-detail">
-                <p>From: {detail.origin}</p>
-                <p>Travel Time: {detail.travelTime}</p>
-                <p>Travel Distance: {detail.travelDistance}</p>
-              </div>
-            ))}
+          <div className="card w-96 bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title">
+                Destination {index + 1}: {destination.address}
+              </h2>
+              {destination.travelDetails.map((detail, detailIndex) => (
+                <div key={detailIndex} className="travel-detail">
+                  <p>From: {detail.origin}</p>
+                  <p>Travel Time: {detail.travelTime}</p>
+                  <p>Travel Distance: {detail.travelDistance}</p>
+                </div>
+              ))}
+            </div>{' '}
           </div>
         ))}
       </div>
-
-      <hr />
     </>
   );
 };
