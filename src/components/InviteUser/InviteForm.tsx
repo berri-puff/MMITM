@@ -2,19 +2,28 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import db from "../../lib/fireBaseConfig";
-import { collection, getDocs, doc, updateDoc, addDoc, Timestamp } from "@firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  addDoc,
+  Timestamp,
+  GeoPoint,
+} from "@firebase/firestore";
 import { Users } from "../../types";
 
 export const InviteForm: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [foundUser, setFoundUser] = useState<Users[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [disableButton, setDisableButton] = useState<boolean>(false);
   const { user } = useContext(UserContext);
   const retrieveUsers = async (searchUser: string) => {
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
       const data: Users[] = querySnapshot.docs.map((person) => {
-        return {...person.data() };
+        return { ...person.data() };
       });
       setFoundUser(
         data.filter((person) => {
@@ -43,67 +52,70 @@ export const InviteForm: React.FC = () => {
     retrieveUsers(searchInput);
   }
 
-  const sendItinerary = async(invitee : Users[]) : Promise<void> => {
+  const patchItinerary = async (invitee: Users[]): Promise<void> => {
+    setDisableButton(true);
     const updateInviteBody = {
-        attendees : {
-            invitee_1 : {
-            accepted: true,
-            start_location : [55.96935528255473, -3.179227758736596],
-            transportation: 'driving',
-            travel_time : '1h30m',
-            username: invitee.username
-            },
-            meeting_creator : {
-                accepted: true,
-                start_location : [55.98234946928965, -3.1774646553803034],
-                transportation: 'driving',
-                travel_time: '9m',
-                username: user
-            }
-        }
-       
-    }
-    const docRef = doc(db, 'itineraries', 'change to correct docu id here')
-updateDoc(docRef, updateInviteBody).then(()=>{
-    console.log('invite sent!')
-})
-  
-  }
-   const postItinerary = (invitee : Users[]) =>{   
-const itneraryBody = {
-    attendees : {
-        invitee_1 : {
-        accepted: true,
-        start_location : [55.96935528255473, -3.179227758736596],
-        transportation: 'driving',
-        travel_time : '1h30m',
-        username: invitee.username
+      attendees: {
+        invitee_1: {
+          accepted: true,
+          start_location: [55.96935528255473, -3.179227758736596],
+          transportation: "driving",
+          travel_time: "1h30m",
+          username: invitee.username,
         },
-        meeting_creator : {
-            accepted: true,
-            start_location : [55.98234946928965, -3.1774646553803034],
-            transportation: 'driving',
-            travel_time: '9m',
-            username: user
+        meeting_creator: {
+          accepted: true,
+          start_location: [55.98234946928965, -3.1774646553803034],
+          transportation: "swimming",
+          travel_time: "9m",
+          username: user,
         },
-    meeting_time : Timestamp.fromDate(new Date()),
-        venue : {
-            coordinates : [55.94416136249669, -3.268433485994756],
-            location : 'Edinburgh',
-            name : 'Edinburgh Zoo',
-            rating : 4.9,
-            type : 'zoo'
-        }
-    }
-   
-}
-const collectionData = collection(db, 'itineraries')
-addDoc(collectionData, itneraryBody).then(()=>{
-    console.log('posted!')
-})
-   }
-
-
+      },
+    };
+    const docRef = doc(db, "itineraries", "sSokx32X71ZYy69n4AwJ");
+    updateDoc(docRef, updateInviteBody)
+      .then(() => {
+        setDisableButton(false);
+        console.log("invite sent!");
+      })
+      .catch((e) => {
+        console.log(e);
+        setDisableButton(false);
+      });
+  };
+  const postItinerary = (invitee: Users[]) => {
+    const itneraryBody = {
+      attendees: {
+        invitee_1: {
+          accepted: true,
+          start_location: new GeoPoint(55.96935528255473,-3.179227758736596),
+          transportation: "driving",
+          travel_time: "1h30m",
+          username: invitee.username,
+        },
+        meeting_creator: {
+          accepted: true,
+          start_location: new GeoPoint(55.98234946928965, -3.1774646553803034),
+          transportation: "walking",
+          travel_time: "9m",
+          username: user,
+        },
+      },
+      meeting_time: Timestamp.fromDate(new Date()),
+      venue: {
+        coordinates: new GeoPoint(55.94416136249669, -3.268433485994756),
+        location: "Edinburgh",
+        name: "Edinburgh Zoo",
+        rating: 4.9,
+        type: "zoo",
+      },
+    };
+    const collectionData = collection(db, "Test-sendData");
+    addDoc(collectionData, itneraryBody).then((docRef) => {
+      console.log(docRef.id, "with the id");
+      console.log("posted!");
+    });
+  };
 
   if (user === "Nobody") {
     return (
@@ -154,7 +166,21 @@ addDoc(collectionData, itneraryBody).then(()=>{
                 <ul key={person.id}>
                   <p>Name: {person.first_name}</p>
                   <p>Username: {person.username}</p>
-                  <button onClick={()=>{sendItinerary(person)} }>Invite!</button> 
+                  <button
+                    onClick={() => {
+                      patchItinerary(person);
+                    }}
+                    disabled={disableButton}
+                  >
+                    Invite!
+                  </button>
+                  <button
+                    onClick={() => {
+                      postItinerary(person);
+                    }}
+                  >
+                    posting
+                  </button>
                 </ul>
               );
             })}
@@ -162,7 +188,6 @@ addDoc(collectionData, itneraryBody).then(()=>{
         ) : (
           <p>Start inviting friends!</p>
         )}
-      
       </section>
     );
   }
