@@ -12,7 +12,7 @@ export const Suggestions = (props: SuggestionsProps) => {
   const [isSorted, setIsSorted] = useState(false);
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const [loading, setLoading] = useState(true);
-
+  console.log(props.transportation, '<<><><><<<<<<<<')
   useEffect(() => {
     const fetchData = async () => {
       try {
