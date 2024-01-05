@@ -55,28 +55,40 @@ export interface Coordinates {
 }
 
 export interface Users {
-  id: string 
-  first_name : string,
-  preferences : string[],
-  username: string
+  id: string;
+  first_name: string;
+  preferences: string[];
+  username: string;
 }
 export type SuggestionsProps = {
   friendCoord: {
-      lat: number,
-      lng: number
-  },
+    lat: number;
+    lng: number;
+  };
   userCoord: {
-      lat: number,
-      lng: number
-  }
-}
+    lat: number;
+    lng: number;
+  };
+  transportation: string;
+};
 export type MeetingMapProps = {
   friendCoord: {
-      lat: number,
-      lng: number
-  },
+    lat: number;
+    lng: number;
+  };
   userCoord: {
-      lat: number,
-      lng: number
-  }
-}
+    lat: number;
+    lng: number;
+  };
+};
+
+export type CrosshairProps = {
+  friendCoord: {
+    lat: number;
+    lng: number;
+  };
+  userCoord: {
+    lat: number;
+    lng: number;
+  };
+};
