@@ -3,13 +3,18 @@ import { convertTime } from "../../utils/utils";
 import { Invite } from "../../types";
 import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
-import { getInvites } from "../../utils/api-ma";
+import { getInvites, updateInvite } from "../../utils/api-ma";
 
 export const InvitationsList: React.FC = () => {
   const { user } = useContext(UserContext);
   const [invites, setInvites] = useState<Invite[]>([]);
   const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState("");
+
+  const handleSubmit = async (id: string, accepted: boolean) => {
+    await updateInvite(id, accepted);
+    setIsSubmitted(`${accepted}`);
+  };
 
   useEffect(() => {
     const fetchInvites = async () => {
@@ -18,8 +23,9 @@ export const InvitationsList: React.FC = () => {
     };
     fetchInvites();
     setHasFetchedInvites(true);
-  }, [hasFetchedInvites]);
-  console.log("in invitationslist");
+    setIsSubmitted("");
+  }, [isSubmitted]);
+
   if (!hasFetchedInvites) {
     return <p>loading....</p>;
   } else if (user === "Nobody" || user === undefined) {
@@ -71,9 +77,15 @@ export const InvitationsList: React.FC = () => {
                     <p>Rating: {invite.venue.rating}</p>
                     <h3 className="invitation-header">WHEN</h3>
                     <p>{convertTime(invite.meeting_time).toString()}</p>
-                    <div className="invitation-buttons">
-                      <button className="btn btn-success">Accept</button>
-                      <button className="btn btn-error">Decline</button>
+                    <div className="invitation-button">
+                      <button
+                        className="btn btn-success"
+                        onClick={() => {
+                          handleSubmit(invite.id, true);
+                        }}
+                      >
+                        Accept
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -117,6 +129,16 @@ export const InvitationsList: React.FC = () => {
                     <p>Rating: {invite.venue.rating}</p>
                     <h3 className="invitation-header">WHEN</h3>
                     <p>{convertTime(invite.meeting_time).toString()}</p>
+                    <div className="invitation-button">
+                      <button
+                        className="btn btn-error"
+                        onClick={() => {
+                          handleSubmit(invite.id, false);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
               </li>
