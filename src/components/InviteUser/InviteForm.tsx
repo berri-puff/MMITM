@@ -72,7 +72,7 @@ export const InviteForm: React.FC = () => {
         },
       },
     };
-    const docRef = doc(db, "itineraries", "sSokx32X71ZYy69n4AwJ");
+    const docRef = doc(db, "itineraries", "change to the proper doc id");
     updateDoc(docRef, updateInviteBody)
       .then(() => {
         setDisableButton(false);
@@ -83,6 +83,7 @@ export const InviteForm: React.FC = () => {
         setDisableButton(false);
       });
   };
+
   const postItinerary = (invitee: Users[]) => {
     const itneraryBody = {
       attendees: {
