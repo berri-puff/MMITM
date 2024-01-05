@@ -1,10 +1,8 @@
-
 .headerIMG {
-    max-width: 100px;
+  max-width: 100px;
 }
 
 .meeting-card {
-  border: 1px solid black;
   margin-bottom: 1rem;
   list-style-type: none;
 }
@@ -13,4 +11,33 @@
   border: 1px solid black;
   margin-bottom: 1rem;
   list-style-type: none;
+}
+
+.invitation-header {
+  margin-top: 1.5rem;
+}
+
+.invitation-accepted {
+  border: var(--fallback-su,oklch(var(--su)/var(--tw-bg-opacity))) 2px solid;
+  border-radius: 0;
+}
+
+.invitation-pending {
+  border: var(--fallback-er,oklch(var(--er)/var(--tw-bg-opacity))) 2px solid;
+  border-radius: 0;
+}
+
+.invitation-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.invitation-buttons > button {
+  margin: 1rem;
+}
+
+.non-collapsed-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
