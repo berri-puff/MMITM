@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { convertToNumberCoord } from '../../utils/utils';
 
-export const MeetingForm: React.FC = ({
+export const MeetingForm = ({
   setUserCoord,
   setFriendCoord,
   setIsSubmitted,
@@ -10,6 +10,8 @@ export const MeetingForm: React.FC = ({
   const [value, setValue] = useState('Transportation...');
   const [userLocation, setUserLocation] = useState<string>('');
   const [friendLocation, setFriendLocation] = useState<string>('');
+  const [userLocationBtn, setUserLocationBtn] = useState<boolean>(false)
+  const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false)
 
   function handleUserLocation(event: any): void {
     setUserLocation(event.target.value);
@@ -21,10 +23,12 @@ export const MeetingForm: React.FC = ({
   function confirmUserPosition(event: any): void {
     event.preventDefault();
     setUserCoord(convertToNumberCoord(userLocation));
+    setUserLocationBtn(true)
   }
   function confirmFriendPosition(event: any): void {
     event.preventDefault();
     setFriendCoord(convertToNumberCoord(friendLocation));
+    setFriendLocationBtn(true)
   }
   function handleSubmit(event: any): void {
     event.preventDefault();
@@ -36,6 +40,8 @@ export const MeetingForm: React.FC = ({
     setValue(event.target.value);
     setTransportation(event.target.value);
   }
+
+  
   return (
     <section>
       <form onSubmit={handleSubmit}>
@@ -50,7 +56,7 @@ export const MeetingForm: React.FC = ({
             required
           />
         </label>
-        <button onClick={confirmUserPosition}>Confirm my place</button>
+        <button onClick={confirmUserPosition} disabled={userLocationBtn}>Confirm my place</button>
         <label>
           Friend's Location
           <input
@@ -62,7 +68,7 @@ export const MeetingForm: React.FC = ({
             required
           />
         </label>
-        <button onClick={confirmFriendPosition}>Confirm friend's place</button>
+        <button onClick={confirmFriendPosition} disabled={friendLocationBtn}>Confirm friend's place</button>
         <label htmlFor="Transportation">
           <div>
             <select
@@ -76,12 +82,15 @@ export const MeetingForm: React.FC = ({
             </select>
           </div>
         </label>
+        
+      </form>
+      {(userLocationBtn && friendLocationBtn) && (userLocation.length !== 0 && friendLocation.length !== 0)? <>
         <p>
           Does the places look correct? If so, click the button to find a
           meeting spot!
         </p>
-        <button>Find Meeting Spot!</button>
-      </form>
+        <button disabled={false}>Find Meeting Spot!</button> 
+       </>: <p>Please confirm both locations!</p>} 
     </section>
   );
 };
