@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import db from "../../lib/fireBaseConfig";
-import { collection, getDocs, doc, updateDoc } from "@firebase/firestore";
+import { collection, getDocs, doc, updateDoc, addDoc, Timestamp } from "@firebase/firestore";
 import { Users } from "../../types";
 
 export const InviteForm: React.FC = () => {
@@ -43,7 +43,7 @@ export const InviteForm: React.FC = () => {
     retrieveUsers(searchInput);
   }
 
-  const sendIntinerary = async(invitee : Users[]) : Promise<void> => {
+  const sendItinerary = async(invitee : Users[]) : Promise<void> => {
     const updateInviteBody = {
         attendees : {
             invitee_1 : {
@@ -69,6 +69,41 @@ updateDoc(docRef, updateInviteBody).then(()=>{
 })
   
   }
+   const postItinerary = (invitee : Users[]) =>{   
+const itneraryBody = {
+    attendees : {
+        invitee_1 : {
+        accepted: true,
+        start_location : [55.96935528255473, -3.179227758736596],
+        transportation: 'driving',
+        travel_time : '1h30m',
+        username: invitee.username
+        },
+        meeting_creator : {
+            accepted: true,
+            start_location : [55.98234946928965, -3.1774646553803034],
+            transportation: 'driving',
+            travel_time: '9m',
+            username: user
+        },
+    meeting_time : Timestamp.fromDate(new Date()),
+        venue : {
+            coordinates : [55.94416136249669, -3.268433485994756],
+            location : 'Edinburgh',
+            name : 'Edinburgh Zoo',
+            rating : 4.9,
+            type : 'zoo'
+        }
+    }
+   
+}
+const collectionData = collection(db, 'itineraries')
+addDoc(collectionData, itneraryBody).then(()=>{
+    console.log('posted!')
+})
+   }
+
+
 
   if (user === "Nobody") {
     return (
@@ -119,7 +154,7 @@ updateDoc(docRef, updateInviteBody).then(()=>{
                 <ul key={person.id}>
                   <p>Name: {person.first_name}</p>
                   <p>Username: {person.username}</p>
-                  <button onClick={()=>{sendIntinerary(person)}}>Invite!</button>
+                  <button onClick={()=>{sendItinerary(person)} }>Invite!</button> 
                 </ul>
               );
             })}
@@ -127,6 +162,7 @@ updateDoc(docRef, updateInviteBody).then(()=>{
         ) : (
           <p>Start inviting friends!</p>
         )}
+      
       </section>
     );
   }
