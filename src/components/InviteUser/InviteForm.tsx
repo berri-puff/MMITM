@@ -42,10 +42,9 @@ export const InviteForm: React.FC = () => {
     setIsLoading(true);
     retrieveUsers(searchInput);
   }
-console.log(user)
+
   const sendIntinerary = async(invitee : Users[]) : Promise<void> => {
-    console.log(invitee.username, 'in the function')
-    const patchMessage = {
+    const updateInviteBody = {
         attendees : {
             invitee_1 : {
             accepted: true,
@@ -64,8 +63,10 @@ console.log(user)
         }
        
     }
-    const docRef = doc(db, 'itineraries', 'sSokx32X71ZYy69n4AwJ')
-updateDoc(docRef, patchMessage)
+    const docRef = doc(db, 'itineraries', 'change to correct docu id here')
+updateDoc(docRef, updateInviteBody).then(()=>{
+    console.log('invite sent!')
+})
   
   }
 
