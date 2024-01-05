@@ -18,18 +18,18 @@
 }
 
 .invitation-accepted {
-  border: var(--fallback-su,oklch(var(--su)/var(--tw-bg-opacity))) 2px solid;
+  border: var(--fallback-su, oklch(var(--su) / var(--tw-bg-opacity))) 2px solid;
   border-radius: 0;
 }
 
 .invitation-pending {
-  border: var(--fallback-er,oklch(var(--er)/var(--tw-bg-opacity))) 2px solid;
+  border: var(--fallback-er, oklch(var(--er) / var(--tw-bg-opacity))) 2px solid;
   border-radius: 0;
 }
 
-.invitation-buttons {
+.invitation-button {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .invitation-buttons > button {

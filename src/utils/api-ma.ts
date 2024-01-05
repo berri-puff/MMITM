@@ -1,7 +1,14 @@
 import axios from "axios";
 import { Place, Invite } from "../types";
 import { convertCrosshairToArray } from "./utils";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import db from "../lib/fireBaseConfig";
 
 export const getPlaces = async (coordinate, setPlaces, apiKey) => {
@@ -36,6 +43,17 @@ export const getInvites = async (user: string) => {
     });
     return data;
   } catch (err: any) {
+    console.log(err);
+  }
+};
+
+export const updateInvite = async (id: string, accepted: boolean) => {
+  const docRef = doc(db, "itineraries", id);
+  try {
+    await updateDoc(docRef, {
+      "attendees.invitee_1.accepted": accepted,
+    });
+  } catch (err) {
     console.log(err);
   }
 };
