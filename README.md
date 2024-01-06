@@ -58,13 +58,3 @@ Run `npm run help` for assistance.
 ## Version History
 
 - 0.1 - Initial release.
-
-## License
-
-Do we need this?
-
-## Acknowledgments
-
-- Northcoders
-- Mapping technology by Google Maps.
-- UI tools from Tailwind CSS and DaisyUI.
