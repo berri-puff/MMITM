@@ -18,7 +18,7 @@ export const MeetingForm = ({
   const [userLocationBtn, setUserLocationBtn] = useState<boolean>(false)
   const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false)
   const [timeStampBtn, setTimeStampBtn] = useState<boolean>(false)
-
+  const [alerts, setAlerts] = useState<boolean>(false)
   function handleUserLocation(event: any): void {
     setUserLocation(event.target.value);
   }
@@ -75,13 +75,17 @@ setUserCoord(result)
     event.preventDefault()
     if(timeStamp.date.length> 0 && timeStamp.time.length > 0){
       setTimeStampBtn(true)
+      setAlerts(true)
+      setTimeout(() => {
+        setAlerts(false)
+      }, 3000);
     }
     
   }
   
   return (
     <>
-       {timeStampBtn ? <p className='toat toast-top toast-center alert alert-success'>Time and Date added!</p> : null}
+       {alerts ? <p className='toast toast-top toast-middle alert alert-success w-48'>Time and Date added!</p> : null}
     <section>
       <form onSubmit={handleSubmit}>
         <label>Date</label>
