@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { getDistance } from '../../utils/api-ak';
 import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
+import { getOpeningHours } from '../../utils/api-cm';
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
@@ -23,7 +24,9 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   // };
 
   useEffect(() => {
-    getOpeningHours(places)
+    getOpeningHours(places).then((results) => {
+      console.log(results, 'RESSSSULLLLLTTTTSSSSS')
+    })
     
     getDistance(finalCoordsOrigins, placesCoords, transportation)
       .then((data) => {
