@@ -30,9 +30,9 @@ export const InvitationsList: React.FC = () => {
     return <p>loading....</p>;
   } else if (user === "Nobody" || user === undefined) {
     return (
-      <Link to={"/Log_in"}>
-        <p>Please log in to see your invites</p>
-      </Link>
+      <p>
+        Please <Link className="btn btn-primary mx-5" to={`/log_in`}>LogIn</Link> to see your invitations.
+      </p>
     );
   } else if (!invites.length) {
     return <p>No invites</p>;

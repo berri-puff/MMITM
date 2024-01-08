@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import { Link } from "react-router-dom";
+
 import db from "../../lib/fireBaseConfig";
 import {
   collection,
@@ -118,13 +118,6 @@ export const InviteForm: React.FC = () => {
     });
   };
 
-  if (user === "Nobody") {
-    return (
-      <p>
-        Please <Link to={`/log_in`}>LogIn</Link> to invite someone
-      </p>
-    );
-  }
   if (isLoading) {
     return (
       <section>
