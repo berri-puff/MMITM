@@ -1,11 +1,13 @@
 import axios from "axios";
-import { Place } from "../types";
+import { Place, Invite } from "../types";
 import { convertCrosshairToArray } from "./utils";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import db from "../lib/fireBaseConfig";
 
 export const getPlaces = async (coordinate, setPlaces, apiKey) => {
   let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coordinate}&type=cafe&opennow&rankby=distance&key=${apiKey}`;
   const { data } = await axios.get(url);
-  return data
+  return data;
 };
 
 export const getAllPlaces = async (crosshair, setPlaces, apiKey) => {
@@ -13,12 +15,27 @@ export const getAllPlaces = async (crosshair, setPlaces, apiKey) => {
   const placesPromises = [];
   await coordinates.map((coordinate) => {
     placesPromises.push(getPlaces(coordinate, setPlaces, apiKey));
-  })
+  });
   try {
-    const dataArr = await Promise.all(placesPromises)
-    return dataArr
+    const dataArr = await Promise.all(placesPromises);
+    return dataArr;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
+};
 
+export const getInvites = async (user: string) => {
+  try {
+    const q = query(
+      collection(db, "itineraries"),
+      where("attendees.invitee_1.username", "==", user)
+    );
+    const querySnapshot = await getDocs(q);
+    const data: Invite[] = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() } as Invite;
+    });
+    return data;
+  } catch (err: any) {
+    console.log(err);
+  }
 };
