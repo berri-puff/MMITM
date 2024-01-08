@@ -1,6 +1,8 @@
 import { SuggestionsListProps } from '../../types';
 import { useEffect, useState } from 'react';
 import { getDistance } from '../../utils/api-ak';
+import { SuggestionCard } from './SuggestionCard';
+import { InviteUser } from '../InviteUser';
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
@@ -11,7 +13,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   const [detailedTravelInfo, setDetailedTravelInfo] = useState<
     DetailedDestination[]
   >([]);
-
+  const [chosenMeeting, setChosenMeeting] = useState({})
   // const getFirstPartOfAddress = (address) => {
   //   return address.split(',')[0].trim();
   // };
@@ -35,6 +37,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         const detailedDestinations = sortedDestinations.map((dest) => {
           const destinationDetails = {
             address: data.destination_addresses[dest.index],
+            placeData: places[dest.index],
             travelDetails: data.rows.map((row) => ({
               origin: data.origin_addresses[data.rows.indexOf(row)],
               travelTime: row.elements[dest.index].duration.text,
@@ -50,40 +53,20 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         console.log(error);
       });
   }, []);
+console.log(chosenMeeting, '<<<<<<<<<<<<<<<<<<<<<')
+  if (chosenMeeting.placeData) {
+    return <InviteUser chosenMeeting={chosenMeeting}/>
+  } else {
+    return (
+      <>
+        <div>
+          {detailedTravelInfo.map((destination, index) => ( 
+            <SuggestionCard key={destination.placeData.place_id} destination={destination} index={index} transportation={transportation} setChosenMeeting={setChosenMeeting}/>
+          ))}
+        </div>
+      </>
+    );
+  }
 
-  return (
-    <>
-      {console.log(detailedTravelInfo, 'detailedTravelInfo')}
-      {console.log(places, 'places')}
-      <ul>
-        {places.map((place) => (
-          <li key={place.place_id} className="suggested-place">
-            <h3>{place.name}</h3>
-            <p>Rating: {place.rating}/5</p>
-            <p># of Ratings: {place.user_ratings_total}</p>
-            <p>Address: {place.vicinity}</p>
-          </li>
-        ))}
-      </ul>
-
-      <div>
-        {detailedTravelInfo.map((destination, index) => (
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title">
-                Destination {index + 1}: {destination.address}
-              </h2>
-              {destination.travelDetails.map((detail, detailIndex) => (
-                <div key={detailIndex} className="travel-detail">
-                  <p>From: {detail.origin}</p>
-                  <p>Travel Time: {detail.travelTime}</p>
-                  <p>Travel Distance: {detail.travelDistance}</p>
-                </div>
-              ))}
-            </div>{' '}
-          </div>
-        ))}
-      </div>
-    </>
-  );
+  
 };
