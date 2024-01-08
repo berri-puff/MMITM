@@ -19,14 +19,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/setup_meeting" element={<SetUpMeeting />} />
-            <Route
-              path="/setup_meeting/suggestions"
-              element={<Suggestions />}
-            />
-            <Route path="/setup_meeting/invite" element={<InviteUser />} />
             <Route path="/invitations/:username" element={<Invitations />} />
             <Route path="/log_in" element={<LogIn />} />
-            <Route path="/playground" element={<Playground />} />
           </Routes>
         </div>
       </UserProvider>
