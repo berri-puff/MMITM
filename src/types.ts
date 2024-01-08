@@ -92,3 +92,8 @@ export type CrosshairProps = {
     lng: number;
   };
 };
+
+export type InvitationsProps = {
+  invites: Invite[];
+  setSubmitted: React.Dispatch<React.SetStateAction<string>>
+}
