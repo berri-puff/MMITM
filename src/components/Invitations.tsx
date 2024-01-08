@@ -11,19 +11,19 @@ export const Invitations = () => {
   const [recievedInvites, setRecievedInvites] = useState<Invite[]>([]);
   const [createdInvites, setCreatedInvites] = useState<Invite[]>([]);
   const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
-  const [viewInvites, setViewInvites] = useState("recieved");
   const [submitted, setSubmitted] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
 
-  const handleInvitesClick = (invitesView) => {
-    setViewInvites(invitesView);
+  const handleToggle = () => {
+    setIsChecked(!isChecked);
   };
 
   useEffect(() => {
     const fetchInvites = async () => {
       const recievedInvitesData = await getInvites(user);
       const createdInvitesData = await getCreatedInvites(user);
-      setRecievedInvites(recievedInvitesData);
-      setCreatedInvites(createdInvitesData);
+      setRecievedInvites(recievedInvitesData as Invite[]);
+      setCreatedInvites(createdInvitesData as Invite[]);
     };
     fetchInvites();
     setHasFetchedInvites(true);
@@ -41,33 +41,23 @@ export const Invitations = () => {
   } else {
     return (
       <div>
-        <h3>Now viewing</h3>
-        <label className="swap">
-          <input type="checkbox" />
-          <div
-            className="swap-off"
-            onClick={() => {
-              handleInvitesClick("recieved");
-            }}
-          >
-            Recieved Invites
-          </div>
-          <div
-            className="swap-on"
-            onClick={() => {
-              handleInvitesClick("created");
-            }}
-          >
-            Created Invites
-          </div>
-        </label>
-        {viewInvites === "recieved" && (
+        <div className="invitations-toggle">
+          <p>Recieved</p>
+          <input
+            type="checkbox"
+            className="toggle bg-blue-500 hover:bg-blue-700 border-blue-500"
+            checked={isChecked}
+            onChange={handleToggle}
+          />
+          <p>Created</p>
+        </div>
+        {isChecked === false && (
           <RecievedInvitations
             invites={recievedInvites}
             setSubmitted={setSubmitted}
           />
         )}
-        {viewInvites === "created" && (
+        {isChecked === true && (
           <CreatedInvitations
             invites={createdInvites}
             setSubmitted={setSubmitted}
