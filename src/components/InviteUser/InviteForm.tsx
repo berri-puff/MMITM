@@ -13,12 +13,13 @@ import {
 } from "@firebase/firestore";
 import { Users } from "../../types";
 
-export const InviteForm: React.FC = () => {
+export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord}) => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [foundUser, setFoundUser] = useState<Users[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disableButton, setDisableButton] = useState<boolean>(false);
   const { user } = useContext(UserContext);
+  console.log(chosenMeeting, 'Chosen Meeting<<<<')
   const retrieveUsers = async (searchUser: string) => {
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
@@ -52,70 +53,42 @@ export const InviteForm: React.FC = () => {
     retrieveUsers(searchInput);
   }
 
-  const patchItinerary = async (invitee: Users[]): Promise<void> => {
-    setDisableButton(true);
-    const updateInviteBody = {
+
+  console.log(chosenMeeting, 'CHOSENMEETING')
+  const postItinerary = (invitee: Users[]) => {
+    console.log(invitee, 'inviteeeeee')
+    const itineraryBody = {
       attendees: {
         invitee_1: {
           accepted: false,
-          start_location: new GeoPoint(55.96935528255473, -3.179227758736596),
-          transportation: "driving",
-          travel_time: "1h30m",
+          start_location: new GeoPoint(friendCoord.lat, friendCoord.lng),
+          transportation: transportation,
+          travel_time: chosenMeeting.travelDetails[1].travelTime,
           username: invitee.username,
         },
         meeting_creator: {
           accepted: true,
-          start_location: new GeoPoint(55.98234946928965, -3.1774646553803034),
-          transportation: "walking",
-          travel_time: "9m",
-          username: user,
-        },
-      },
-    };
-    const docRef = doc(db, "Test-sendData", "2I8Nn4RIbgi3r01EBwFK");
-    updateDoc(docRef, updateInviteBody)
-      .then(() => {
-        setDisableButton(false);
-        console.log("invite sent!");
-      })
-      .catch((e) => {
-        console.log(e);
-        setDisableButton(false);
-      });
-  };
-
-  const postItinerary = (invitee: Users[]) => {
-    const itneraryBody = {
-      attendees: {
-        invitee_1: {
-          accepted: true,
-          start_location: new GeoPoint(55.96935528255473,-3.179227758736596),
-          transportation: "driving",
-          travel_time: "1h30m",
-          username: invitee.username,
-        },
-        meeting_creator: {
-          accepted: true,
-          start_location: new GeoPoint(55.98234946928965, -3.1774646553803034),
-          transportation: "walking",
-          travel_time: "9m",
+          start_location: new GeoPoint(userCoord.lat, userCoord.lng),
+          transportation: transportation,
+          travel_time: chosenMeeting.travelDetails[0].travelTime,
           username: user,
         },
       },
       meeting_time: Timestamp.fromDate(new Date()),
       venue: {
-        coordinates: new GeoPoint(55.94416136249669, -3.268433485994756),
-        location: "Edinburgh",
-        name: "Edinburgh Zoo",
-        rating: 4.9,
-        type: "zoo",
+        coordinates: new GeoPoint(chosenMeeting.placeData.geometry.location.lat, chosenMeeting.placeData.geometry.location.lng),
+        location: chosenMeeting.address,
+        name: chosenMeeting.placeData.name,
+        rating: chosenMeeting.placeData.rating,
+        type: "Cafe",
       },
     };
-    const collectionData = collection(db, "Test-sendData");
-    addDoc(collectionData, itneraryBody).then((docRef) => {
-      console.log(docRef.id, "with the id");
-      console.log("posted!");
-    });
+    console.log(itineraryBody, 'itineraryBody<<<<<<')
+    // const collectionData = collection(db, "Test-sendData");
+    // addDoc(collectionData, itineraryBody).then((docRef) => {
+    //   console.log(docRef.id, "with the id");
+    //   console.log("posted!");
+    // });
   };
 
   if (isLoading) {
@@ -138,8 +111,13 @@ export const InviteForm: React.FC = () => {
       </section>
     );
   } else {
+    
+      
+    
     return (
+      
       <section>
+        
         <form onSubmit={searchForUser}>
           <label htmlFor="invite-user">
             Search by firstname or username:
@@ -155,22 +133,18 @@ export const InviteForm: React.FC = () => {
         </form>
         {foundUser.length !== 0 ? (
           <>
-            {foundUser.map((person) => {
-              return (
-                <ul key={person.id}>
-                  <p>Name: {person.first_name}</p>
-                  <p>Username: {person.username}</p>
+                <ul key={foundUser[0].id}>
+                  <p>Name: {foundUser[0].first_name}</p>
+                  <p>Username: {foundUser[0].username}</p>
                   <button
                     onClick={() => {
-                      patchItinerary(person);
+                      postItinerary(foundUser[0]);
                     }}
                     disabled={disableButton}
                   >
                     Invite!
                   </button>
                 </ul>
-              );
-            })}
           </>
         ) : (
           <p>Start inviting friends!</p>

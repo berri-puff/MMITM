@@ -97,6 +97,8 @@ export const Suggestions = (props: SuggestionsProps) => {
           placesCoords={placesCoords}
           finalCoordsOrigins={finalCoordsOrigins}
           transportation={props.transportation}
+          userCoord={props.userCoord} 
+          friendCoord={props.friendCoord}
         />
       </div>
     );
