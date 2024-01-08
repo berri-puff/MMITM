@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { convertToNumberCoord } from '../../utils/utils';
 import { addressToCoord } from '../../utils/api-ma';
 import { Coordinates } from '../../types';
+
+
 
 export const MeetingForm = ({
   setUserCoord,
@@ -79,8 +80,9 @@ setUserCoord(result)
   }
   
   return (
+    <>
+       {timeStampBtn ? <p className='toat toast-top toast-center alert alert-success'>Time and Date added!</p> : null}
     <section>
-
       <form onSubmit={handleSubmit}>
         <label>Date</label>
         <input required type="date" onChange={handleDate}></input>
@@ -90,6 +92,7 @@ setUserCoord(result)
         <button onClick={confirmDateAndTime} className="btn btn-primary mx-5">
           Confirm Date and Time
         </button>
+     
         <label className="label">Your Location </label>
         <input
           type="text"
@@ -148,5 +151,6 @@ setUserCoord(result)
         <button onClick={handleSubmit} disabled={false} className="btn btn-primary mx-5">Find Meeting Spot!</button> 
        </> : <p>Please confirm both locations!</p>} 
     </section>
+  </>
   );
 };
