@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { convertToNumberCoord } from '../../utils/utils';
+import { addressToCoord } from '../../utils/api-ma';
+import { Coordinates } from '../../types';
 
-export const MeetingForm: React.FC = ({
+export const MeetingForm = ({
   setUserCoord,
   setFriendCoord,
   setIsSubmitted,
   setTransportation,
 }) => {
   const [value, setValue] = useState('Transportation...');
-  const [userLocation, setUserLocation] = useState<string>('');
-  const [friendLocation, setFriendLocation] = useState<string>('');
+  const [userLocation, setUserLocation] = useState<string[]>('');
+  const [friendLocation, setFriendLocation] = useState<string[]>('');
+  const [userLocationBtn, setUserLocationBtn] = useState<boolean>(false)
+  const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false)
+
 
   function handleUserLocation(event: any): void {
     setUserLocation(event.target.value);
@@ -20,11 +25,17 @@ export const MeetingForm: React.FC = ({
   }
   function confirmUserPosition(event: any): void {
     event.preventDefault();
-    setUserCoord(convertToNumberCoord(userLocation));
+addressToCoord(userLocation).then((result : Coordinates) =>{
+setUserCoord(result)
+})
+    setUserLocationBtn(true)
   }
   function confirmFriendPosition(event: any): void {
     event.preventDefault();
-    setFriendCoord(convertToNumberCoord(friendLocation));
+    addressToCoord(friendLocation).then((result : Coordinates) =>{
+     setFriendCoord(result)
+    })
+    setFriendLocationBtn(true)
   }
   function handleSubmit(event: any): void {
     event.preventDefault();
@@ -36,6 +47,8 @@ export const MeetingForm: React.FC = ({
     setValue(event.target.value);
     setTransportation(event.target.value);
   }
+
+  
   return (
     <section>
       <form onSubmit={handleSubmit}>
@@ -71,28 +84,31 @@ export const MeetingForm: React.FC = ({
           Confirm friend's place
         </button>
         <label htmlFor="Transportation" className="label">
-          {' '}
           Choose transportation
         </label>
-        <div>
-          <select
-            id="Transportation"
-            name="Transportation"
-            value={value}
-            onChange={handleSortChange}
-            className="dropdown"
-          >
-            <option value={'walking'}>Walking</option>
-            <option value={'driving'}>Driving</option>
-          </select>
-        </div>
 
+        <label htmlFor="Transportation">
+          <div>
+            <select
+              id="Transportation"
+              name="Transportation"
+              value={value}
+              onChange={handleSortChange}
+            >
+              <option value={'walking'}>Walking</option>
+              <option value={'driving'}>Driving</option>
+            </select>
+          </div>
+        </label>
+        
+      </form>
+      {(userLocationBtn && friendLocationBtn) && (userLocation.length !== 0 && friendLocation.length !== 0) ? <>
         <p className="py-5">
           Does the places look correct? If so, click the button to find a
           meeting spot!
         </p>
-        <button className="btn btn-primary mx-5">Find Meeting Spot!</button>
-      </form>
+        <button onClick={handleSubmit} disabled={false} className="btn btn-primary mx-5">Find Meeting Spot!</button> 
+       </> : <p>Please confirm both locations!</p>} 
     </section>
   );
 };

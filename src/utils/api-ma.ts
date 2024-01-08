@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Place, Invite } from "../types";
+import { Place, Invite, Coordinates } from "../types";
 import { convertCrosshairToArray } from "./utils";
 import {
   collection,
@@ -84,3 +84,10 @@ export const getCreatedInvites = async (user: string) => {
     console.log("Error fetching invites:", err);
   }
 };
+
+export const addressToCoord = async (userLocation : string[]) : Promise<Coordinates> =>{
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
+let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${userLocation}&key=${apiKey}`;
+const {data} = await axios.get(url)
+return data.results[0].geometry.location
+}

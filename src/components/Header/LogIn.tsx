@@ -1,13 +1,14 @@
 import { collection, getDocs } from "firebase/firestore";
 
 import db from "../../lib/fireBaseConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { UserCard } from "../UserCard";
+import { UserContext } from "../../contexts/UserContext";
 
 export const LogIn: React.FC = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { user } = useContext(UserContext);
   const getUsers = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
@@ -42,6 +43,9 @@ export const LogIn: React.FC = () => {
           );
         })}
       </ul>
+      <p>  </p>
+      <p>  </p>
+    {user !== 'Nobody' ? <p>You are now logged in as {user}.</p> : <p></p> }
     </div>
   );
 };

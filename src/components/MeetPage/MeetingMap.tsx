@@ -1,14 +1,13 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import React from 'react';
-import { MeetingMapProps } from '../../types';
+import { Coordinates, MeetingMapProps } from '../../types';
 
-export const MeetingMap : React.FC = (props: MeetingMapProps)=>{
+export const MeetingMap = (props: MeetingMapProps)=>{
     const containerStyle = {
         width: '400px',
         height: '400px'
       };
       
-      const center = {
+      let center : Coordinates= {
         lat: 53.80083232820499, 
         lng: -1.5491218869883503
       };
@@ -23,9 +22,9 @@ export const MeetingMap : React.FC = (props: MeetingMapProps)=>{
         <div>
             <GoogleMap 
             mapContainerStyle={containerStyle}
-            zoom={7}
-            center={center}>
-             {props.userCoord.lat ? <Marker position={props.userCoord}/>  : <Marker position={center}/>}
+            zoom={10}
+            center={props.userCoord.lat ? props.userCoord: center}>
+             {props.userCoord.lat ? <Marker position={props.userCoord}/> : null}
              {props.friendCoord.lat ? <Marker position={props.friendCoord}/> : null}
             </GoogleMap>
         </div>
