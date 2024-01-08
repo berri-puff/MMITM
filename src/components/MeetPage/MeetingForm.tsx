@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { convertToNumberCoord } from '../../utils/utils';
+import { addressToCoord } from '../../utils/api-ma';
+import { Coordinates } from '../../types';
 
 export const MeetingForm = ({
   setUserCoord,
@@ -8,10 +10,11 @@ export const MeetingForm = ({
   setTransportation,
 }) => {
   const [value, setValue] = useState('Transportation...');
-  const [userLocation, setUserLocation] = useState<string>('');
-  const [friendLocation, setFriendLocation] = useState<string>('');
+  const [userLocation, setUserLocation] = useState<string[]>('');
+  const [friendLocation, setFriendLocation] = useState<string[]>('');
   const [userLocationBtn, setUserLocationBtn] = useState<boolean>(false)
   const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false)
+
 
   function handleUserLocation(event: any): void {
     setUserLocation(event.target.value);
@@ -22,12 +25,16 @@ export const MeetingForm = ({
   }
   function confirmUserPosition(event: any): void {
     event.preventDefault();
-    setUserCoord(convertToNumberCoord(userLocation));
+addressToCoord(userLocation).then((result : Coordinates) =>{
+setUserCoord(result)
+})
     setUserLocationBtn(true)
   }
   function confirmFriendPosition(event: any): void {
     event.preventDefault();
-    setFriendCoord(convertToNumberCoord(friendLocation));
+    addressToCoord(friendLocation).then((result : Coordinates) =>{
+     setFriendCoord(result)
+    })
     setFriendLocationBtn(true)
   }
   function handleSubmit(event: any): void {

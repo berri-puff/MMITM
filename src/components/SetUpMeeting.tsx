@@ -8,7 +8,6 @@ export const SetUpMeeting: React.FC = () => {
   const [friendCoord, setFriendCoord] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [transportation, setTransportation] = useState<string>('walking');
-
   if (isSubmitted) {
     return (
       <Suggestions
