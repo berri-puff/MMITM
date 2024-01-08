@@ -10,7 +10,9 @@ export const SetUpMeeting: React.FC = () => {
   const [friendCoord, setFriendCoord] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [transportation, setTransportation] = useState<string>('walking');
+  const [timeStamp, setTimeStamp] = useState({date: '', time: ''})
   const { user } = useContext(UserContext);
+ 
   if (user === "Nobody") {
     return (
       <p>
@@ -24,6 +26,7 @@ export const SetUpMeeting: React.FC = () => {
         userCoord={userCoord}
         friendCoord={friendCoord}
         transportation={transportation}
+        timeStamp={timeStamp}
       />
     );
   } else {
@@ -36,6 +39,8 @@ export const SetUpMeeting: React.FC = () => {
           setFriendCoord={setFriendCoord}
           setIsSubmitted={setIsSubmitted}
           setTransportation={setTransportation}
+          setTimeStamp={setTimeStamp}
+          timeStamp={timeStamp}
         />
       </div>
     );

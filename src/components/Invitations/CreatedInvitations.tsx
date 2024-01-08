@@ -50,6 +50,10 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                     <p>Location: {invite.venue.location}</p>
                     <p>Rating: {invite.venue.rating}</p>
                     <h3 className="invitation-header">WHEN</h3>
+
+                    <p>{invite.meeting_time.date}</p>
+                    <p>{invite.meeting_time.time}</p>
+
                     <div className="invitation-button">
                       <button
                         className="btn btn-error"
@@ -121,6 +125,10 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                     <p>Location: {invite.venue.location}</p>
                     <p>Rating: {invite.venue.rating}</p>
                     <h3 className="invitation-header">WHEN</h3>
+
+                    <p>{invite.meeting_time.date}</p>
+                    <p>{invite.meeting_time.time}</p>
+
                     <div className="invitation-button">
                       <button
                         className="btn btn-error"

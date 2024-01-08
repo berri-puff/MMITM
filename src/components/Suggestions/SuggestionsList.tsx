@@ -9,6 +9,9 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   placesCoords,
   finalCoordsOrigins,
   transportation,
+  userCoord,
+  friendCoord,
+  timeStamp
 }) => {
   const [detailedTravelInfo, setDetailedTravelInfo] = useState<
     DetailedDestination[]
@@ -55,13 +58,13 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   }, []);
 console.log(chosenMeeting, '<<<<<<<<<<<<<<<<<<<<<')
   if (chosenMeeting.placeData) {
-    return <InviteUser chosenMeeting={chosenMeeting}/>
+    return <InviteUser chosenMeeting={chosenMeeting} transportation={transportation} userCoord={userCoord} friendCoord={friendCoord} timeStamp={timeStamp}/>
   } else {
     return (
       <>
         <div>
           {detailedTravelInfo.map((destination, index) => ( 
-            <SuggestionCard key={destination.placeData.place_id} destination={destination} index={index} transportation={transportation} setChosenMeeting={setChosenMeeting}/>
+            <SuggestionCard key={destination.placeData.place_id} destination={destination} index={index} transportation={transportation} setChosenMeeting={setChosenMeeting} timeStamp={timeStamp}/>
           ))}
         </div>
       </>

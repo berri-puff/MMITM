@@ -1,4 +1,4 @@
-export const SuggestionCard = ({destination, index, transportation, setChosenMeeting}) => {
+export const SuggestionCard = ({destination, index, transportation, setChosenMeeting, timeStamp}) => {
     function handleClick(event: any): void {
         event.preventDefault();
         setChosenMeeting(destination)
@@ -12,6 +12,8 @@ export const SuggestionCard = ({destination, index, transportation, setChosenMee
                     
                   </h2>
                   <h2 className="card-title">#{index + 1} {destination.placeData.name}</h2>
+                  <h3>Date: {timeStamp.date}</h3>
+                  <h3>Time: {timeStamp.time}</h3>
                   <h3>Café</h3>
                   <h3>Rating: {destination.placeData.rating}</h3>
                   <h3>Address: {destination.address}</h3>

@@ -8,13 +8,15 @@ export const MeetingForm = ({
   setFriendCoord,
   setIsSubmitted,
   setTransportation,
+  setTimeStamp,
+  timeStamp
 }) => {
   const [value, setValue] = useState('Transportation...');
   const [userLocation, setUserLocation] = useState<string[]>('');
   const [friendLocation, setFriendLocation] = useState<string[]>('');
   const [userLocationBtn, setUserLocationBtn] = useState<boolean>(false)
   const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false)
-
+  const [timeStampBtn, setTimeStampBtn] = useState<boolean>(false)
 
   function handleUserLocation(event: any): void {
     setUserLocation(event.target.value);
@@ -47,11 +49,47 @@ setUserCoord(result)
     setValue(event.target.value);
     setTransportation(event.target.value);
   }
-
+ 
+  function handleDate (event: any) {
+    event.preventDefault()
+    setTimeStamp((currTimeStamp) => {
+      currTimeStamp.date = event.target.value
+      return currTimeStamp
+    })
+      console.log(timeStamp)
+  
+    
+  }
+  function handleTime (event: any) {
+    event.preventDefault()
+    setTimeStamp((currTimeStamp) => {
+      
+      currTimeStamp.time = event.target.value
+      return currTimeStamp
+    })
+      console.log(timeStamp)
+  
+  }
+  function confirmDateAndTime (event: any) {
+    event.preventDefault()
+    if(timeStamp.date.length> 0 && timeStamp.time.length > 0){
+      setTimeStampBtn(true)
+    }
+    
+  }
   
   return (
     <section>
+
       <form onSubmit={handleSubmit}>
+        <label>Date</label>
+        <input required type="date" onChange={handleDate}></input>
+      
+        <label>Time</label>
+        <input required type="time" onChange={handleTime}></input>
+        <button onClick={confirmDateAndTime} className="btn btn-primary mx-5">
+          Confirm Date and Time
+        </button>
         <label className="label">Your Location </label>
         <input
           type="text"
@@ -102,7 +140,7 @@ setUserCoord(result)
         </label>
         
       </form>
-      {(userLocationBtn && friendLocationBtn) && (userLocation.length !== 0 && friendLocation.length !== 0) ? <>
+      {(userLocationBtn && friendLocationBtn && timeStampBtn ) && (userLocation.length !== 0 && friendLocation.length !== 0 ) && (timeStamp.date.length > 0 && timeStamp.time.length > 0) ? <>
         <p className="py-5">
           Does the places look correct? If so, click the button to find a
           meeting spot!
