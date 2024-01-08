@@ -13,7 +13,7 @@ import {
 } from "@firebase/firestore";
 import { Users } from "../../types";
 
-export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord}) => {
+export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord, timeStamp}) => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [foundUser, setFoundUser] = useState<Users[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -54,7 +54,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
   }
 
 
-  console.log(chosenMeeting, 'CHOSENMEETING')
+
   const postItinerary = (invitee: Users[]) => {
     console.log(invitee, 'inviteeeeee')
     const itineraryBody = {
@@ -74,7 +74,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
           username: user,
         },
       },
-      meeting_time: Timestamp.fromDate(new Date()),
+      meeting_time: timeStamp,
       venue: {
         coordinates: new GeoPoint(chosenMeeting.placeData.geometry.location.lat, chosenMeeting.placeData.geometry.location.lng),
         location: chosenMeeting.address,
@@ -83,12 +83,8 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
         type: "Cafe",
       },
     };
-    console.log(itineraryBody, 'itineraryBody<<<<<<')
-    // const collectionData = collection(db, "Test-sendData");
-    // addDoc(collectionData, itineraryBody).then((docRef) => {
-    //   console.log(docRef.id, "with the id");
-    //   console.log("posted!");
-    // });
+    const collectionData = collection(db, "itineraries");
+    addDoc(collectionData, itineraryBody)
   };
 
   if (isLoading) {

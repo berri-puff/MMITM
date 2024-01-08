@@ -99,6 +99,7 @@ export const Suggestions = (props: SuggestionsProps) => {
           transportation={props.transportation}
           userCoord={props.userCoord} 
           friendCoord={props.friendCoord}
+          timeStamp={props.timeStamp}
         />
       </div>
     );

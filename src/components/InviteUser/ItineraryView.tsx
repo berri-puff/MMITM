@@ -1,4 +1,4 @@
-export const ItineraryView = ({chosenMeeting, transportation})=>{
+export const ItineraryView = ({chosenMeeting, transportation, timeStamp})=>{
     return <>
     <div>
         <div className="card w-96 bg-base-100 shadow-xl">
@@ -7,6 +7,8 @@ export const ItineraryView = ({chosenMeeting, transportation})=>{
               Please Invite a Friend to your Meeting below...
             </h2>
             <h2 className="card-title">{chosenMeeting.placeData.name}</h2>
+            <h3>Date: {timeStamp.date}</h3>
+            <h3>Time: {timeStamp.time}</h3>
             <h3>Café</h3>
             <h3>Rating: {chosenMeeting.placeData.rating}</h3>
             <h3>Address: {chosenMeeting.address}</h3>
