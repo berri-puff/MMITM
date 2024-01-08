@@ -17,11 +17,14 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
     DetailedDestination[]
   >([]);
   const [chosenMeeting, setChosenMeeting] = useState({})
+  const [openPlaces, setOpenPlaces] = useState([])
   // const getFirstPartOfAddress = (address) => {
   //   return address.split(',')[0].trim();
   // };
 
   useEffect(() => {
+    getOpeningHours(places)
+    
     getDistance(finalCoordsOrigins, placesCoords, transportation)
       .then((data) => {
         console.log(data, 'data');

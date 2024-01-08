@@ -32,7 +32,6 @@ export const Suggestions = (props: SuggestionsProps) => {
 
   useEffect(() => {
     if (places.length === 100) {
-      //console.log('gets here', places);
       setFinalPlaces(sortPlaces(places));
       setIsSorted(true);
       setLoading(false);
