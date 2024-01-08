@@ -3,6 +3,7 @@ import { Place, Invite, Coordinates } from "../types";
 import { convertCrosshairToArray } from "./utils";
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   query,
@@ -85,9 +86,19 @@ export const getCreatedInvites = async (user: string) => {
   }
 };
 
-export const addressToCoord = async (userLocation : string[]) : Promise<Coordinates> =>{
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
-let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${userLocation}&key=${apiKey}`;
-const {data} = await axios.get(url)
-return data.results[0].geometry.location
-}
+export const addressToCoord = async (
+  userLocation: string[]
+): Promise<Coordinates> => {
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${userLocation}&key=${apiKey}`;
+  const { data } = await axios.get(url);
+  return data.results[0].geometry.location;
+};
+
+export const deleteInvite = async (id) => {
+  try {
+    await deleteDoc(doc(db, "itineraries", id));
+  } catch (err) {
+    console.log(err);
+  }
+};
