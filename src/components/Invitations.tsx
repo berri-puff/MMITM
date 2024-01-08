@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { InvitationsList } from "./Invitations/InvitationsList";
 import { UserContext } from "../contexts/UserContext";
-import { getCreatedInvites, getInvites, updateInvite } from "../utils/api-ma";
+import { getCreatedInvites, getInvites } from "../utils/api-ma";
 import { Link } from "react-router-dom";
 import { CreatedInvitations } from "./Invitations/CreatedInvitations";
+import { Invite } from "../types";
+import { RecievedInvitations } from "./Invitations/RecievedInvitations";
 
 export const Invitations = () => {
   const { user } = useContext(UserContext);
@@ -11,6 +12,7 @@ export const Invitations = () => {
   const [createdInvites, setCreatedInvites] = useState<Invite[]>([]);
   const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
   const [viewInvites, setViewInvites] = useState("recieved");
+  const [submitted, setSubmitted] = useState("");
 
   const handleInvitesClick = (invitesView) => {
     setViewInvites(invitesView);
@@ -25,7 +27,8 @@ export const Invitations = () => {
     };
     fetchInvites();
     setHasFetchedInvites(true);
-  }, []);
+    setSubmitted("");
+  }, [submitted]);
 
   if (!hasFetchedInvites) {
     return <p>loading....</p>;
@@ -38,6 +41,7 @@ export const Invitations = () => {
   } else {
     return (
       <div>
+        <h3>Now viewing</h3>
         <label className="swap">
           <input type="checkbox" />
           <div
@@ -58,10 +62,16 @@ export const Invitations = () => {
           </div>
         </label>
         {viewInvites === "recieved" && (
-          <InvitationsList invites={recievedInvites} />
+          <RecievedInvitations
+            invites={recievedInvites}
+            setSubmitted={setSubmitted}
+          />
         )}
         {viewInvites === "created" && (
-          <CreatedInvitations invites={createdInvites} />
+          <CreatedInvitations
+            invites={createdInvites}
+            setSubmitted={setSubmitted}
+          />
         )}
       </div>
     );
