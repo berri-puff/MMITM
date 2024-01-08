@@ -35,7 +35,7 @@ export const getInvites = async (user: string) => {
   try {
     const q = query(
       collection(db, "itineraries"),
-      where("attendees.invitee_1.username", "==", user)
+      where("attendees.invitee_1.username", "==", user),
     );
     const querySnapshot = await getDocs(q);
     const data: Invite[] = querySnapshot.docs.map((doc) => {
@@ -43,7 +43,7 @@ export const getInvites = async (user: string) => {
     });
     return data;
   } catch (err: any) {
-    console.log(err);
+    console.log('Error fetching invites:', err);
   }
 };
 
@@ -54,6 +54,22 @@ export const updateInvite = async (id: string, accepted: boolean) => {
       "attendees.invitee_1.accepted": accepted,
     });
   } catch (err) {
-    console.log(err);
+    console.log('Error updating invite:', err);
   }
 };
+
+export const getCreatedInvites = async (user: string) => {
+  try {
+    const q = query(
+      collection(db, "itineraries"),
+      where("attendees.meeting_creator.username", "==", user),
+    );
+    const querySnapshot = await getDocs(q);
+    const data: Invite[] = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() } as Invite;
+    });
+    return data;
+  } catch (err: any) {
+    console.log('Error fetching invites:', err);
+  }
+}
