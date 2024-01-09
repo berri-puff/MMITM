@@ -103,9 +103,9 @@ setUserCoord(result)
       
         <label>Time : </label>
         <input required type="time" onBlur={handleTime} ></input>
-        {/* <button onClick={confirmDateAndTime} className="btn btn-primary mx-5">
+        <button onClick={confirmDateAndTime} className="btn btn-primary mx-5">
           Confirm Date and Time
-        </button> */}
+        </button>
      
         <label className="label">Your Location: </label>
         <input
