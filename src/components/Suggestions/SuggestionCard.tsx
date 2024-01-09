@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+=======
+import { useEffect, useState } from 'react';
+import { getPhoto } from '../../utils/api-ak';
+import { HiOutlineClock } from 'react-icons/hi';
+import { HiOutlineCalendar } from 'react-icons/hi';
+import { HiOutlineStar } from 'react-icons/hi2';
+import { HiOutlineMap } from 'react-icons/hi2';
+import { HiOutlineMapPin } from 'react-icons/hi2';
+>>>>>>> main
 
 export const SuggestionCard = ({
   destination,
@@ -15,8 +25,10 @@ export const SuggestionCard = ({
  console.log(destination.placeData.data.result.current_opening_hours, '.................')
   const openingHours = destination.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
   // console.log(openingHours, 'OPENINGHOURS')
-  return (
+  
+return (
     <>
+<<<<<<< HEAD
       <div>
         <div className="card w-96 bg-base-100 shadow-xl">
           <div className="card-body">
@@ -35,35 +47,63 @@ export const SuggestionCard = ({
             <div className="travel-detail">
               <p>Creators Journey:</p>
               <p>From: {destination.travelDetails[0].origin}</p>
+=======
+      <div className="card card-compact w-96 bg-base-100 shadow-2xl hover:bg-secondary hover:text-secondary-content mb-10">
+        <figure className="h-48 overflow-hidden">
+          {imageUrl && <img src={imageUrl} alt="Image" />}
+        </figure>
+        <div className="card-body">
+          <h2 className="card-title">
+            #{index + 1} {destination.placeData.name}{' '}
+            <HiOutlineStar className="inline" />
+            {destination.placeData.rating}
+          </h2>
+          <p>Opening Hours: {openingHours}</p>
+          <h3>
+            {' '}
+            <HiOutlineMapPin className="inline" /> {destination.address}
+          </h3>
+          <div className="divider">Meeting</div>
+          <p>
+            <HiOutlineCalendar className="inline" /> {timeStamp.date}{' '}
+            <HiOutlineClock className="inline" /> {timeStamp.time}
+          </p>
+          <div className="divider">Your journey</div>
+          <div className="travel-detail">
+            <p>
+              <HiOutlineMap className="inline" />
+>>>>>>> main
               {transportation === 'driving' ? (
-                <p>Transportation: Driving </p>
+                <span> Driving </span>
               ) : (
-                <p>Transportation: Walking</p>
+                <span> Walking </span>
               )}
-              <p>Travel Time: {destination.travelDetails[0].travelTime}</p>
-              <p>
-                Travel Distance: {destination.travelDetails[0].travelDistance}
-              </p>
-            </div>
-            <div className="travel-detail">
-              <p>Invitee's Journey:</p>
-              <p>From: {destination.travelDetails[1].origin}</p>
+              {destination.travelDetails[0].travelDistance} in{' '}
+              {destination.travelDetails[0].travelTime} from{' '}
+              {destination.travelDetails[0].origin}
+            </p>
+          </div>
+          <div className="divider">Guest journey</div>
+          <div className="travel-detail">
+            <p>
+              <HiOutlineMap className="inline" />
               {transportation === 'driving' ? (
-                <p>Transportation: Driving </p>
+                <span> Driving </span>
               ) : (
-                <p>Transportation: Walking</p>
+                <span> Walking </span>
               )}
-              <p>Travel Time: {destination.travelDetails[1].travelTime}</p>
-              <p>
-                Travel Distance: {destination.travelDetails[1].travelDistance}
-              </p>
-            </div>
+              {destination.travelDetails[1].travelDistance} in{' '}
+              {destination.travelDetails[1].travelTime} from{' '}
+              {destination.travelDetails[1].origin}
+            </p>
+          </div>
+          <div className="card-actions justify-end mt-5">
             <button onClick={handleClick} className="btn btn-primary mx-5">
               Confirm Meeting
             </button>
-          </div>{' '}
+          </div>
         </div>
       </div>
     </>
   );
-};
+  }
