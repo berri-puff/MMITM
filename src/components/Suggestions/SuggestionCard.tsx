@@ -18,21 +18,27 @@ export const SuggestionCard = ({
     setChosenMeeting(destination);
   }
 
-  const photoReference = destination.placeData.photos[0].photo_reference;
+  // const photoReference = destination.placeData.photos[0].photo_reference;
+  // const [imageUrl, setImageUrl] = useState('');
+  // useEffect(() => {
+  //   getPhoto(photoReference).then((url) => {
+  //     setImageUrl(url);
+  //   });
+  // }, []);
 
-  const [imageUrl, setImageUrl] = useState('');
+  const photo = destination.placeData.photos[0].photo_reference;
 
-  useEffect(() => {
-    getPhoto(photoReference).then((url) => {
-      setImageUrl(url);
-    });
-  }, []);
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+
   return (
     <>
       <div className="mt-10"></div>
       <div className="card card-compact w-96 bg-base-100 shadow-2xl">
         <figure className="h-48 overflow-hidden">
-          {imageUrl && <img src={imageUrl} alt="Image" />}
+          {/* {imageUrl && <img src={imageUrl} alt="Image" />} */}
+          <img
+            src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${apiKey}`}
+          />
         </figure>
         <div className="card-body">
           <h2 className="card-title">
