@@ -103,10 +103,10 @@ setUserCoord(result)
           onChange={handleUserLocation}
           value={userLocation}
           required
-          className="input input-bordered w-full max-w-xs mb-2"
+          className="input input-bordered w-full max-w-xs mb-2 focus:input-primary"
         />
 
-        <button onClick={confirmUserPosition} className="btn btn-primary mx-5">
+        <button onClick={confirmUserPosition} className="btn btn-primary mx-5 input-primary">
           Confirm my place 
         </button>
         <label className="label">Friend's Location: </label>
@@ -117,7 +117,7 @@ setUserCoord(result)
           onChange={handleFriendLocation}
           value={friendLocation}
           required
-          className="input input-bordered w-full max-w-xs mb-2"
+          className="input input-bordered w-full max-w-xs mb-2 focus:input-primary"
         />
 
         <button
