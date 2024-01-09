@@ -111,17 +111,37 @@ export const convertCrosshairToArray = (crosshair) => {
 };
 
 export const convertDateToDay = (date) => {
-  const dayObj = {dayIndex: 0, dayName: ""}
+  const dayObj = {weekdayTextIndex: 0, periodsDayIndex: 0, dayName: ""}
   const dateToConvert = new Date (date)
-  let dayIndex = dateToConvert.getDay() - 1
+  let weekdayTextIndex = dateToConvert.getDay() - 1
+  const periodsDayIndex = dateToConvert.getDay()
   const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-  if(dayIndex === -1) {
-    dayIndex = 6
+  if(weekdayTextIndex === -1) {
+    weekdayTextIndex = 6
   }
-  if(dayIndex === 5){
-    dayIndex = 0 
+  if(weekdayTextIndex === 5){
+    weekdayTextIndex = 0 
   }
-  dayObj.dayIndex = dayIndex
-  dayObj.dayName = dayNames[dayIndex]
+  dayObj.periodsDayIndex = periodsDayIndex
+  dayObj.weekdayTextIndex = weekdayTextIndex
+  dayObj.dayName = dayNames[weekdayTextIndex]
   return dayObj
+}
+
+export const areTheyOpen = (details, timeStamp) => {
+  console.log(details, 'details')
+  console.log(timeStamp, 'TIMESTAMP IN UTILS')
+const finalDetails = details.map((detail) => {
+
+  const openingHours = detail.data.result.current_opening_hours
+  if(openingHours && openingHours.weekday_text[timeStamp.day.weekdayIndex] !== "Closed") {
+    console.log(openingHours.weekday_text[timeStamp.day.dayIndex], 'MAD INDEX THIIING')
+
+  }
+  if(!openingHours) {
+   return detail
+  }
+  
+})
+return finalDetails
 }

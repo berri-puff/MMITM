@@ -9,7 +9,7 @@ const api = axios.create({
     const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
     
     const pendingPromises = places.map((place) => {
-        console.log(place, 'plaaaace')
+
         return api.get(`/json?place_id=${place.place_id}&key=${apiKey}`)
     })
     return Promise.all(pendingPromises)

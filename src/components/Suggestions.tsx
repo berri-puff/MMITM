@@ -1,9 +1,10 @@
 import { SuggestionsList } from './Suggestions/SuggestionsList';
 import { SuggestionsMap } from './Suggestions/SuggestionsMap';
 import { useEffect, useState } from 'react';
-import { convertCoordsToCrosshair, sortPlaces } from '../utils/utils';
+import { areTheyOpen, convertCoordsToCrosshair, sortPlaces } from '../utils/utils';
 import { Place, SuggestionsProps } from '../types';
 import { getAllPlaces, getPlaces } from '../utils/api-ma';
+import { getOpeningHours } from '../utils/api-cm';
 
 export const Suggestions = (props: SuggestionsProps) => {
   const crosshair = convertCoordsToCrosshair(props);
@@ -32,7 +33,9 @@ export const Suggestions = (props: SuggestionsProps) => {
 
   useEffect(() => {
     if (places.length === 100) {
-      setFinalPlaces(sortPlaces(places));
+      getOpeningHours(sortPlaces(places)).then((details) => {
+        setFinalPlaces(areTheyOpen(details, props.timeStamp));
+      })
       setIsSorted(true);
       setLoading(false);
     }
