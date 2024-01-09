@@ -37,7 +37,8 @@ export const SuggestionCard = ({
         <div className="card-body">
           <h2 className="card-title">
             #{index + 1} {destination.placeData.name}{' '}
-            <HiOutlineStar className="inline" /> {destination.placeData.rating}
+            <HiOutlineStar className="inline" />
+            {destination.placeData.rating}
           </h2>
           <h3>
             {' '}

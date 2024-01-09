@@ -3,12 +3,10 @@ import './App.css';
 import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { SetUpMeeting } from './components/SetUpMeeting';
-import { Suggestions } from './components/Suggestions';
-import { InviteUser } from './components/InviteUser';
 import { LogIn } from './components/Header/LogIn';
 import { Invitations } from './components/Invitations';
 import { UserProvider } from './contexts/UserContext';
-import { Playground } from './components/ak-stuff/playground';
+import { Footer } from './components/Footer/Footer';
 
 function App() {
   return (
@@ -23,6 +21,7 @@ function App() {
             <Route path="/log_in" element={<LogIn />} />
           </Routes>
         </div>
+        <Footer />
       </UserProvider>
     </>
   );
