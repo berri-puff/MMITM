@@ -151,10 +151,6 @@ export const areTheyOpen = (details, timeStamp) => {
       } 
       
     }
-    if(!openingHours) {
-      
-      finalDetails.push(detail)
-    }
     
   })
 return finalDetails
