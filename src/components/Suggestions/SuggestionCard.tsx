@@ -1,13 +1,11 @@
-<<<<<<< HEAD
-=======
-import { useEffect, useState } from 'react';
-import { getPhoto } from '../../utils/api-ak';
+
+
 import { HiOutlineClock } from 'react-icons/hi';
 import { HiOutlineCalendar } from 'react-icons/hi';
 import { HiOutlineStar } from 'react-icons/hi2';
 import { HiOutlineMap } from 'react-icons/hi2';
 import { HiOutlineMapPin } from 'react-icons/hi2';
->>>>>>> main
+
 
 export const SuggestionCard = ({
   destination,
@@ -26,31 +24,11 @@ export const SuggestionCard = ({
   const openingHours = destination.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
   // console.log(openingHours, 'OPENINGHOURS')
   
-return (
+  return (
     <>
-<<<<<<< HEAD
-      <div>
-        <div className="card w-96 bg-base-100 shadow-xl">
-          <div className="card-body">
-            
-            <h2 className="card-title">
-              #{index + 1} {destination.placeData.data.result.name}
-            </h2>
-            <h3>{timeStamp.day.dayName}</h3>
-            <h3>Date: {timeStamp.date}</h3>
-            <h3>Time: {timeStamp.time}</h3>
-            
-            <h3>Café</h3>
-            <h3>Rating: {destination.placeData.data.result.rating}</h3>
-            <h3>Address: {destination.address}</h3>
-            <h3>Opening hours: {openingHours}</h3>
-            <div className="travel-detail">
-              <p>Creators Journey:</p>
-              <p>From: {destination.travelDetails[0].origin}</p>
-=======
       <div className="card card-compact w-96 bg-base-100 shadow-2xl hover:bg-secondary hover:text-secondary-content mb-10">
         <figure className="h-48 overflow-hidden">
-          {imageUrl && <img src={imageUrl} alt="Image" />}
+          
         </figure>
         <div className="card-body">
           <h2 className="card-title">
@@ -58,7 +36,6 @@ return (
             <HiOutlineStar className="inline" />
             {destination.placeData.rating}
           </h2>
-          <p>Opening Hours: {openingHours}</p>
           <h3>
             {' '}
             <HiOutlineMapPin className="inline" /> {destination.address}
@@ -72,7 +49,6 @@ return (
           <div className="travel-detail">
             <p>
               <HiOutlineMap className="inline" />
->>>>>>> main
               {transportation === 'driving' ? (
                 <span> Driving </span>
               ) : (
