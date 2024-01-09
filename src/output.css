@@ -4213,10 +4213,6 @@ details.collapse summary::-webkit-details-marker {
   flex-direction: column;
 }
 
-.place-items-center {
-  place-items: center;
-}
-
 .gap-2 {
   gap: 0.5rem;
 }
@@ -4257,10 +4253,6 @@ details.collapse summary::-webkit-details-marker {
 
 .text-center {
   text-align: center;
-}
-
-.text-justify {
-  text-align: justify;
 }
 
 .text-2xl {
