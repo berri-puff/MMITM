@@ -41,7 +41,7 @@ export const Suggestions = (props: SuggestionsProps) => {
       
     }
   }, [places]);
-console.log(finalPlaces, 'FINAL PLACESSSS')
+
   //console.log(finalPlaces, 'final places');
 
   //// for const loop of props and push each prop to new array
@@ -69,7 +69,7 @@ console.log(finalPlaces, 'FINAL PLACESSSS')
 
   //////////////////// Matrix stuff
   function placesToPlacesID(finalPlaces) {
-    console.log(finalPlaces, 'FINAL PLA')
+  
     let finalPlacesIDs = '';
     finalPlaces.forEach((place) => {
       finalPlacesIDs = finalPlacesIDs + 'place_id:' + place.data.result.place_id + '|';

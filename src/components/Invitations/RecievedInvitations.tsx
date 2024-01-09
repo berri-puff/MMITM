@@ -47,6 +47,7 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({ invites, setSu
                     </p>
                     <p>Location: {invite.venue.location}</p>
                     <p>Rating: {invite.venue.rating}</p>
+                    <p>Opening Hours: {invite.venue.opening_hours}</p>
                     <h3 className="invitation-header">WHEN</h3>
 
                     <p>{invite.meeting_time.date}</p>
@@ -102,6 +103,7 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({ invites, setSu
                     </p>
                     <p>Location: {invite.venue.location}</p>
                     <p>Rating: {invite.venue.rating}</p>
+                    <p>Opening Hours: {invite.venue.opening_hours}</p>
                     <h3 className="invitation-header">WHEN</h3>
 
                     <p>{invite.meeting_time.date}</p>

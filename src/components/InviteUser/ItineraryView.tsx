@@ -1,4 +1,5 @@
 export const ItineraryView = ({chosenMeeting, transportation, timeStamp})=>{
+  const openingHours = chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
     return <>
     <div>
         <div className="card w-96 bg-base-100 shadow-xl">
@@ -6,13 +7,14 @@ export const ItineraryView = ({chosenMeeting, transportation, timeStamp})=>{
             <h2 className="card-title">
               Please Invite a Friend to your Meeting below...
             </h2>
-            <h2 className="card-title">{chosenMeeting.placeData.name}</h2>
+            <h2 className="card-title">{chosenMeeting.placeData.data.result.name}</h2>
+            <h3>{timeStamp.day.dayName}</h3>
             <h3>Date: {timeStamp.date}</h3>
             <h3>Time: {timeStamp.time}</h3>
             <h3>Café</h3>
-            <h3>Rating: {chosenMeeting.placeData.rating}</h3>
+            <h3>Rating: {chosenMeeting.placeData.data.result.rating}</h3>
             <h3>Address: {chosenMeeting.address}</h3>
-            
+            <h3>Opening hours: {openingHours}</h3>
             
               <div className="travel-detail">
                   <p>Creators Journey:</p>

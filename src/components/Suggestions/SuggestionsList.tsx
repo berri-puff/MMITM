@@ -85,7 +85,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   } else {
     return (
       <>
-        {console.log(detailedTravelInfo, 'deet travel')}
+       
         <SuggestionsMap
           detailedTravelInfo={detailedTravelInfo}
           scrollToCard={scrollToCard}

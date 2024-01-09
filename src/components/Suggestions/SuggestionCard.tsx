@@ -22,6 +22,9 @@ export const SuggestionCard = ({
       setImageUrl(url);
     });
   }, []);
+ 
+  const openingHours = destination.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
+  // console.log(openingHours, 'OPENINGHOURS')
   return (
     <>
       <div>
@@ -31,12 +34,14 @@ export const SuggestionCard = ({
             <h2 className="card-title">
               #{index + 1} {destination.placeData.data.result.name}
             </h2>
+            <h3>{timeStamp.day.dayName}</h3>
             <h3>Date: {timeStamp.date}</h3>
             <h3>Time: {timeStamp.time}</h3>
+            
             <h3>Café</h3>
             <h3>Rating: {destination.placeData.data.result.rating}</h3>
             <h3>Address: {destination.address}</h3>
-
+            <h3>Opening hours: {openingHours}</h3>
             <div className="travel-detail">
               <p>Creators Journey:</p>
               <p>From: {destination.travelDetails[0].origin}</p>

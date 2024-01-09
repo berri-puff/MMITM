@@ -56,7 +56,7 @@ setUserCoord(result)
       currTimeStamp.date = event.target.value
       return currTimeStamp
     })
-      console.log(timeStamp)
+
   
     
   }
@@ -67,7 +67,7 @@ setUserCoord(result)
       currTimeStamp.time = event.target.value
       return currTimeStamp
     })
-      console.log(timeStamp)
+
   
   }
   function confirmDateAndTime (event: any) {
@@ -79,7 +79,6 @@ setUserCoord(result)
         currTimeStamp.day = dayObj
         return currTimeStamp
       })
-      console.log(timeStamp, 'TIMESTAMP')
       setTimeStampBtn(true)
     }
     
