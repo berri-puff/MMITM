@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { convertToNumberCoord } from '../../utils/utils';
+import { convertDateToDay, convertToNumberCoord } from '../../utils/utils';
 import { addressToCoord } from '../../utils/api-ma';
 import { Coordinates } from '../../types';
 
@@ -73,6 +73,13 @@ setUserCoord(result)
   function confirmDateAndTime (event: any) {
     event.preventDefault()
     if(timeStamp.date.length> 0 && timeStamp.time.length > 0){
+      const dayObj = convertDateToDay(timeStamp.date)
+      
+      setTimeStamp((currTimeStamp) => {
+        currTimeStamp.day = dayObj
+        return currTimeStamp
+      })
+      console.log(timeStamp, 'TIMESTAMP')
       setTimeStampBtn(true)
     }
     

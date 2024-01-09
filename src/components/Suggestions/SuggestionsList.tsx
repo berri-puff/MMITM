@@ -28,7 +28,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
 
   useEffect(() => {
     getOpeningHours(places).then((results) => {
-      console.log(results, 'RESSSSULLLLLTTTTSSSSS')
+      console.log(results, 'RESSSSULLLLLTTTTSSSSS!!!!!!!')
     })
     
     getDistance(finalCoordsOrigins, placesCoords, transportation)

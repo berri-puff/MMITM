@@ -109,3 +109,19 @@ export const convertCrosshairToArray = (crosshair) => {
   coordinates.push(string);
   return coordinates;
 };
+
+export const convertDateToDay = (date) => {
+  const dayObj = {dayIndex: 0, dayName: ""}
+  const dateToConvert = new Date (date)
+  let dayIndex = dateToConvert.getDay() - 1
+  const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+  if(dayIndex === -1) {
+    dayIndex = 6
+  }
+  if(dayIndex === 5){
+    dayIndex = 0 
+  }
+  dayObj.dayIndex = dayIndex
+  dayObj.dayName = dayNames[dayIndex]
+  return dayObj
+}
