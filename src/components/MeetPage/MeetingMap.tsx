@@ -18,7 +18,7 @@ export const MeetingMap = (props: MeetingMapProps)=>{
 
 
     return isLoaded ?(
-        <> <h3>Map View</h3>
+        <> 
         <div>
             <GoogleMap 
             mapContainerStyle={containerStyle}
