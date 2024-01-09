@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { getDistance } from '../../utils/api-ak';
 import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
+import { getOpeningHours } from '../../utils/api-cm';
 import { SuggestionsMap } from './SuggestionsMap';
 import { Element, scroller } from 'react-scroll';
 import LinkToTop from './LinkkToTop';
@@ -19,12 +20,16 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   const [detailedTravelInfo, setDetailedTravelInfo] = useState<
     DetailedDestination[]
   >([]);
+  const [openPlaces, setOpenPlaces] = useState([])
   const [chosenMeeting, setChosenMeeting] = useState({});
+
   // const getFirstPartOfAddress = (address) => {
   //   return address.split(',')[0].trim();
   // };
 
   useEffect(() => {
+    
+    
     getDistance(finalCoordsOrigins, placesCoords, transportation)
       .then((data) => {
         const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
@@ -80,7 +85,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   } else {
     return (
       <>
-        {console.log(detailedTravelInfo, 'deet travel')}
+       
         <SuggestionsMap
           detailedTravelInfo={detailedTravelInfo}
           scrollToCard={scrollToCard}
@@ -89,8 +94,8 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           {/* <div class="flex flex-col space-y-4 md:flex-row md:flex-wrap md:justify-between md:space-y-0"> */}
           {detailedTravelInfo.map((destination, index) => (
             <Element
-              name={destination.placeData.place_id}
-              key={destination.placeData.place_id}
+              name={destination.placeData.data.result.place_id}
+              key={destination.placeData.data.result.place_id}
             >
               <SuggestionCard
                 destination={destination}

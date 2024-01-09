@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { convertDateToDay, convertToNumberCoord } from '../../utils/utils';
 import { addressToCoord } from '../../utils/api-ma';
 import { Coordinates } from '../../types';
 
@@ -69,8 +70,18 @@ setUserCoord(result)
       currTimeStamp.time = event.target.value
       return currTimeStamp
     })
-     
-   if(timeStamp.date.length> 0 && timeStamp.time.length > 0){
+
+  
+  }
+  function confirmDateAndTime (event: any) {
+    event.preventDefault()
+    if(timeStamp.date.length> 0 && timeStamp.time.length > 0){
+      const dayObj = convertDateToDay(timeStamp.date)
+      
+      setTimeStamp((currTimeStamp) => {
+        currTimeStamp.day = dayObj
+        return currTimeStamp
+      })
       setTimeStampBtn(true)
       setAlerts(true)
       setTimeout(() => {

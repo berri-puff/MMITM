@@ -18,7 +18,7 @@ export const SuggestionCard = ({
     setChosenMeeting(destination);
   }
 
-  const photoReference = destination.placeData.photos[0].photo_reference;
+  const photoReference = destination.placeData.data.result.photos[0].photo_reference;
 
   const [imageUrl, setImageUrl] = useState('');
 
@@ -27,10 +27,13 @@ export const SuggestionCard = ({
       setImageUrl(url);
     });
   }, []);
-  return (
+ 
+  const openingHours = destination.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
+  // console.log(openingHours, 'OPENINGHOURS')
+  
+return (
     <>
-      <div className="mt-10"></div>
-      <div className="card card-compact w-96 bg-base-100 shadow-2xl">
+      <div className="card card-compact w-96 bg-base-100 shadow-2xl hover:bg-secondary hover:text-secondary-content mb-10">
         <figure className="h-48 overflow-hidden">
           {imageUrl && <img src={imageUrl} alt="Image" />}
         </figure>
@@ -40,16 +43,16 @@ export const SuggestionCard = ({
             <HiOutlineStar className="inline" />
             {destination.placeData.rating}
           </h2>
+          <p>Opening Hours: {openingHours}</p>
           <h3>
             {' '}
             <HiOutlineMapPin className="inline" /> {destination.address}
           </h3>
-          <div className="divider">Itinerary</div>
+          <div className="divider">Meeting</div>
           <p>
             <HiOutlineCalendar className="inline" /> {timeStamp.date}{' '}
             <HiOutlineClock className="inline" /> {timeStamp.time}
           </p>
-
           <div className="divider">Your journey</div>
           <div className="travel-detail">
             <p>
@@ -78,7 +81,6 @@ export const SuggestionCard = ({
               {destination.travelDetails[1].origin}
             </p>
           </div>
-
           <div className="card-actions justify-end mt-5">
             <button onClick={handleClick} className="btn btn-primary mx-5">
               Confirm Meeting
@@ -88,4 +90,4 @@ export const SuggestionCard = ({
       </div>
     </>
   );
-};
+  }

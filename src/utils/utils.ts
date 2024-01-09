@@ -1,9 +1,5 @@
-import firebase from "firebase/compat/app";
-import { Coordinates, CrosshairProps } from "../types";
 
-export const convertTime = (timestamp: firebase.firestore.Timestamp): Date => {
-  return timestamp.toDate();
-};
+import { Coordinates, CrosshairProps } from "../types";
 
 export const sortPlaces = (places) => {
   const reviewedPlaces = places.filter((place) => {
@@ -109,3 +105,57 @@ export const convertCrosshairToArray = (crosshair) => {
   coordinates.push(string);
   return coordinates;
 };
+
+export const convertDateToDay = (date) => {
+  const dayObj = {weekdayTextIndex: 0, periodsDayIndex: 0, dayName: ""}
+  const dateToConvert = new Date (date)
+  let weekdayTextIndex = dateToConvert.getDay() - 1
+  const periodsDayIndex = dateToConvert.getDay()
+  const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+  if(weekdayTextIndex === -1) {
+    weekdayTextIndex = 6
+  }
+  if(weekdayTextIndex === 5){
+    weekdayTextIndex = 0 
+  }
+  dayObj.periodsDayIndex = periodsDayIndex
+  dayObj.weekdayTextIndex = weekdayTextIndex
+  dayObj.dayName = dayNames[weekdayTextIndex]
+  return dayObj
+}
+export const convertTime = (time) => {
+  const firstHalf = time.slice(0,2)
+  const secondHalf = time.slice(2)
+  return firstHalf + ':' + secondHalf
+}
+export const areTheyOpen = (details, timeStamp) => {
+
+  const finalDetails = []
+  details.forEach((detail) => {
+
+    const openingHours = detail.data.result.current_opening_hours
+    if(openingHours && openingHours.weekday_text[timeStamp.day.weekdayIndex] !== "Closed") {
+ 
+   
+   
+      const openTime = new Date(`${timeStamp.date}` + ` ${convertTime(openingHours.periods[timeStamp.day.periodsDayIndex].open.time)}`)
+      const closeTime = new Date(`${timeStamp.date}` + ` ${convertTime(openingHours.periods[timeStamp.day.periodsDayIndex].close.time)}`)
+      const meetingTime = new Date(`${timeStamp.date}` + ` ${timeStamp.time}`)
+      
+      if(openTime <= meetingTime && closeTime > meetingTime){
+        finalDetails.push(detail)
+  
+      } 
+      if(openingHours.periods[timeStamp.day.periodsDayIndex].open.date !== openingHours.periods[timeStamp.day.periodsDayIndex].close.date && meetingTime > openTime){
+        finalDetails.push(detail)
+      } 
+      
+    }
+    if(!openingHours) {
+      
+      finalDetails.push(detail)
+    }
+    
+  })
+return finalDetails
+}
