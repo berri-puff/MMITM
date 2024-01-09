@@ -1,11 +1,13 @@
-import { convertTime } from "../../utils/utils";
-import { updateCreatorInvite } from "../../utils/api-ma";
+import { deleteInvite, updateCreatorInvite } from "../../utils/api-ma";
 import { Invite, InvitationsProps } from "../../types";
 
-export const CreatedInvitations: React.FC<InvitationsProps> = ({ invites, setSubmitted }) => {
-  const handleSubmit = async (id: string, accepted: boolean) => {
-    await updateCreatorInvite(id, accepted);
-    setSubmitted(`${accepted}`);
+export const CreatedInvitations: React.FC<InvitationsProps> = ({
+  invites,
+  setSubmitted,
+}) => {
+  const handleDelete = async (id: string) => {
+    await deleteInvite(id);
+    setSubmitted(`${id}`);
   };
 
   if (!invites.length) {
@@ -14,7 +16,7 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({ invites, setSub
     return (
       <ul>
         {invites.map((invite: Invite) => {
-          if (invite.attendees.meeting_creator.accepted !== true) {
+          if (invite.attendees.invitee_1.accepted !== true) {
             return (
               <li key={invite.id} className="meeting-card">
                 <div className="collapse bg-base-200 invitation-pending collapse-arrow">
@@ -48,17 +50,43 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({ invites, setSub
                     <p>Location: {invite.venue.location}</p>
                     <p>Rating: {invite.venue.rating}</p>
                     <h3 className="invitation-header">WHEN</h3>
-                    <p>{convertTime(invite.meeting_time).toString()}</p>
+
+                    <p>{invite.meeting_time.date}</p>
+                    <p>{invite.meeting_time.time}</p>
+
                     <div className="invitation-button">
                       <button
-                        className="btn btn-success"
-                        onClick={() => {
-                          handleSubmit(invite.id, true);
-                        }}
+                        className="btn btn-error"
+                        onClick={() =>
+                          document.getElementById("my_modal_1").showModal()
+                        }
                       >
-                        Accept
+                        Delete
                       </button>
                     </div>
+                    <dialog id="my_modal_1" className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-bold text-lg">Confirm</h3>
+                        <p className="py-4">
+                          Are you sure you want to delete this meeting?
+                        </p>
+                        <div className="modal-action">
+                          <form method="dialog">
+                            <button
+                              className="btn btn-outline btn-success"
+                              onClick={() => {
+                                handleDelete(invite.id);
+                              }}
+                            >
+                              Confirm
+                            </button>
+                            <button className="btn btn-outline btn-error close-button">
+                              Close
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
                   </div>
                 </div>
               </li>
@@ -97,17 +125,43 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({ invites, setSub
                     <p>Location: {invite.venue.location}</p>
                     <p>Rating: {invite.venue.rating}</p>
                     <h3 className="invitation-header">WHEN</h3>
-                    <p>{convertTime(invite.meeting_time).toString()}</p>
+
+                    <p>{invite.meeting_time.date}</p>
+                    <p>{invite.meeting_time.time}</p>
+
                     <div className="invitation-button">
                       <button
                         className="btn btn-error"
-                        onClick={() => {
-                          handleSubmit(invite.id, false);
-                        }}
+                        onClick={() =>
+                          document.getElementById("my_modal_1").showModal()
+                        }
                       >
-                        Cancel
+                        Delete
                       </button>
                     </div>
+                    <dialog id="my_modal_1" className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-bold text-lg">Confirm</h3>
+                        <p className="py-4">
+                          Are you sure you want to delete this meeting?
+                        </p>
+                        <div className="modal-action">
+                          <form method="dialog">
+                            <button
+                              className="btn btn-outline btn-success"
+                              onClick={() => {
+                                handleDelete(invite.id);
+                              }}
+                            >
+                              Confirm
+                            </button>
+                            <button className="btn btn-outline btn-error close-button">
+                              Close
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
                   </div>
                 </div>
               </li>

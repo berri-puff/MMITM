@@ -6,7 +6,7 @@ import { SetUpMeeting } from './components/SetUpMeeting';
 import { LogIn } from './components/Header/LogIn';
 import { Invitations } from './components/Invitations';
 import { UserProvider } from './contexts/UserContext';
-
+import { Footer } from './components/Footer/Footer';
 
 function App() {
   return (
@@ -21,6 +21,7 @@ function App() {
             <Route path="/log_in" element={<LogIn />} />
           </Routes>
         </div>
+        <Footer />
       </UserProvider>
     </>
   );

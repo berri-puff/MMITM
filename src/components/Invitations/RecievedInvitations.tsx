@@ -1,5 +1,4 @@
 import { updateInviteeInvite } from "../../utils/api-ma";
-import { convertTime } from "../../utils/utils";
 import { Invite, InvitationsProps } from "../../types";
 
 export const RecievedInvitations: React.FC<InvitationsProps> = ({ invites, setSubmitted }) => {
@@ -49,7 +48,10 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({ invites, setSu
                     <p>Location: {invite.venue.location}</p>
                     <p>Rating: {invite.venue.rating}</p>
                     <h3 className="invitation-header">WHEN</h3>
-                    <p>{convertTime(invite.meeting_time).toString()}</p>
+
+                    <p>{invite.meeting_time.date}</p>
+                    <p>{invite.meeting_time.time}</p>
+
                     <div className="invitation-button">
                       <button
                         className="btn btn-success"
@@ -101,7 +103,10 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({ invites, setSu
                     <p>Location: {invite.venue.location}</p>
                     <p>Rating: {invite.venue.rating}</p>
                     <h3 className="invitation-header">WHEN</h3>
-                    <p>{convertTime(invite.meeting_time).toString()}</p>
+
+                    <p>{invite.meeting_time.date}</p>
+                    <p>{invite.meeting_time.time}</p>
+
                     <div className="invitation-button">
                       <button
                         className="btn btn-error"

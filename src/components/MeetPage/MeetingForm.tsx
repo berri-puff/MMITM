@@ -4,6 +4,7 @@ import { Coordinates } from '../../types';
 
 
 
+
 export const MeetingForm = ({
   setUserCoord,
   setFriendCoord,

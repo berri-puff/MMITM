@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import { getDistance } from '../../utils/api-ak';
 import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
+import { SuggestionsMap } from './SuggestionsMap';
+import { Element, scroller } from 'react-scroll';
+import LinkToTop from './LinkkToTop';
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
@@ -11,12 +14,12 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   transportation,
   userCoord,
   friendCoord,
-  timeStamp
+  timeStamp,
 }) => {
   const [detailedTravelInfo, setDetailedTravelInfo] = useState<
     DetailedDestination[]
   >([]);
-  const [chosenMeeting, setChosenMeeting] = useState({})
+  const [chosenMeeting, setChosenMeeting] = useState({});
   // const getFirstPartOfAddress = (address) => {
   //   return address.split(',')[0].trim();
   // };
@@ -24,7 +27,6 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   useEffect(() => {
     getDistance(finalCoordsOrigins, placesCoords, transportation)
       .then((data) => {
-        console.log(data, 'data');
         const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
           index,
           difference: Math.abs(
@@ -56,20 +58,52 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         console.log(error);
       });
   }, []);
-console.log(chosenMeeting, '<<<<<<<<<<<<<<<<<<<<<')
+
+  const scrollToCard = (placeId) => {
+    scroller.scrollTo(placeId, {
+      duration: 800,
+      delay: 0,
+      smooth: 'easeInOutQuart',
+    });
+  };
+
   if (chosenMeeting.placeData) {
-    return <InviteUser chosenMeeting={chosenMeeting} transportation={transportation} userCoord={userCoord} friendCoord={friendCoord} timeStamp={timeStamp}/>
+    return (
+      <InviteUser
+        chosenMeeting={chosenMeeting}
+        transportation={transportation}
+        userCoord={userCoord}
+        friendCoord={friendCoord}
+        timeStamp={timeStamp}
+      />
+    );
   } else {
     return (
       <>
-        <div>
-          {detailedTravelInfo.map((destination, index) => ( 
-            <SuggestionCard key={destination.placeData.place_id} destination={destination} index={index} transportation={transportation} setChosenMeeting={setChosenMeeting} timeStamp={timeStamp}/>
+        {console.log(detailedTravelInfo, 'deet travel')}
+        <SuggestionsMap
+          detailedTravelInfo={detailedTravelInfo}
+          scrollToCard={scrollToCard}
+        />
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          {/* <div class="flex flex-col space-y-4 md:flex-row md:flex-wrap md:justify-between md:space-y-0"> */}
+          {detailedTravelInfo.map((destination, index) => (
+            <Element
+              name={destination.placeData.place_id}
+              key={destination.placeData.place_id}
+            >
+              <SuggestionCard
+                destination={destination}
+                index={index}
+                transportation={transportation}
+                setChosenMeeting={setChosenMeeting}
+                timeStamp={timeStamp}
+              />
+            </Element>
           ))}
         </div>
+        <LinkToTop />
       </>
     );
   }
-
-  
 };

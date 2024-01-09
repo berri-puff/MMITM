@@ -44,3 +44,20 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.close-button {
+  margin-left: 1rem;
+}
+
+.invitations-toggle {
+  display: flex;
+  justify-content: end;
+  margin-right: -1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.invitations-toggle > p {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}

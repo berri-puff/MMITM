@@ -1,40 +1,100 @@
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import { SuggestionsMapProps } from "../../types";
+import React, { useState, useEffect } from 'react';
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  useJsApiLoader,
+} from '@react-google-maps/api';
 
 export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
-  lat,
-  lng,
-  places,
+  detailedTravelInfo,
+  scrollToCard,
 }) => {
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const mapContainer = {
-    width: "100%",
-    height: "400px",
-  };
-  const center = {
-    lat: +lat,
-    lng: +lng,
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+
+  useEffect(() => {
+    if (detailedTravelInfo && detailedTravelInfo.length > 0) {
+      setMapCenter({
+        lat: detailedTravelInfo[0].placeData.geometry.location.lat,
+        lng: detailedTravelInfo[0].placeData.geometry.location.lng,
+      });
+    }
+  }, [detailedTravelInfo]);
+
+  const onMarkerClick = (place) => {
+    setSelectedPlace(place);
+    setMapCenter({
+      lat: place.placeData.geometry.location.lat,
+      lng: place.placeData.geometry.location.lng,
+    });
   };
 
-  return (
+  const onInfoWindowClick = (placeId) => {
+    scrollToCard(placeId);
+  };
+
+  const containerStyle = {
+    width: '100%',
+    height: '400px',
+    borderRadius: '20px',
+  };
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
+  });
+
+  return isLoaded ? (
     <>
-      <h3>map view of suggestioned palces with pins here</h3>
-      <LoadScript googleMapsApiKey={apiKey}>
-        <GoogleMap mapContainerStyle={mapContainer} center={center} zoom={3}>
-          {places.map((place) => {
-            return (
-              <Marker
-                key={place.place_id}
-                position={{
-                  lat: place.geometry.location.lat,
-                  lng: place.geometry.location.lng,
-                }}
-                title={place.name}
-              />
-            );
-          })}
-        </GoogleMap>
-      </LoadScript>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        zoom={10}
+        center={mapCenter}
+      >
+        {detailedTravelInfo.map((place, index) => (
+          <Marker
+            key={index}
+            position={{
+              lat: place.placeData.geometry.location.lat,
+              lng: place.placeData.geometry.location.lng,
+            }}
+            onClick={() => onMarkerClick(place)}
+          />
+        ))}
+
+        {selectedPlace && (
+          <InfoWindow
+            position={{
+              lat: selectedPlace.placeData.geometry.location.lat,
+              lng: selectedPlace.placeData.geometry.location.lng,
+            }}
+            onCloseClick={() => setSelectedPlace(null)}
+          >
+            <div className="max-w-40">
+              <h2 className="text-black">{selectedPlace.placeData.name}</h2>
+
+              <p className="text-black p-0.5 my-3">
+                Address: {selectedPlace.address}
+              </p>
+
+              <p className="text-black">
+                Rating: {selectedPlace.placeData.rating}
+              </p>
+              <button
+                className="btn btn-primary btn-sm mt-3"
+                onClick={() =>
+                  onInfoWindowClick(selectedPlace.placeData.place_id)
+                }
+              >
+                View Details
+              </button>
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
     </>
+  ) : (
+    <p>Oops, something's wrong</p>
   );
 };
