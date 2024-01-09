@@ -32,7 +32,7 @@ export const SetUpMeeting: React.FC = () => {
   } else {
     return (
       <div>
-        <h3>Locations:</h3>
+        <h3>Set up a meeting here!</h3>
         <MeetingMap userCoord={userCoord} friendCoord={friendCoord} />
         <MeetingForm
           setUserCoord={setUserCoord}

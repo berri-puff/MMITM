@@ -85,7 +85,9 @@ setUserCoord(result)
   
   return (
     <>
-       {alerts ? <p className='toast toast-top toast-middle alert alert-success w-48'>Time and Date added!</p> : null}
+       {alerts ? <p className="toast toast-top toast-center max-w-fit alert alert-success">
+ Time and Date added!
+          </p> : null}
     <section>
       <form onSubmit={handleSubmit}>
         <label>Date</label>
