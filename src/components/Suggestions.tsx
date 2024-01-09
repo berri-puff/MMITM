@@ -34,7 +34,11 @@ export const Suggestions = (props: SuggestionsProps) => {
   useEffect(() => {
     if (places.length === 100) {
       getOpeningHours(sortPlaces(places)).then((details) => {
-        setFinalPlaces(areTheyOpen(details, props.timeStamp));
+        const openVenues = areTheyOpen(details, props.timeStamp)
+        console.log(openVenues, 'OOOOOOOOOOOPPPPPPPPENN')
+        const filteredVenues = openVenues.filter((venue) => venue !== undefined)
+        console.log(filteredVenues, 'FILTERRERERER')
+        setFinalPlaces(filteredVenues);
         setIsSorted(true);
         setLoading(false);
       })

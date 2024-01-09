@@ -56,7 +56,8 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           };
           return destinationDetails;
         });
-
+        console.log(detailedDestinations[10], 'DETAIL 10')
+        console.log(detailedDestinations, 'DEEETTTAAAIIIILLLL')
         setDetailedTravelInfo(detailedDestinations);
       })
       .catch((error) => {

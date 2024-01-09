@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-import { getPhoto } from '../../utils/api-ak';
 
 export const SuggestionCard = ({
   destination,
@@ -13,16 +11,8 @@ export const SuggestionCard = ({
     setChosenMeeting(destination);
   }
 
-  const photoReference = destination.placeData.data.result.photos[0].photo_reference;
 
-  const [imageUrl, setImageUrl] = useState('');
-
-  useEffect(() => {
-    getPhoto(photoReference).then((url) => {
-      setImageUrl(url);
-    });
-  }, []);
- 
+ console.log(destination.placeData.data.result.current_opening_hours, '.................')
   const openingHours = destination.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
   // console.log(openingHours, 'OPENINGHOURS')
   return (
@@ -30,7 +20,7 @@ export const SuggestionCard = ({
       <div>
         <div className="card w-96 bg-base-100 shadow-xl">
           <div className="card-body">
-            {imageUrl && <img src={imageUrl} alt="Image" />}
+            
             <h2 className="card-title">
               #{index + 1} {destination.placeData.data.result.name}
             </h2>
