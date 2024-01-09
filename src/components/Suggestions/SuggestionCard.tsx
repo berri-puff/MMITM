@@ -20,7 +20,7 @@ export const SuggestionCard = ({
   }
 
 
- console.log(destination.placeData.data.result.current_opening_hours, '.................')
+
   const openingHours = destination.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
   // console.log(openingHours, 'OPENINGHOURS')
   

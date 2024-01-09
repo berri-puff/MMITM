@@ -7,6 +7,7 @@ import { getAllPlaces, getPlaces } from '../utils/api-ma';
 import { getOpeningHours } from '../utils/api-cm';
 
 export const Suggestions = (props: SuggestionsProps) => {
+  
   const crosshair = convertCoordsToCrosshair(props);
   const [places, setPlaces] = useState<Place[]>([]);
   const [finalPlaces, setFinalPlaces] = useState<Place[]>([]);
@@ -18,6 +19,7 @@ export const Suggestions = (props: SuggestionsProps) => {
     const fetchData = async () => {
       try {
         const placesData = await getAllPlaces(crosshair, setPlaces, apiKey);
+        
         const placesArr = placesData.map((place) => {
           return place.results.map((result) => {
             return result;
@@ -34,11 +36,8 @@ export const Suggestions = (props: SuggestionsProps) => {
   useEffect(() => {
     if (places.length === 100) {
       getOpeningHours(sortPlaces(places)).then((details) => {
-        const openVenues = areTheyOpen(details, props.timeStamp)
-        console.log(openVenues, 'OOOOOOOOOOOPPPPPPPPENN')
-        const filteredVenues = openVenues.filter((venue) => venue !== undefined)
-        console.log(filteredVenues, 'FILTERRERERER')
-        setFinalPlaces(filteredVenues);
+        console.log(details, 'DETAILS')
+        setFinalPlaces(areTheyOpen(details, props.timeStamp));
         setIsSorted(true);
         setLoading(false);
       })
