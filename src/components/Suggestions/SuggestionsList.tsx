@@ -5,6 +5,7 @@ import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
 import { SuggestionsMap } from './SuggestionsMap';
 import { Element, scroller } from 'react-scroll';
+import LinkToTop from './LinkkToTop';
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
@@ -26,7 +27,6 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   useEffect(() => {
     getDistance(finalCoordsOrigins, placesCoords, transportation)
       .then((data) => {
-        console.log(data, 'data');
         const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
           index,
           difference: Math.abs(
@@ -80,6 +80,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   } else {
     return (
       <>
+        {console.log(detailedTravelInfo, 'deet travel')}
         <SuggestionsMap
           detailedTravelInfo={detailedTravelInfo}
           scrollToCard={scrollToCard}
@@ -100,6 +101,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
             </Element>
           ))}
         </div>
+        <LinkToTop />
       </>
     );
   }
