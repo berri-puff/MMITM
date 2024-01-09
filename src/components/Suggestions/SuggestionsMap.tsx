@@ -35,8 +35,9 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
   };
 
   const containerStyle = {
-    width: '800px',
+    width: '100%',
     height: '400px',
+    borderRadius: '20px',
   };
 
   const { isLoaded } = useJsApiLoader({
@@ -46,7 +47,6 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
 
   return isLoaded ? (
     <>
-      <h1>Suggestions</h1>
       <GoogleMap
         mapContainerStyle={containerStyle}
         zoom={10}
