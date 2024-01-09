@@ -18,7 +18,7 @@ export const SuggestionCard = ({
     setChosenMeeting(destination);
   }
 
-  const photoReference = destination.placeData.photos[0].photo_reference;
+  const photoReference = destination.placeData.data.result.photos[0].photo_reference;
 
   const [imageUrl, setImageUrl] = useState('');
 
@@ -27,8 +27,31 @@ export const SuggestionCard = ({
       setImageUrl(url);
     });
   }, []);
+ 
+  const openingHours = destination.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
+  // console.log(openingHours, 'OPENINGHOURS')
   return (
     <>
+
+      <div>
+        <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card-body">
+            {imageUrl && <img src={imageUrl} alt="Image" />}
+            <h2 className="card-title">
+              #{index + 1} {destination.placeData.data.result.name}
+            </h2>
+            <h3>{timeStamp.day.dayName}</h3>
+            <h3>Date: {timeStamp.date}</h3>
+            <h3>Time: {timeStamp.time}</h3>
+            
+            <h3>Café</h3>
+            <h3>Rating: {destination.placeData.data.result.rating}</h3>
+            <h3>Address: {destination.address}</h3>
+            <h3>Opening hours: {openingHours}</h3>
+            <div className="travel-detail">
+              <p>Creators Journey:</p>
+              <p>From: {destination.travelDetails[0].origin}</p>
+
       <div className="mt-10"></div>
       <div className="card card-compact w-96 bg-base-100 shadow-2xl">
         <figure className="h-48 overflow-hidden">
@@ -54,6 +77,7 @@ export const SuggestionCard = ({
           <div className="travel-detail">
             <p>
               <HiOutlineMap className="inline" />
+
               {transportation === 'driving' ? (
                 <span> Driving </span>
               ) : (
