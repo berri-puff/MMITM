@@ -4,22 +4,9 @@ const api = axios.create({
   baseURL: 'https://maps.googleapis.com/maps/api/distancematrix',
 });
 
-// export const getDistance = () => {
-//   const origins =
-//     '51.5136375825016, -0.1365400240806151|51.46222995063997, 0.10913959392165778';
-//   const destination = '51.51104942119124, -0.03696107287824183';
-//   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-//   const mode = 'walking';
-
-//   return api
-//     .get(
-//       `/json?destinations=${destination}&origins=${origins}&units=metric&mode=${mode}&key=${apiKey}`
-//     )
-//     .then((response) => {
-//       console.log(response, 'res');
-//       return response.data;
-//     });
-// };
+const photoApi = axios.create({
+  baseURL: 'https://maps.googleapis.com/maps/api/place',
+});
 
 export const getDistance = (
   origins: string,
@@ -28,12 +15,31 @@ export const getDistance = (
 ) => {
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const mode = transportation;
-  console.log(transportation, 'transportation');
   return api
     .get(
       `/json?destinations=${destinations}&origins=${origins}&units=metric&mode=${mode}&key=${apiKey}`
     )
     .then((response) => {
       return response.data;
+    });
+};
+
+export const getPhoto = (photoReference: string) => {
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const photoRef = photoReference;
+
+  return photoApi
+    .get(`photo?maxwidth=400&photoreference=${photoRef}&key=${apiKey}`, {
+      responseType: 'blob', // Important for handling binary data
+    })
+    .then((response) => {
+      // Create a URL from the Blob//
+      const urlCreator = window.URL || window.webkitURL;
+      const imageUrl = urlCreator.createObjectURL(response.data);
+      console.log(imageUrl, 'imgUrl in api call');
+      return imageUrl;
+    })
+    .catch((error) => {
+      console.error('Error fetching image:', error);
     });
 };
