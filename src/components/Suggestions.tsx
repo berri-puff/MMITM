@@ -95,13 +95,13 @@ export const Suggestions = (props: SuggestionsProps) => {
     //   'finalCoordsOrigins'
     // );
     return (
-      <div>
+      <div className="container mx-auto mt-5">
         <SuggestionsList
           places={finalPlaces}
           placesCoords={placesCoords}
           finalCoordsOrigins={finalCoordsOrigins}
           transportation={props.transportation}
-          userCoord={props.userCoord} 
+          userCoord={props.userCoord}
           friendCoord={props.friendCoord}
           timeStamp={props.timeStamp}
         />
