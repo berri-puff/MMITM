@@ -35,12 +35,13 @@ export const Suggestions = (props: SuggestionsProps) => {
     if (places.length === 100) {
       getOpeningHours(sortPlaces(places)).then((details) => {
         setFinalPlaces(areTheyOpen(details, props.timeStamp));
+        setIsSorted(true);
+        setLoading(false);
       })
-      setIsSorted(true);
-      setLoading(false);
+      
     }
   }, [places]);
-
+console.log(finalPlaces, 'FINAL PLACESSSS')
   //console.log(finalPlaces, 'final places');
 
   //// for const loop of props and push each prop to new array
@@ -68,9 +69,10 @@ export const Suggestions = (props: SuggestionsProps) => {
 
   //////////////////// Matrix stuff
   function placesToPlacesID(finalPlaces) {
+    console.log(finalPlaces, 'FINAL PLA')
     let finalPlacesIDs = '';
     finalPlaces.forEach((place) => {
-      finalPlacesIDs = finalPlacesIDs + 'place_id:' + place.place_id + '|';
+      finalPlacesIDs = finalPlacesIDs + 'place_id:' + place.data.result.place_id + '|';
     });
     return finalPlacesIDs.slice(0, -1);
   }

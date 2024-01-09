@@ -93,8 +93,8 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         <div>
           {detailedTravelInfo.map((destination, index) => (
             <Element
-              name={destination.placeData.place_id}
-              key={destination.placeData.place_id}
+              name={destination.placeData.data.result.place_id}
+              key={destination.placeData.data.result.place_id}
             >
               <SuggestionCard
                 destination={destination}

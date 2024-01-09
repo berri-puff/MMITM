@@ -16,8 +16,8 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
   useEffect(() => {
     if (detailedTravelInfo && detailedTravelInfo.length > 0) {
       setMapCenter({
-        lat: detailedTravelInfo[0].placeData.geometry.location.lat,
-        lng: detailedTravelInfo[0].placeData.geometry.location.lng,
+        lat: detailedTravelInfo[0].placeData.data.result.geometry.location.lat,
+        lng: detailedTravelInfo[0].placeData.data.result.geometry.location.lng,
       });
     }
   }, [detailedTravelInfo]);
@@ -25,8 +25,8 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
   const onMarkerClick = (place) => {
     setSelectedPlace(place);
     setMapCenter({
-      lat: place.placeData.geometry.location.lat,
-      lng: place.placeData.geometry.location.lng,
+      lat: place.placeData.data.result.geometry.location.lat,
+      lng: place.placeData.data.result.geometry.location.lng,
     });
   };
 
@@ -56,8 +56,8 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
           <Marker
             key={index}
             position={{
-              lat: place.placeData.geometry.location.lat,
-              lng: place.placeData.geometry.location.lng,
+              lat: place.placeData.data.result.geometry.location.lat,
+              lng: place.placeData.data.result.geometry.location.lng,
             }}
             onClick={() => onMarkerClick(place)}
           />
@@ -66,25 +66,25 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
         {selectedPlace && (
           <InfoWindow
             position={{
-              lat: selectedPlace.placeData.geometry.location.lat,
-              lng: selectedPlace.placeData.geometry.location.lng,
+              lat: selectedPlace.placeData.data.result.geometry.location.lat,
+              lng: selectedPlace.placeData.data.result.geometry.location.lng,
             }}
             onCloseClick={() => setSelectedPlace(null)}
           >
             <div className="max-w-40">
-              <h2 className="text-black">{selectedPlace.placeData.name}</h2>
+              <h2 className="text-black">{selectedPlace.placeData.data.result.name}</h2>
 
               <p className="text-black p-0.5 my-3">
                 Address: {selectedPlace.address}
               </p>
 
               <p className="text-black">
-                Rating: {selectedPlace.placeData.rating}
+                Rating: {selectedPlace.placeData.data.result.rating}
               </p>
               <button
                 className="btn btn-primary btn-sm mt-3"
                 onClick={() =>
-                  onInfoWindowClick(selectedPlace.placeData.place_id)
+                  onInfoWindowClick(selectedPlace.placeData.data.result.place_id)
                 }
               >
                 View Details
