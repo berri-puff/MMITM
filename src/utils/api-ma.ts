@@ -5,12 +5,19 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
+  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
 import db from "../lib/fireBaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 export const getPlaces = async (coordinate, setPlaces, apiKey) => {
   let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coordinate}&type=cafe&opennow&rankby=distance&key=${apiKey}`;
@@ -100,5 +107,44 @@ export const deleteInvite = async (id) => {
     await deleteDoc(doc(db, "itineraries", id));
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const createAccount = async (
+  name: string,
+  username: string,
+  email: string,
+  password: string
+) => {
+  try {
+    const auth = getAuth();
+    const {
+      user: { uid },
+    } = await createUserWithEmailAndPassword(auth, email, password);
+    await setDoc(doc(db, "users", uid), {
+      first_name: name,
+      username: username,
+      preferences: [],
+    });
+  } catch (err) {
+    console.log("unable to create account", err);
+  }
+};
+
+export const logInAccount = async (email: string, password: string) => {
+  try {
+    const auth = getAuth();
+    const {
+      user: { uid },
+    } = await signInWithEmailAndPassword(auth, email, password);
+    const userDoc = await getDoc(doc(db, "users", uid));
+    const username = userDoc.data().username;
+
+    return {
+      id: uid,
+      username: username,
+    };
+  } catch (err) {
+    console.log("Could not sign in:", err);
   }
 };

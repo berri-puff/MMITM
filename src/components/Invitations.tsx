@@ -20,8 +20,8 @@ export const Invitations = () => {
 
   useEffect(() => {
     const fetchInvites = async () => {
-      const recievedInvitesData = await getInvites(user);
-      const createdInvitesData = await getCreatedInvites(user);
+      const recievedInvitesData = await getInvites(user.username);
+      const createdInvitesData = await getCreatedInvites(user.username);
       setRecievedInvites(recievedInvitesData as Invite[]);
       setCreatedInvites(createdInvitesData as Invite[]);
     };
@@ -32,7 +32,7 @@ export const Invitations = () => {
 
   if (!hasFetchedInvites) {
     return <p>loading....</p>;
-  } else if (user === "Nobody" || user === undefined) {
+  } else if (user.username === "Nobody" || user.username === undefined) {
     return (
       <Link to={"/Log_in"}>
         <p>Please log in to see your invites</p>

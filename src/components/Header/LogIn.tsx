@@ -1,51 +1,65 @@
 import { collection, getDocs } from "firebase/firestore";
-
 import db from "../../lib/fireBaseConfig";
 import { useEffect, useState, useContext } from "react";
 import { UserCard } from "../UserCard";
 import { UserContext } from "../../contexts/UserContext";
+import { logInAccount } from "../../utils/api-ma";
+import { useNavigate } from "react-router-dom";
 
 export const LogIn: React.FC = () => {
-  const [users, setUsers] = useState([]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
-  const { user } = useContext(UserContext);
-  const getUsers = async () => {
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const data = querySnapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() };
-      });
-      setUsers(data);
-      setLoading(false);
-    } catch (err: any) {
+      const loggedInUser = await logInAccount(email, password);
+      setUser(loggedInUser);
+    } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  if (loading) {
-    return <div>Loading!</div>;
-  }
-
   return (
-    <div>
-      <h2>Log in </h2>
-      <h3>select a user from the list below</h3>
-      <ul>
-        {users.map((user) => {
-          return (
-            <li key={user.username}>
-              <UserCard user={user} />
-            </li>
-          );
-        })}
-      </ul>
-      <p>  </p>
-      <p>  </p>
-    {user !== 'Nobody' ? <p>You are now logged in as {user}.</p> : <p></p> }
-    </div>
+    <>
+      <form onSubmit={handleSubmit}>
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Email</span>
+          </div>
+          <input
+            type="email"
+            placeholder="Type here"
+            className="input input-bordered w-full max-w-xs"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <div className="label"></div>
+        </label>
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Password</span>
+          </div>
+          <input
+            type="password"
+            placeholder="Type here"
+            className="input input-bordered w-full max-w-xs"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div className="label"></div>
+        </label>
+        <button className="btn btn-primary">Primary</button>
+      </form>
+    </>
   );
 };
