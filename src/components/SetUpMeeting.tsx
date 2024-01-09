@@ -31,10 +31,13 @@ export const SetUpMeeting: React.FC = () => {
     );
   } else {
     return (
-      <div>
-        <h3>Set up a meeting here!</h3>
-        <MeetingMap userCoord={userCoord} friendCoord={friendCoord} />
-        <MeetingForm
+      <section>
+        <h3 className="text-2xl font-bold text-justify mb-5">Set up a meeting here!</h3>
+        <p className='mb-2' >To get started, fill the date, time, your's and your friend's locations and mode of transport and you're all set to find a meeting spot!</p>
+        <div className="flex flex-col w-full lg:flex-row">
+        <MeetingMap className="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center" userCoord={userCoord} friendCoord={friendCoord} />
+        <div className="divider lg:divider-horizontal divider-primary " ></div> 
+        <MeetingForm  className="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center"
           setUserCoord={setUserCoord}
           setFriendCoord={setFriendCoord}
           setIsSubmitted={setIsSubmitted}
@@ -42,7 +45,8 @@ export const SetUpMeeting: React.FC = () => {
           setTimeStamp={setTimeStamp}
           timeStamp={timeStamp}
         />
-      </div>
+        </div>
+      </section>
     );
   }
 };
