@@ -1,5 +1,10 @@
-import { deleteInvite, updateCreatorInvite } from "../../utils/api-ma";
-import { Invite, InvitationsProps } from "../../types";
+import { deleteInvite, updateCreatorInvite } from '../../utils/api-ma';
+import { Invite, InvitationsProps } from '../../types';
+import { HiOutlineClock } from 'react-icons/hi';
+import { HiOutlineCalendar } from 'react-icons/hi';
+import { HiOutlineStar } from 'react-icons/hi2';
+import { HiOutlineMap } from 'react-icons/hi2';
+import { HiOutlineMapPin } from 'react-icons/hi2';
 
 export const CreatedInvitations: React.FC<InvitationsProps> = ({
   invites,
@@ -19,47 +24,50 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
           if (invite.attendees.invitee_1.accepted !== true) {
             return (
               <li key={invite.id} className="meeting-card">
-                <div className="collapse bg-base-200 invitation-pending collapse-arrow">
+                <div className="collapse bg-base-200 hover:bg-base-300 collapse-arrow mx-auto w-2/3 mb-5">
                   <input type="radio" name="my-accordion-1" />
-                  <div className="collapse-title text-xl font-medium non-collapsed-content">
-                    <p>Invitation created by you</p>
-                    <div className="badge badge-error gap-2">Not Accepted</div>
+                  <div className="collapse-title non-collapsed-content flex justify-between items-center">
+                    <p>
+                      You invited{' '}
+                      <span className="text-xl">
+                        {invite.attendees.invitee_1.username}
+                      </span>{' '}
+                      to <span className="text-xl">{invite.venue.name}</span>
+                    </p>
+                    <div className="badge badge-outline gap-2">
+                      Not Accepted
+                    </div>
                   </div>
                   <div className="collapse-content">
+                    <div className="divider">Meeting</div>
                     <p>
-                      You have invited {invite.attendees.invitee_1.username} for
-                      a meet up, see below for details.
-                    </p>
-                    <h3 className="invitation-header">WHAT</h3>
+                      <HiOutlineCalendar className="inline" />{' '}
+                      {invite.meeting_time.date}{' '}
+                      <HiOutlineClock className="inline" />{' '}
+                      {invite.meeting_time.time}
+                    </p>{' '}
                     <p>
-                      Transportation:{" "}
-                      {invite.attendees.meeting_creator.transportation}
-                    </p>
-                    <p>
-                      Your travel time:{" "}
-                      {invite.attendees.meeting_creator.travel_time}
+                      <HiOutlineStar className="inline" /> {invite.venue.rating}
                     </p>
                     <p>
-                      {invite.attendees.invitee_1.username} travel time:{" "}
+                      <HiOutlineMapPin className="inline" />{' '}
+                      {invite.venue.location}
+                    </p>
+                    <p>
+                      <HiOutlineMap className="inline" />{' '}
+                      <span className="capitalize">
+                        {invite.attendees.meeting_creator.transportation}
+                      </span>{' '}
+                      will take you{' '}
+                      {invite.attendees.meeting_creator.travel_time} and{' '}
+                      {invite.attendees.invitee_1.username}{' '}
                       {invite.attendees.invitee_1.travel_time}
                     </p>
-                    <h3 className="invitation-header">WHERE</h3>
-                    <p>
-                      Venue: {invite.venue.name} ({invite.venue.type})
-                    </p>
-                    <p>Location: {invite.venue.location}</p>
-                    <p>Rating: {invite.venue.rating}</p>
-                    <p>Opening Hours: {invite.venue.opening_hours}</p>
-                    <h3 className="invitation-header">WHEN</h3>
-
-                    <p>{invite.meeting_time.date}</p>
-                    <p>{invite.meeting_time.time}</p>
-
-                    <div className="invitation-button">
+                    <div className="card-actions justify-end mt-5">
                       <button
-                        className="btn btn-error"
+                        className="btn btn-primary"
                         onClick={() =>
-                          document.getElementById("my_modal_1").showModal()
+                          document.getElementById('my_modal_1').showModal()
                         }
                       >
                         Delete
@@ -74,14 +82,14 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                         <div className="modal-action">
                           <form method="dialog">
                             <button
-                              className="btn btn-outline btn-success"
+                              className="btn btn-outline btn-primary mr-5"
                               onClick={() => {
                                 handleDelete(invite.id);
                               }}
                             >
                               Confirm
                             </button>
-                            <button className="btn btn-outline btn-error close-button">
+                            <button className="btn btn btn-secondary close-button">
                               Close
                             </button>
                           </form>
@@ -108,15 +116,15 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                     </p>
                     <h3 className="invitation-header">WHAT</h3>
                     <p>
-                      Transportation:{" "}
+                      Transportation:{' '}
                       {invite.attendees.meeting_creator.transportation}
                     </p>
                     <p>
-                      Your travel time:{" "}
+                      Your travel time:{' '}
                       {invite.attendees.meeting_creator.travel_time}
                     </p>
                     <p>
-                      {invite.attendees.invitee_1.username} travel time:{" "}
+                      {invite.attendees.invitee_1.username} travel time:{' '}
                       {invite.attendees.invitee_1.travel_time}
                     </p>
                     <h3 className="invitation-header">WHERE</h3>
@@ -135,7 +143,7 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                       <button
                         className="btn btn-error"
                         onClick={() =>
-                          document.getElementById("my_modal_1").showModal()
+                          document.getElementById('my_modal_1').showModal()
                         }
                       >
                         Delete
