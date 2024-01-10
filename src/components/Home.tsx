@@ -5,7 +5,10 @@ export const Home = () => {
       <div className="container mx-auto mt-5">
         <div className="hero min-h-screen bg-base-200">
           <div className="hero-content flex-col lg:flex-row">
-            <img src="logo-large.webp" className="max-w-xs rounded-lg mr-" />
+            <img
+              src="mmitm-whitedark.png"
+              className="max-w-xs rounded-lg mr-"
+            />
             <div>
               <h1 className="text-5xl font-bold">Meet Me in the Middle</h1>
               <p className="py-6 max-w-lg">
