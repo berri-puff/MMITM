@@ -5,10 +5,10 @@ export const Footer = () => {
   return (
     <footer className="footer footer-center p-10 bg-secondary text-secondary-content mt-20">
       <aside>
-        <p className="text-4xl">
+        {/* <p className="text-4xl">
           {' '}
           <HiMap />
-        </p>
+        </p> */}
         <p className="font-bold">
           Meet Me In The Middle <br />
         </p>
@@ -16,7 +16,7 @@ export const Footer = () => {
       </aside>
       <nav>
         <div className="grid grid-flow-col gap-4">
-          <a>
+          <a href="https://github.com/berri-puff/MMITM" className="text-xl">
             <FaGithub />
           </a>
         </div>

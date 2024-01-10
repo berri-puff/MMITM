@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <UserProvider>
-        <div className="container mx-auto">
+        <div className="container mx-auto min-h-screen">
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />

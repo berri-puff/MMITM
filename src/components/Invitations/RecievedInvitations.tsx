@@ -5,6 +5,7 @@ import { HiOutlineCalendar } from 'react-icons/hi';
 import { HiOutlineStar } from 'react-icons/hi2';
 import { HiOutlineMap } from 'react-icons/hi2';
 import { HiOutlineMapPin } from 'react-icons/hi2';
+import { Link } from 'react-router-dom';
 
 export const RecievedInvitations: React.FC<InvitationsProps> = ({
   invites,
@@ -17,8 +18,11 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({
 
   if (!invites.length) {
     return (
-      <div className="bg-base-200 mx-auto w-2/3 mb-5 p-20">
-        <p className="text-xl">No invites here.</p>
+      <div className="bg-base-200 mx-auto w-2/3 mb-5 p-20 rounded-xl">
+        <p className="text-xl">You haven't received any invites.</p>
+        <Link to={`/setup_meeting`}>
+          <button className="btn btn-primary my-10">Set up a meeting</button>
+        </Link>
       </div>
     );
   } else {
