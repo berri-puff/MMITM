@@ -159,6 +159,7 @@ export const MeetingForm = ({
       ) : null}
       <section>
         <form onSubmit={handleSubmit}>
+          <p>Choose the meeting date and time: </p>
           <label>Date : </label>
           <input
             required
