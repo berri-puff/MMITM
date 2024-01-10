@@ -5,16 +5,20 @@ import { HiOutlineCalendar } from 'react-icons/hi';
 import { HiOutlineStar } from 'react-icons/hi2';
 import { HiOutlineMap } from 'react-icons/hi2';
 import { HiOutlineMapPin } from 'react-icons/hi2';
+import { Loading } from '../Loading';
 
 export const RecievedInvitations: React.FC<InvitationsProps> = ({
   invites,
   setSubmitted,
+  loading
 }) => {
   const handleSubmit = async (id: string, accepted: boolean) => {
     await updateInviteeInvite(id, accepted);
     setSubmitted(`${accepted}`);
   };
-
+  if(loading) {
+    return <Loading/>
+  }
   if (!invites.length) {
     return (
       <div className="bg-base-200 mx-auto w-2/3 mb-5 p-20">

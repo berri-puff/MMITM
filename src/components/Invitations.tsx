@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { CreatedInvitations } from './Invitations/CreatedInvitations';
 import { Invite } from '../types';
 import { RecievedInvitations } from './Invitations/RecievedInvitations';
+import { Loading } from './Loading';
 
 export const Invitations = () => {
   const { user } = useContext(UserContext);
@@ -13,6 +14,7 @@ export const Invitations = () => {
   const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
   const [submitted, setSubmitted] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(true)
 
   const handleToggle = () => {
     setIsChecked(!isChecked);
@@ -20,10 +22,11 @@ export const Invitations = () => {
 
   useEffect(() => {
     const fetchInvites = async () => {
-      const recievedInvitesData = await getInvites(user);
-      const createdInvitesData = await getCreatedInvites(user);
+      const recievedInvitesData = await getInvites(user.username);
+      const createdInvitesData = await getCreatedInvites(user.username);
       setRecievedInvites(recievedInvitesData as Invite[]);
       setCreatedInvites(createdInvitesData as Invite[]);
+      setLoading(false)
     };
     fetchInvites();
     setHasFetchedInvites(true);
@@ -31,8 +34,8 @@ export const Invitations = () => {
   }, [submitted]);
 
   if (!hasFetchedInvites) {
-    return <p>loading....</p>;
-  } else if (user === 'Nobody' || user === undefined) {
+         return <Loading/>;   
+  } else if (user.username === "Nobody" || user.username === undefined) {
     return (
       <Link to={'/Log_in'}>
         <p>Please log in to see your invites</p>
@@ -55,12 +58,14 @@ export const Invitations = () => {
           <RecievedInvitations
             invites={recievedInvites}
             setSubmitted={setSubmitted}
+            loading={loading}
           />
         )}
         {isChecked === true && (
           <CreatedInvitations
             invites={createdInvites}
             setSubmitted={setSubmitted}
+            loading={loading}
           />
         )}
       </div>

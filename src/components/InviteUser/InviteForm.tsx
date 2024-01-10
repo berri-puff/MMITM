@@ -13,6 +13,7 @@ import {
 } from "@firebase/firestore";
 import { Users } from "../../types";
 import { InviteConfirmation } from "./InviteConfirmation";
+import { Loading } from "../Loading";
 
 export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord, timeStamp, setHasClicked, foundUser, setFoundUser}) => {
   const [searchInput, setSearchInput] = useState<string>("");
@@ -73,7 +74,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
           start_location: new GeoPoint(userCoord.lat, userCoord.lng),
           transportation: transportation,
           travel_time: chosenMeeting.travelDetails[0].travelTime,
-          username: user,
+          username: user.username,
         },
       },
       meeting_time: timeStamp,
@@ -107,7 +108,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
           </label>
           <button disabled={disableSearchBtn}>Search</button>
         </form>
-        <p>Loading!</p>
+        <Loading/>
       </section>
     );
   } else {
