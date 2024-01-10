@@ -1,8 +1,10 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
-import { createAccount } from "../utils/api-ma";
+import { checkUsernameExists, createAccount } from "../utils/api-ma";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import { IconH3 } from "@tabler/icons-preact";
+import { set } from "firebase/database";
 
 export const CreateAccount: React.FC = () => {
   const [name, setName] = useState("");
@@ -11,18 +13,20 @@ export const CreateAccount: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userCreated, setUserCreated] = useState(false);
+  const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    createAccount(name, username, avatarUrl, email, password, setUserCreated);
-  };
 
-  useEffect(() => {
-    if (userCreated) {
+    const exists = await checkUsernameExists(username);
+    if (exists === false) {
+      createAccount(name, username, avatarUrl, email, password, setUserCreated);
       navigate("/Log_in");
+    } else {
+      setUserExists(true);
     }
-  }, [userCreated]);
+  };
 
   return (
     <>
@@ -89,6 +93,11 @@ export const CreateAccount: React.FC = () => {
           <div className="label"></div>
         </label>
         <button className="btn btn-primary">Create Account</button>
+        {userExists ? (
+          <h3 className="text-error">Username already exists</h3>
+        ) : (
+          ""
+        )}
       </form>
     </>
   );

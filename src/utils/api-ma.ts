@@ -160,3 +160,20 @@ export const logInAccount = async (
     setIsError(true);
   }
 };
+
+export const checkUsernameExists = async (username) => {
+  try {
+    const q = query(collection(db, "users"), where("username", "==", username));
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    if (data.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
