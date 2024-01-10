@@ -111,13 +111,16 @@ export const convertDateToDay = (date) => {
   const dateToConvert = new Date (date)
   let weekdayTextIndex = dateToConvert.getDay() - 1
   const periodsDayIndex = dateToConvert.getDay()
-  const dayIndex = dateToConvert.getDay() + 1
+  let dayIndex = dateToConvert.getDay()
   const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
   if(weekdayTextIndex === -1) {
     weekdayTextIndex = 6
   }
   if(weekdayTextIndex === 5){
     weekdayTextIndex = 0 
+  }
+  if(dayIndex === 0) {
+    dayIndex = 7
   }
   dayObj.dayIndex = dayIndex
   dayObj.periodsDayIndex = periodsDayIndex
@@ -145,20 +148,26 @@ export const areTheyOpen = (details, timeStamp) => {
           
           let convertedOpenTime
           let convertedCloseTime 
-
-      
+          let openDate
+          let closeDate
           openingHours.periods.forEach((period) => {
             if (period.open.day === timeStamp.day.dayIndex) {
               convertedOpenTime = convertTime(period.open.time)
               convertedCloseTime = convertTime(period.close.time)
+              openDate = period.open.date
+              closeDate = period.close.date
             }
           })
-        
+          
+        // console.log(timeStamp, 'timestamp')
+        // console.log(convertedOpenTime, 'open time')
+        // console.log(convertedCloseTime, 'close time')
+        // console.log(openDate, 'open date')
+        // console.log(closeDate, 'close date ')
         
 
-        
-          const openTime = new Date(`${timeStamp.date}` + ` ${convertedOpenTime}`)
-          const closeTime = new Date(`${timeStamp.date}` + ` ${convertedCloseTime}`)
+          const openTime = new Date(`${openDate}` + ` ${convertedOpenTime}`)
+          const closeTime = new Date(`${closeDate}` + ` ${convertedCloseTime}`)
           const meetingTime = new Date(`${timeStamp.date}` + ` ${timeStamp.time}`)
 
      
