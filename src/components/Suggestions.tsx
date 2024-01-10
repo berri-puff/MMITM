@@ -6,6 +6,7 @@ import { Place, SuggestionsProps } from '../types';
 import { getAllPlaces, getPlaces } from '../utils/api-ma';
 import { getOpeningHours } from '../utils/api-cm';
 import { Link } from 'react-router-dom';
+import { Loading } from './Loading';
 
 export const Suggestions = (props: SuggestionsProps) => {
   
@@ -88,7 +89,7 @@ export const Suggestions = (props: SuggestionsProps) => {
   }
   //console.log(placesCoords, '<<<<<<placesCoords');
   if (loading) {
-    return <h3>Loading....</h3>;
+    return <Loading/>;
   } else if(finalPlaces.length === 0){
     return <>
     <h3>Unfortunatley, your search has not returned any results. It's possible that nothing is open at the time you have specified, please try again.</h3>

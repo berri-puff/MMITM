@@ -13,6 +13,7 @@ import {
 } from "@firebase/firestore";
 import { Users } from "../../types";
 import { InviteConfirmation } from "./InviteConfirmation";
+import { Loading } from "../Loading";
 
 export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord, timeStamp, setHasClicked, foundUser, setFoundUser}) => {
   const [searchInput, setSearchInput] = useState<string>("");
@@ -107,7 +108,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
           </label>
           <button>Search</button>
         </form>
-        <p>Loading!</p>
+        <Loading/>
       </section>
     );
   } else {
