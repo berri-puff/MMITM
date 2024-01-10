@@ -7,6 +7,7 @@ import { LogIn } from './components/Header/LogIn';
 import { Invitations } from './components/Invitations';
 import { UserProvider } from './contexts/UserContext';
 import { Footer } from './components/Footer/Footer';
+import { CreateAccount } from './components/CreateAccount';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/setup_meeting" element={<SetUpMeeting />} />
             <Route path="/invitations/:username" element={<Invitations />} />
             <Route path="/log_in" element={<LogIn />} />
+            <Route path='/sign_up' element={<CreateAccount />} />
           </Routes>
         </div>
         <Footer />

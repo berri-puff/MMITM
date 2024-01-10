@@ -12,6 +12,8 @@ import {
   GeoPoint,
 } from '@firebase/firestore';
 import { Users } from '../../types';
+import { InviteConfirmation } from './InviteConfirmation';
+import { Loading } from '../Loading';
 
 export const InviteForm: React.FC = ({
   chosenMeeting,
@@ -19,14 +21,19 @@ export const InviteForm: React.FC = ({
   userCoord,
   friendCoord,
   timeStamp,
+  setHasClicked,
+  foundUser,
+  setFoundUser,
 }) => {
   const [searchInput, setSearchInput] = useState<string>('');
-  const [foundUser, setFoundUser] = useState<Users[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [disableButton, setDisableButton] = useState<boolean>(false);
-  const { user } = useContext(UserContext);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [disableSearchBtn, setDisableSearchBtn] = useState<boolean>(false);
+
+  const { user } = useContext(UserContext);
   const retrieveUsers = async (searchUser: string) => {
+    setDisableSearchBtn(true);
+
     try {
       const querySnapshot = await getDocs(collection(db, 'users'));
       const data: Users[] = querySnapshot.docs.map((person) => {
@@ -34,14 +41,12 @@ export const InviteForm: React.FC = ({
       });
       setFoundUser(
         data.filter((person) => {
-          if (
-            person.first_name === searchUser ||
-            person.username === searchUser
-          ) {
+          if (person.username === searchUser) {
             return { ...person };
           }
         })
       );
+      setDisableSearchBtn(false);
       setIsLoading(false);
     } catch (err: unknown) {
       console.log(err);
@@ -64,7 +69,6 @@ export const InviteForm: React.FC = ({
       timeStamp.day.weekdayTextIndex
     ];
   const postItinerary = (invitee: Users[]) => {
-    console.log(invitee, 'inviteeeeee');
     const itineraryBody = {
       attendees: {
         invitee_1: {
@@ -79,7 +83,7 @@ export const InviteForm: React.FC = ({
           start_location: new GeoPoint(userCoord.lat, userCoord.lng),
           transportation: transportation,
           travel_time: chosenMeeting.travelDetails[0].travelTime,
-          username: user,
+          username: user.username,
         },
       },
       meeting_time: timeStamp,
@@ -114,54 +118,43 @@ export const InviteForm: React.FC = ({
               value={searchInput}
             />
           </label>
-          <button>Search</button>
+          <button disabled={disableSearchBtn}>Search</button>
         </form>
-        <p>Loading!</p>
+        <Loading />
       </section>
     );
   } else {
     return (
       <section>
         <form onSubmit={searchForUser}>
-          <label htmlFor="searchUserInput" className="label">
-            Search by name or username{' '}
+          <label htmlFor="invite-user">
+            Search by username:
+            <input
+              id="searchUserInput"
+              type="text"
+              placeholder="second"
+              onChange={handleSearchUser}
+              value={searchInput}
+            />
           </label>
-          <input
-            id="searchUserInput"
-            type="text"
-            placeholder="Search a name"
-            onChange={handleSearchUser}
-            value={searchInput}
-            className="input input-bordered w-full max-w-xs"
-          />
-
-          <button className="btn btn-primary ml-5">Search</button>
+          <button disabled={disableSearchBtn}>Search</button>
         </form>
         {foundUser.length !== 0 ? (
           <>
             <ul key={foundUser[0].id}>
-              <div className="m-10">
-                <p>
-                  We found{' '}
-                  <span className="capitalize">{foundUser[0].first_name}</span>
-                </p>
-                {/* <p>Username: {foundUser[0].username}</p> */}
-                <button
-                  onClick={() => {
-                    postItinerary(foundUser[0]);
-                  }}
-                  disabled={disableButton}
-                  className="btn btn-primary"
-                >
-                  Invite{' '}
-                  <span className="capitalize">{foundUser[0].first_name}</span>
-                </button>
-              </div>
+              <p>Name: {foundUser[0].first_name}</p>
+              <p>Username: {foundUser[0].username}</p>
+              <button
+                onClick={() => {
+                  postItinerary(foundUser[0]);
+                  setHasClicked(true);
+                }}
+              >
+                Invite!
+              </button>
             </ul>
           </>
-        ) : (
-          <p>Invite</p>
-        )}
+        ) : null}
       </section>
     );
   }

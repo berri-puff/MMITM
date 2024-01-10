@@ -28,7 +28,7 @@ export const SuggestionCard = ({
 
   return (
     <>
-      {console.log(destination.placeData, 'place data')}
+      {/* {console.log(destination.placeData, 'place data')} */}
       <div className="card card-compact w-96 bg-base-200 shadow-2xl hover:bg-base-300 mb-10">
         <figure className="h-48 overflow-hidden">
           <img

@@ -119,9 +119,7 @@ export const convertDateToDay = (date) => {
   if(weekdayTextIndex === 5){
     weekdayTextIndex = 0 
   }
-  if(dayIndex === 0) {
-    dayIndex = 7
-  }
+  
   dayObj.dayIndex = dayIndex
   dayObj.periodsDayIndex = periodsDayIndex
   dayObj.weekdayTextIndex = weekdayTextIndex
@@ -139,9 +137,11 @@ export const areTheyOpen = (details, timeStamp) => {
   details.forEach((detail) => {
 
     const openingHours = detail.data.result.current_opening_hours
-    if(openingHours) {
+    if(detail.data.result.current_opening_hours) {
       
-      if (openingHours.weekday_text[timeStamp.day.weekdayTextIndex] !== "Closed") {
+        if (openingHours.weekday_text) {
+         
+        
         
         const splitInfo = openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(': ')
         if(splitInfo[1] !== 'Closed') {
@@ -150,12 +150,17 @@ export const areTheyOpen = (details, timeStamp) => {
           let convertedCloseTime 
           let openDate
           let closeDate
+          let openCloseSameDay = false 
           openingHours.periods.forEach((period) => {
             if (period.open.day === timeStamp.day.dayIndex) {
               convertedOpenTime = convertTime(period.open.time)
               convertedCloseTime = convertTime(period.close.time)
-              openDate = period.open.date
-              closeDate = period.close.date
+              if(period.open.date === period.close.date){
+                openDate = timeStamp.date
+                closeDate = timeStamp.date
+                openCloseSameDay = true
+              } 
+              
             }
           })
           
@@ -176,9 +181,9 @@ export const areTheyOpen = (details, timeStamp) => {
       
           } 
 
-      
+          openCloseSameDay = false
         }
-      }
+        }
     }
 
 })
