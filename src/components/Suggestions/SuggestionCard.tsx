@@ -1,11 +1,8 @@
-
-
 import { HiOutlineClock } from 'react-icons/hi';
 import { HiOutlineCalendar } from 'react-icons/hi';
 import { HiOutlineStar } from 'react-icons/hi2';
 import { HiOutlineMap } from 'react-icons/hi2';
 import { HiOutlineMapPin } from 'react-icons/hi2';
-
 
 export const SuggestionCard = ({
   destination,
@@ -20,21 +17,21 @@ export const SuggestionCard = ({
   }
 
 
-console.log(timeStamp, 'timestamp')
-  const openingHours = destination.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
-  console.log(openingHours, 'OPENINGHOURS')
-  
+  const openingHours =
+    destination.placeData.data.result.current_opening_hours.weekday_text[
+      timeStamp.day.weekdayTextIndex
+    ];
+
   return (
     <>
-      <div className="card card-compact w-96 bg-base-100 shadow-2xl hover:bg-secondary hover:text-secondary-content mb-10">
-        <figure className="h-48 overflow-hidden">
-          
-        </figure>
+      {console.log(destination.placeData, 'place data')}
+      <div className="card card-compact w-96 bg-base-200 shadow-2xl hover:bg-base-300 mb-10">
+        <figure className="h-48 overflow-hidden"></figure>
         <div className="card-body">
           <h2 className="card-title">
-            #{index + 1} {destination.placeData.name}{' '}
+            #{index + 1} {destination.placeData.data.result.name}{' '}
             <HiOutlineStar className="inline" />
-            {destination.placeData.rating}
+            {destination.placeData.data.result.rating}
           </h2>
           
           <h3>
@@ -84,4 +81,4 @@ console.log(timeStamp, 'timestamp')
       </div>
     </>
   );
-  }
+};
