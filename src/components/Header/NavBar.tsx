@@ -19,7 +19,7 @@ export const NavBar = () => {
       </div>
       {user ? (
         <>
-        <h3>{user.username}</h3>
+          <h3>{user.username}</h3>
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -35,8 +35,11 @@ export const NavBar = () => {
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
               <li>
-                <Link to={`/invitations/${user.username}`}>
-                  <a className="justify-between">Invitations</a>
+                <Link
+                  className="justify-between"
+                  to={`/invitations/${user.username}`}
+                >
+                  Invitations
                 </Link>
               </li>
               <li></li>
