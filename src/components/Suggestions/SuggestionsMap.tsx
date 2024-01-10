@@ -37,7 +37,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
   const containerStyle = {
     width: '100%',
     height: '400px',
-    borderRadius: '20px',
+    borderRadius: '1rem',
   };
 
   const { isLoaded } = useJsApiLoader({
@@ -49,7 +49,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
     <>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        zoom={10}
+        zoom={13}
         center={mapCenter}
       >
         {detailedTravelInfo.map((place, index) => (
@@ -72,7 +72,9 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
             onCloseClick={() => setSelectedPlace(null)}
           >
             <div className="max-w-40">
-              <h2 className="text-black">{selectedPlace.placeData.data.result.name}</h2>
+              <h2 className="text-black">
+                {selectedPlace.placeData.data.result.name}
+              </h2>
 
               <p className="text-black p-0.5 my-3">
                 Address: {selectedPlace.address}
@@ -84,7 +86,9 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
               <button
                 className="btn btn-primary btn-sm mt-3"
                 onClick={() =>
-                  onInfoWindowClick(selectedPlace.placeData.data.result.place_id)
+                  onInfoWindowClick(
+                    selectedPlace.placeData.data.result.place_id
+                  )
                 }
               >
                 View Details

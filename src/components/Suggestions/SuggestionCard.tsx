@@ -41,7 +41,7 @@ export const SuggestionCard = ({
               <span className="text-sm font-normal"> #{index + 1}</span>{' '}
               {destination.placeData.data.result.name}{' '}
             </h2>
-            <h2>
+            <h2 className="min-w-10">
               <HiOutlineStar className="inline" />{' '}
               {destination.placeData.data.result.rating}
             </h2>

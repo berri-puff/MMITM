@@ -25,84 +25,97 @@ export const InviteConfirmation = ({
 
   return (
     <>
-      <div>
-        <h1>Congratualtions</h1>
-        <h2>Your invitation has been sent to {userName}!</h2>
-        <h3>
-          Your Meeting Itinerary is now available in your 'created' Invitations.
-        </h3>
+      <div className="hero min-h-screen bg-base-200">
+        <div className="hero-content flex-col-reverse lg:flex-row-reverse">
+          <div className="text-center max-w-1xl p-5">
+            <div>
+              <div className="card card-compact w-96 bg-base-200 shadow-2xl mb-10">
+                <figure className="h-48 overflow-hidden">
+                  <img
+                    src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${apiKey}`}
+                  />
+                </figure>
+                <div className="card-body">
+                  <div className="flex justify-between">
+                    <h2 className="card-title">
+                      Invite to {chosenMeeting.placeData.data.result.name}
+                    </h2>
+                    <h2>
+                      <HiOutlineStar className="inline" />{' '}
+                      {chosenMeeting.placeData.data.result.rating}
+                    </h2>
+                  </div>
 
-        <Link className="btn btn-primary mx-5" to={`/invitations/${user}`}>
-          Invitations
-        </Link>
-        <Link className="btn btn-primary mx-5" to={`/`}>
-          Set Up Another Meeting
-        </Link>
-      </div>
-      <div>
-        <div className="card card-compact w-96 bg-base-200 shadow-2xl mb-10">
-          <figure className="h-48 overflow-hidden">
-            <img
-              src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${apiKey}`}
-            />
-          </figure>
-          <div className="card-body">
-            <div className="flex justify-between">
-              <h2 className="card-title">
-                Invite to {chosenMeeting.placeData.data.result.name}
-              </h2>
-              <h2>
-                <HiOutlineStar className="inline" />{' '}
-                {chosenMeeting.placeData.data.result.rating}
-              </h2>
+                  <p>
+                    {' '}
+                    <HiOutlineMapPin className="inline" />{' '}
+                    {chosenMeeting.address}
+                  </p>
+                  <p>
+                    <HiOutlineHome className="inline" /> Open {openingHours}
+                  </p>
+                  <div className="divider">Meeting</div>
+                  <p>
+                    <HiOutlineCalendar className="inline" />{' '}
+                    {timeStamp.day.dayName} {timeStamp.date}{' '}
+                    <HiOutlineClock className="inline" /> {timeStamp.time}
+                  </p>
+
+                  <div className="travel-detail">
+                    <div className="divider">Your journey</div>
+                    <p>
+                      <HiOutlineMap className="inline" />
+                      {transportation === 'driving' ? (
+                        <span> Driving </span>
+                      ) : (
+                        <span> Walking </span>
+                      )}
+                      {chosenMeeting.travelDetails[0].travelDistance} in{' '}
+                      {chosenMeeting.travelDetails[0].travelTime} from{' '}
+                      {chosenMeeting.travelDetails[0].origin}
+                    </p>
+                  </div>
+
+                  <div className="travel-detail">
+                    <div className="divider">Guest journey</div>
+                    <p>
+                      <HiOutlineMap className="inline" />
+                      {transportation === 'driving' ? (
+                        <span> Driving </span>
+                      ) : (
+                        <span> Walking </span>
+                      )}
+                      {chosenMeeting.travelDetails[1].travelDistance} in{' '}
+                      {chosenMeeting.travelDetails[1].travelTime} from{' '}
+                      {chosenMeeting.travelDetails[1].origin}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <p>
-              {' '}
-              <HiOutlineMapPin className="inline" /> {chosenMeeting.address}
+          </div>
+          <div className="card shrink-0 w-full max-w-xl shadow-2xl bg-base-100 p-10">
+            <h3 className="text-5xl font-bold">
+              Your invitation has been sent to {userName}
+            </h3>
+            <p className="py-6">
+              Your Meeting Itinerary is now available in your 'created'
+              Invitations.
             </p>
-            <p>
-              <HiOutlineHome className="inline" /> Open {openingHours}
-            </p>
-            <div className="divider">Meeting</div>
-            <p>
-              <HiOutlineCalendar className="inline" /> {timeStamp.day.dayName}{' '}
-              {timeStamp.date} <HiOutlineClock className="inline" />{' '}
-              {timeStamp.time}
-            </p>
-
-            <div className="travel-detail">
-              <div className="divider">Your journey</div>
-              <p>
-                <HiOutlineMap className="inline" />
-                {transportation === 'driving' ? (
-                  <span> Driving </span>
-                ) : (
-                  <span> Walking </span>
-                )}
-                {chosenMeeting.travelDetails[0].travelDistance} in{' '}
-                {chosenMeeting.travelDetails[0].travelTime} from{' '}
-                {chosenMeeting.travelDetails[0].origin}
-              </p>
-            </div>
-
-            <div className="travel-detail">
-              <div className="divider">Guest journey</div>
-              <p>
-                <HiOutlineMap className="inline" />
-                {transportation === 'driving' ? (
-                  <span> Driving </span>
-                ) : (
-                  <span> Walking </span>
-                )}
-                {chosenMeeting.travelDetails[1].travelDistance} in{' '}
-                {chosenMeeting.travelDetails[1].travelTime} from{' '}
-                {chosenMeeting.travelDetails[1].origin}
-              </p>
+            <div>
+              <Link className="btn btn-primary" to={`/invitations/${user}`}>
+                Invitations
+              </Link>
+              <Link className="btn btn-primary mx-5" to={`/`}>
+                Set Up Another Meeting
+              </Link>
             </div>
           </div>
         </div>
       </div>
+
+      {/* mmm */}
+      <div></div>
     </>
   );
 };

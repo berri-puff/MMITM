@@ -1,22 +1,22 @@
-import React, { useState, useContext } from "react";
-import { MeetingForm } from "./MeetPage/MeetingForm";
-import { MeetingMap } from "./MeetPage/MeetingMap";
-import { Suggestions } from "./Suggestions";
-import { Link } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
-import { FaInfoCircle } from "react-icons/fa";
+import React, { useState, useContext } from 'react';
+import { MeetingForm } from './MeetPage/MeetingForm';
+import { MeetingMap } from './MeetPage/MeetingMap';
+import { Suggestions } from './Suggestions';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext';
+import { FaInfoCircle } from 'react-icons/fa';
 
 export const SetUpMeeting: React.FC = () => {
   const [userCoord, setUserCoord] = useState<string[]>([]);
   const [friendCoord, setFriendCoord] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const [transportation, setTransportation] = useState<string>("walking");
+  const [transportation, setTransportation] = useState<string>('walking');
   const [timeStamp, setTimeStamp] = useState({
-    date: "",
-    time: "",
+    date: '',
+    time: '',
     day: {
-      dayName: "",
-      dayIndex: "",
+      dayName: '',
+      dayIndex: '',
     },
   });
 
@@ -25,10 +25,10 @@ export const SetUpMeeting: React.FC = () => {
   if (!user) {
     return (
       <p>
-        Please{" "}
+        Please{' '}
         <Link className="btn btn-primary mx-5" to={`/log_in`}>
-          LogIn
-        </Link>{" "}
+          Log in
+        </Link>{' '}
         to set up a meeting.
       </p>
     );
@@ -44,35 +44,32 @@ export const SetUpMeeting: React.FC = () => {
     );
   } else {
     return (
-      <section className="flex flex-col items-center justify-center">
-        <h3 className="text-2xl font-bold mb-5 text-center">
-          Set up a meeting here!
-        </h3>
-        <FaInfoCircle />{" "}
-        <p className="mb-5">
-          To get started, fill the date, time, your location and a friend's
-          locations, mode of transport and you're all set to find a meeting
-          spot!
-        </p>
-        <div className="divider divider-success divider-secondary"></div>
-        <div className="flex flex-col w-full lg:flex-row items-center justify-center">
-          <MeetingMap
-            className="grid flex-grow h-32 card bg-base-300 rounded-box"
-            userCoord={userCoord}
-            friendCoord={friendCoord}
-          />
-          <div className="divider lg:divider-horizontal divider-primary"></div>
-          <MeetingForm
-            className="grid flex-grow h-32 card bg-base-300 rounded-box"
-            setUserCoord={setUserCoord}
-            setFriendCoord={setFriendCoord}
-            setIsSubmitted={setIsSubmitted}
-            setTransportation={setTransportation}
-            setTimeStamp={setTimeStamp}
-            timeStamp={timeStamp}
-          />
+      <>
+        <div className="hero min-h-screen bg-base-200">
+          <div className="hero-content flex-col-reverse lg:flex-row-reverse">
+            <div className="text-center bg-base-100 max-w-1xl p-5">
+              <MeetingMap userCoord={userCoord} friendCoord={friendCoord} />
+            </div>
+            <div className="card shrink-0 w-full max-w-xl shadow-2xl bg-base-100 p-10">
+              <h3 className="text-5xl font-bold">Set up a meeting</h3>
+              <p className="py-6">
+                Just input the date, time, both locations, and travel modes and
+                we'll find the ideal meeting spot for you.
+              </p>
+              <MeetingForm
+                setUserCoord={setUserCoord}
+                setFriendCoord={setFriendCoord}
+                setIsSubmitted={setIsSubmitted}
+                setTransportation={setTransportation}
+                setTimeStamp={setTimeStamp}
+                timeStamp={timeStamp}
+              />
+            </div>
+          </div>
         </div>
-      </section>
+
+        <div className="flex flex-col w-full lg:flex-row items-center justify-center"></div>
+      </>
     );
   }
 };

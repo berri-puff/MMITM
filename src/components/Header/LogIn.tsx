@@ -52,11 +52,10 @@ export const LogIn: React.FC = () => {
                 <input
                   type="email"
                   placeholder="Type here"
-                  className="input input-bordered w-full max-w-xs"
+                  className="input input-bordered w-full max-w-xs mb-5"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <div className="label"></div>
               </label>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
@@ -65,7 +64,7 @@ export const LogIn: React.FC = () => {
                 <input
                   type="password"
                   placeholder="Type here"
-                  className="input input-bordered w-full max-w-xs"
+                  className="input input-bordered w-full max-w-xs mb-5"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
