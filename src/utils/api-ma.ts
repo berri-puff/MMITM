@@ -20,7 +20,7 @@ import {
 } from "firebase/auth";
 
 export const getPlaces = async (coordinate, setPlaces, apiKey) => {
-  let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coordinate}&type=cafe&opennow&rankby=distance&key=${apiKey}`;
+  let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coordinate}&type=cafe&rankby=distance&key=${apiKey}`;
   const { data } = await axios.get(url);
   return data;
 };

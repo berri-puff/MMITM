@@ -1,11 +1,15 @@
 import { SuggestionsList } from './Suggestions/SuggestionsList';
 import { SuggestionsMap } from './Suggestions/SuggestionsMap';
 import { useEffect, useState } from 'react';
-import { convertCoordsToCrosshair, sortPlaces } from '../utils/utils';
+import { areTheyOpen, convertCoordsToCrosshair, sortPlaces } from '../utils/utils';
 import { Place, SuggestionsProps } from '../types';
 import { getAllPlaces, getPlaces } from '../utils/api-ma';
+import { getOpeningHours } from '../utils/api-cm';
+import { Link } from 'react-router-dom';
+import { Loading } from './Loading';
 
 export const Suggestions = (props: SuggestionsProps) => {
+  
   const crosshair = convertCoordsToCrosshair(props);
   const [places, setPlaces] = useState<Place[]>([]);
   const [finalPlaces, setFinalPlaces] = useState<Place[]>([]);
@@ -17,6 +21,7 @@ export const Suggestions = (props: SuggestionsProps) => {
     const fetchData = async () => {
       try {
         const placesData = await getAllPlaces(crosshair, setPlaces, apiKey);
+        
         const placesArr = placesData.map((place) => {
           return place.results.map((result) => {
             return result;
@@ -32,10 +37,13 @@ export const Suggestions = (props: SuggestionsProps) => {
 
   useEffect(() => {
     if (places.length === 100) {
-      //console.log('gets here', places);
-      setFinalPlaces(sortPlaces(places));
-      setIsSorted(true);
-      setLoading(false);
+      getOpeningHours(sortPlaces(places)).then((details) => {
+        console.log(details, 'DETAILS')
+        setFinalPlaces(areTheyOpen(details, props.timeStamp));
+        setIsSorted(true);
+        setLoading(false);
+      })
+      
     }
   }, [places]);
 
@@ -66,9 +74,10 @@ export const Suggestions = (props: SuggestionsProps) => {
 
   //////////////////// Matrix stuff
   function placesToPlacesID(finalPlaces) {
+  
     let finalPlacesIDs = '';
     finalPlaces.forEach((place) => {
-      finalPlacesIDs = finalPlacesIDs + 'place_id:' + place.place_id + '|';
+      finalPlacesIDs = finalPlacesIDs + 'place_id:' + place.data.result.place_id + '|';
     });
     return finalPlacesIDs.slice(0, -1);
   }
@@ -80,7 +89,13 @@ export const Suggestions = (props: SuggestionsProps) => {
   }
   //console.log(placesCoords, '<<<<<<placesCoords');
   if (loading) {
-    return <h3>Loading....</h3>;
+    return <Loading/>;
+  } else if(finalPlaces.length === 0){
+    return <>
+    <h3>Unfortunatley, your search has not returned any results. It's possible that nothing is open at the time you have specified, please try again.</h3>
+    <Link className="btn btn-primary mx-5" to={`/`}>Try again</Link>
+    </>
+
   } else if (isSorted && !loading) {
     // console.log(
     //   places,

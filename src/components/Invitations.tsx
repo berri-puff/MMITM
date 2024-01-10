@@ -1,18 +1,20 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
-import { getCreatedInvites, getInvites } from "../utils/api-ma";
-import { Link } from "react-router-dom";
-import { CreatedInvitations } from "./Invitations/CreatedInvitations";
-import { Invite } from "../types";
-import { RecievedInvitations } from "./Invitations/RecievedInvitations";
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../contexts/UserContext';
+import { getCreatedInvites, getInvites } from '../utils/api-ma';
+import { Link } from 'react-router-dom';
+import { CreatedInvitations } from './Invitations/CreatedInvitations';
+import { Invite } from '../types';
+import { RecievedInvitations } from './Invitations/RecievedInvitations';
+import { Loading } from './Loading';
 
 export const Invitations = () => {
   const { user } = useContext(UserContext);
   const [recievedInvites, setRecievedInvites] = useState<Invite[]>([]);
   const [createdInvites, setCreatedInvites] = useState<Invite[]>([]);
   const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
-  const [submitted, setSubmitted] = useState("");
+  const [submitted, setSubmitted] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(true)
 
   const handleToggle = () => {
     setIsChecked(!isChecked);
@@ -24,43 +26,46 @@ export const Invitations = () => {
       const createdInvitesData = await getCreatedInvites(user.username);
       setRecievedInvites(recievedInvitesData as Invite[]);
       setCreatedInvites(createdInvitesData as Invite[]);
+      setLoading(false)
     };
     fetchInvites();
     setHasFetchedInvites(true);
-    setSubmitted("");
+    setSubmitted('');
   }, [submitted]);
 
   if (!hasFetchedInvites) {
-    return <p>loading....</p>;
+         return <Loading/>;   
   } else if (user.username === "Nobody" || user.username === undefined) {
     return (
-      <Link to={"/Log_in"}>
+      <Link to={'/Log_in'}>
         <p>Please log in to see your invites</p>
       </Link>
     );
   } else {
     return (
-      <div>
-        <div className="invitations-toggle">
-          <p>Recieved</p>
+      <div className="container mx-auto mt-5">
+        <div className="flex mt-5 mb-10 w-2/3 mx-auto justify-end">
+          <p className="pr-3">Recieved</p>
           <input
             type="checkbox"
-            className="toggle bg-blue-500 hover:bg-blue-700 border-blue-500"
+            className="toggle bg-accent hover:bg-secondary border-accent"
             checked={isChecked}
             onChange={handleToggle}
           />
-          <p>Created</p>
+          <p className="pl-3">Created</p>
         </div>
         {isChecked === false && (
           <RecievedInvitations
             invites={recievedInvites}
             setSubmitted={setSubmitted}
+            loading={loading}
           />
         )}
         {isChecked === true && (
           <CreatedInvitations
             invites={createdInvites}
             setSubmitted={setSubmitted}
+            loading={loading}
           />
         )}
       </div>

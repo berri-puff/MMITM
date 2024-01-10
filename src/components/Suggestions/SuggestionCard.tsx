@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-import { getPhoto } from '../../utils/api-ak';
 import { HiOutlineClock } from 'react-icons/hi';
 import { HiOutlineCalendar } from 'react-icons/hi';
 import { HiOutlineStar } from 'react-icons/hi2';
@@ -18,38 +16,34 @@ export const SuggestionCard = ({
     setChosenMeeting(destination);
   }
 
-  const photoReference = destination.placeData.photos[0].photo_reference;
 
-  const [imageUrl, setImageUrl] = useState('');
+  const openingHours =
+    destination.placeData.data.result.current_opening_hours.weekday_text[
+      timeStamp.day.weekdayTextIndex
+    ];
 
-  useEffect(() => {
-    getPhoto(photoReference).then((url) => {
-      setImageUrl(url);
-    });
-  }, []);
   return (
     <>
-      <div className="mt-10"></div>
-      <div className="card card-compact w-96 bg-base-100 shadow-2xl">
-        <figure className="h-48 overflow-hidden">
-          {imageUrl && <img src={imageUrl} alt="Image" />}
-        </figure>
+      {/* {console.log(destination.placeData, 'place data')} */}
+      <div className="card card-compact w-96 bg-base-200 shadow-2xl hover:bg-base-300 mb-10">
+        <figure className="h-48 overflow-hidden"></figure>
         <div className="card-body">
           <h2 className="card-title">
-            #{index + 1} {destination.placeData.name}{' '}
+            #{index + 1} {destination.placeData.data.result.name}{' '}
             <HiOutlineStar className="inline" />
-            {destination.placeData.rating}
+            {destination.placeData.data.result.rating}
           </h2>
+          
           <h3>
             {' '}
             <HiOutlineMapPin className="inline" /> {destination.address}
           </h3>
-          <div className="divider">Itinerary</div>
+          <p>Opening Hours: {openingHours}</p>
+          <div className="divider">Meeting</div>
           <p>
-            <HiOutlineCalendar className="inline" /> {timeStamp.date}{' '}
+            <HiOutlineCalendar className="inline" /> {timeStamp.day.dayName} {timeStamp.date}{' '}
             <HiOutlineClock className="inline" /> {timeStamp.time}
           </p>
-
           <div className="divider">Your journey</div>
           <div className="travel-detail">
             <p>
@@ -78,7 +72,6 @@ export const SuggestionCard = ({
               {destination.travelDetails[1].origin}
             </p>
           </div>
-
           <div className="card-actions justify-end mt-5">
             <button onClick={handleClick} className="btn btn-primary mx-5">
               Confirm Meeting

@@ -12,12 +12,15 @@ import {
   GeoPoint,
 } from "@firebase/firestore";
 import { Users } from "../../types";
+import { InviteConfirmation } from "./InviteConfirmation";
+import { Loading } from "../Loading";
 
-export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord, timeStamp}) => {
+export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord, timeStamp, setHasClicked, foundUser, setFoundUser}) => {
   const [searchInput, setSearchInput] = useState<string>("");
-  const [foundUser, setFoundUser] = useState<Users[]>([]);
+  
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disableButton, setDisableButton] = useState<boolean>(false);
+
   const { user } = useContext(UserContext);
   console.log(chosenMeeting, 'Chosen Meeting<<<<')
   const retrieveUsers = async (searchUser: string) => {
@@ -54,7 +57,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
   }
 
 
-
+  const openingHours = chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
   const postItinerary = (invitee: Users[]) => {
     console.log(invitee, 'inviteeeeee')
     const itineraryBody = {
@@ -75,18 +78,20 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
         },
       },
       meeting_time: timeStamp,
+      
       venue: {
-        coordinates: new GeoPoint(chosenMeeting.placeData.geometry.location.lat, chosenMeeting.placeData.geometry.location.lng),
+        coordinates: new GeoPoint(chosenMeeting.placeData.data.result.geometry.location.lat, chosenMeeting.placeData.data.result.geometry.location.lng),
         location: chosenMeeting.address,
-        name: chosenMeeting.placeData.name,
-        rating: chosenMeeting.placeData.rating,
+        name: chosenMeeting.placeData.data.result.name,
+        rating: chosenMeeting.placeData.data.result.rating,
         type: "Cafe",
+        opening_hours: openingHours
       },
     };
     const collectionData = collection(db, "itineraries");
     addDoc(collectionData, itineraryBody)
   };
-
+  
   if (isLoading) {
     return (
       <section>
@@ -103,7 +108,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
           </label>
           <button>Search</button>
         </form>
-        <p>Loading!</p>
+        <Loading/>
       </section>
     );
   } else {
@@ -135,6 +140,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
                   <button
                     onClick={() => {
                       postItinerary(foundUser[0]);
+                      setHasClicked(true)
                     }}
                     disabled={disableButton}
                   >

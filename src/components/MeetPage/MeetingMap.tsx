@@ -1,5 +1,6 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { Coordinates, MeetingMapProps } from '../../types';
+import { Loading } from '../Loading';
 
 export const MeetingMap = (props: MeetingMapProps)=>{
     const containerStyle = {
@@ -16,9 +17,11 @@ export const MeetingMap = (props: MeetingMapProps)=>{
     googleMapsApiKey:import.meta.env.VITE_GOOGLE_API_KEY
   })
 
-
+if(!isLoaded){
+  return <Loading/>
+}
     return isLoaded ?(
-        <> <h3>Map View</h3>
+        <> 
         <div>
             <GoogleMap 
             mapContainerStyle={containerStyle}

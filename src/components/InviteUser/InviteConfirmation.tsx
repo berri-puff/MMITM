@@ -1,12 +1,23 @@
-export const ItineraryView = ({chosenMeeting, transportation, timeStamp})=>{
-  const openingHours = chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
+import { Link } from "react-router-dom"
+import React, { useState, useContext } from 'react';
+import { UserContext } from "../../contexts/UserContext";
+export const InviteConfirmation = ({chosenMeeting, timeStamp, foundUser, transportation}) => {
+    console.log(foundUser, 'FOUND USER')
+    const { user } = useContext(UserContext);
+    const openingHours = chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
+    const userName = foundUser[0].username
+    console.log(user, 'user')
     return <>
     <div>
         <div className="card w-96 bg-base-100 shadow-xl">
           <div className="card-body">
+            <h1 className="card-title">
+             Congratualtions
+            </h1>
             <h2 className="card-title">
-              Please Invite a Friend to your Meeting below...
+              Your invitation has been sent to {userName}!
             </h2>
+            <h3>Your Meeting Itinerary is now available in your 'created' Invitations. </h3>
             <h2 className="card-title">{chosenMeeting.placeData.data.result.name}</h2>
             <h3>{timeStamp.day.dayName}</h3>
             <h3>Date: {timeStamp.date}</h3>
@@ -34,6 +45,7 @@ export const ItineraryView = ({chosenMeeting, transportation, timeStamp})=>{
           </div>{' '}
         </div>
     </div>
+    <Link className="btn btn-primary mx-5" to={`/invitations/${user}`}>Invitations</Link>
+    <Link className="btn btn-primary mx-5" to={`/`}>Set Up Another Meeting</Link>
   </>
-    
 }

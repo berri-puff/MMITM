@@ -15,6 +15,7 @@ export const getDistance = (
 ) => {
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const mode = transportation;
+
   return api
     .get(
       `/json?destinations=${destinations}&origins=${origins}&units=metric&mode=${mode}&key=${apiKey}`

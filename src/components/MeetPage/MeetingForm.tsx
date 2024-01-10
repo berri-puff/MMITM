@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { convertToNumberCoord } from '../../utils/utils';
+import { convertDateToDay, convertToNumberCoord } from '../../utils/utils';
 import { addressToCoord } from '../../utils/api-ma';
 import { Coordinates } from '../../types';
+
+
+
 
 export const MeetingForm = ({
   setUserCoord,
@@ -17,7 +20,7 @@ export const MeetingForm = ({
   const [userLocationBtn, setUserLocationBtn] = useState<boolean>(false)
   const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false)
   const [timeStampBtn, setTimeStampBtn] = useState<boolean>(false)
-
+  const [alerts, setAlerts] = useState<boolean>(false)
   function handleUserLocation(event: any): void {
     setUserLocation(event.target.value);
   }
@@ -56,7 +59,7 @@ setUserCoord(result)
       currTimeStamp.date = event.target.value
       return currTimeStamp
     })
-      console.log(timeStamp)
+  
   
     
   }
@@ -67,52 +70,66 @@ setUserCoord(result)
       currTimeStamp.time = event.target.value
       return currTimeStamp
     })
-      console.log(timeStamp)
+
   
   }
   function confirmDateAndTime (event: any) {
     event.preventDefault()
     if(timeStamp.date.length> 0 && timeStamp.time.length > 0){
+      const dayObj = convertDateToDay(timeStamp.date)
+      
+      setTimeStamp((currTimeStamp) => {
+        currTimeStamp.day = dayObj
+        return currTimeStamp
+      })
       setTimeStampBtn(true)
+      setAlerts(true)
+      setTimeout(() => {
+        setAlerts(false)
+      }, 3000);
     }
-    
   }
+
   
   return (
+    <>
+       {alerts ? <p className="toast toast-top toast-center max-w-fit alert alert-success">
+ Time and Date added!
+          </p> : null}
     <section>
-
       <form onSubmit={handleSubmit}>
-        <label>Date</label>
-        <input required type="date" onChange={handleDate}></input>
+        <label>Date : </label>
+        <input required type="date" onBlur={handleDate} className='mr-3'></input>
       
-        <label>Time</label>
-        <input required type="time" onChange={handleTime}></input>
+        <label>Time : </label>
+        <input required type="time" onBlur={handleTime} ></input>
         <button onClick={confirmDateAndTime} className="btn btn-primary mx-5">
           Confirm Date and Time
         </button>
-        <label className="label">Your Location </label>
+     
+        <label className="label">Your Location: </label>
         <input
           type="text"
           id="host-location"
-          placeholder="34.543, -1.354"
+          placeholder="Manchester"
           onChange={handleUserLocation}
           value={userLocation}
           required
-          className="input input-bordered w-full max-w-xs"
+          className="input input-bordered w-full max-w-xs mb-2 focus:input-primary"
         />
 
-        <button onClick={confirmUserPosition} className="btn btn-primary mx-5">
-          Confirm my place
+        <button onClick={confirmUserPosition} className="btn btn-primary mx-5 input-primary">
+          Confirm my place 
         </button>
-        <label className="label">Friend's Location </label>
+        <label className="label">Friend's Location: </label>
         <input
           type="text"
           id="second-location"
-          placeholder="12.534, -3.5344"
+          placeholder="Leeds"
           onChange={handleFriendLocation}
           value={friendLocation}
           required
-          className="input input-bordered w-full max-w-xs"
+          className="input input-bordered w-full max-w-xs mb-2 focus:input-primary"
         />
 
         <button
@@ -122,11 +139,11 @@ setUserCoord(result)
           Confirm friend's place
         </button>
         <label htmlFor="Transportation" className="label">
-          Choose transportation
+          Choose transportation:
         </label>
 
         <label htmlFor="Transportation">
-          <div>
+          <div className='ml-10'>
             <select
               id="Transportation"
               name="Transportation"
@@ -142,11 +159,11 @@ setUserCoord(result)
       </form>
       {(userLocationBtn && friendLocationBtn && timeStampBtn ) && (userLocation.length !== 0 && friendLocation.length !== 0 ) && (timeStamp.date.length > 0 && timeStamp.time.length > 0) ? <>
         <p className="py-5">
-          Does the places look correct? If so, click the button to find a
-          meeting spot!
+         Click the button below to find meeting spots!
         </p>
         <button onClick={handleSubmit} disabled={false} className="btn btn-primary mx-5">Find Meeting Spot!</button> 
-       </> : <p>Please confirm both locations!</p>} 
+       </> : <p className="alert alert-error max-w-fit mt-5 font-bold">Please confirm both locations!</p>} 
     </section>
+  </>
   );
 };

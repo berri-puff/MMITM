@@ -1,9 +1,5 @@
-import firebase from "firebase/compat/app";
-import { Coordinates, CrosshairProps } from "../types";
 
-export const convertTime = (timestamp: firebase.firestore.Timestamp): Date => {
-  return timestamp.toDate();
-};
+import { Coordinates, CrosshairProps } from "../types";
 
 export const sortPlaces = (places) => {
   const reviewedPlaces = places.filter((place) => {
@@ -109,3 +105,88 @@ export const convertCrosshairToArray = (crosshair) => {
   coordinates.push(string);
   return coordinates;
 };
+
+export const convertDateToDay = (date) => {
+  const dayObj = {weekdayTextIndex: 0, periodsDayIndex: 0, dayIndex: 0, dayName: ""}
+  const dateToConvert = new Date (date)
+  let weekdayTextIndex = dateToConvert.getDay() - 1
+  const periodsDayIndex = dateToConvert.getDay()
+  let dayIndex = dateToConvert.getDay()
+  const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+  if(weekdayTextIndex === -1) {
+    weekdayTextIndex = 6
+  }
+  if(weekdayTextIndex === 5){
+    weekdayTextIndex = 0 
+  }
+  
+  dayObj.dayIndex = dayIndex
+  dayObj.periodsDayIndex = periodsDayIndex
+  dayObj.weekdayTextIndex = weekdayTextIndex
+  dayObj.dayName = dayNames[weekdayTextIndex]
+  return dayObj
+}
+export const convertTime = (time) => {
+  const firstHalf = time.slice(0,2)
+  const secondHalf = time.slice(2)
+  return firstHalf + ':' + secondHalf
+}
+export const areTheyOpen = (details, timeStamp) => {
+
+  const finalDetails = []
+  details.forEach((detail) => {
+
+    const openingHours = detail.data.result.current_opening_hours
+    if(detail.data.result.current_opening_hours) {
+      
+        if (openingHours.weekday_text) {
+         
+        
+        
+        const splitInfo = openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(': ')
+        if(splitInfo[1] !== 'Closed') {
+          
+          let convertedOpenTime
+          let convertedCloseTime 
+          let openDate
+          let closeDate
+          let openCloseSameDay = false 
+          openingHours.periods.forEach((period) => {
+            if (period.open.day === timeStamp.day.dayIndex) {
+              convertedOpenTime = convertTime(period.open.time)
+              convertedCloseTime = convertTime(period.close.time)
+              if(period.open.date === period.close.date){
+                openDate = timeStamp.date
+                closeDate = timeStamp.date
+                openCloseSameDay = true
+              } 
+              
+            }
+          })
+          
+        // console.log(timeStamp, 'timestamp')
+        // console.log(convertedOpenTime, 'open time')
+        // console.log(convertedCloseTime, 'close time')
+        // console.log(openDate, 'open date')
+        // console.log(closeDate, 'close date ')
+        
+
+          const openTime = new Date(`${openDate}` + ` ${convertedOpenTime}`)
+          const closeTime = new Date(`${closeDate}` + ` ${convertedCloseTime}`)
+          const meetingTime = new Date(`${timeStamp.date}` + ` ${timeStamp.time}`)
+
+     
+          if(openTime <= meetingTime && closeTime > meetingTime){
+            finalDetails.push(detail)
+      
+          } 
+
+          openCloseSameDay = false
+        }
+        }
+    }
+
+})
+console.log(finalDetails, 'FINAL DETAILS')
+return finalDetails
+}
