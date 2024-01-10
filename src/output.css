@@ -4819,6 +4819,10 @@ details.collapse summary::-webkit-details-marker {
   padding: 2.5rem;
 }
 
+.p-20 {
+  padding: 5rem;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;

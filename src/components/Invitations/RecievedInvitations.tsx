@@ -16,7 +16,11 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({
   };
 
   if (!invites.length) {
-    return <p>nothing here...</p>;
+    return (
+      <div className="bg-base-200 mx-auto w-2/3 mb-5 p-20">
+        <p className="text-xl">No invites here.</p>
+      </div>
+    );
   } else {
     return (
       <ul>
