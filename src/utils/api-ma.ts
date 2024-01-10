@@ -89,10 +89,16 @@ export const getCreatedInvites = async (user: string) => {
 export const addressToCoord = async (
   userLocation: string[]
 ): Promise<Coordinates> => {
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  try {
+     const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${userLocation}&key=${apiKey}`;
   const { data } = await axios.get(url);
   return data.results[0].geometry.location;
+  } catch (err) {
+
+   throw err
+  }
+ 
 };
 
 export const deleteInvite = async (id) => {
