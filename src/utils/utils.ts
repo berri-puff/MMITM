@@ -164,7 +164,7 @@ export const areTheyOpen = (details, timeStamp) => {
             }
           })
           
-        console.log(timeStamp, 'timestamp')
+        // console.log(timeStamp, 'timestamp')
         // console.log(convertedOpenTime, 'open time')
         // console.log(convertedCloseTime, 'close time')
         // console.log(openDate, 'open date')

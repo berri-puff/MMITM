@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { CreatedInvitations } from './Invitations/CreatedInvitations';
 import { Invite } from '../types';
 import { RecievedInvitations } from './Invitations/RecievedInvitations';
+import { Loading } from './Loading';
 
 export const Invitations = () => {
   const { user } = useContext(UserContext);
@@ -13,6 +14,7 @@ export const Invitations = () => {
   const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
   const [submitted, setSubmitted] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(true)
 
   const handleToggle = () => {
     setIsChecked(!isChecked);
@@ -24,6 +26,7 @@ export const Invitations = () => {
       const createdInvitesData = await getCreatedInvites(user);
       setRecievedInvites(recievedInvitesData as Invite[]);
       setCreatedInvites(createdInvitesData as Invite[]);
+      setLoading(false)
     };
     fetchInvites();
     setHasFetchedInvites(true);
@@ -31,7 +34,7 @@ export const Invitations = () => {
   }, [submitted]);
 
   if (!hasFetchedInvites) {
-    return <p>loading....</p>;
+    return <Loading/>;
   } else if (user === 'Nobody' || user === undefined) {
     return (
       <Link to={'/Log_in'}>
@@ -55,12 +58,14 @@ export const Invitations = () => {
           <RecievedInvitations
             invites={recievedInvites}
             setSubmitted={setSubmitted}
+            loading={loading}
           />
         )}
         {isChecked === true && (
           <CreatedInvitations
             invites={createdInvites}
             setSubmitted={setSubmitted}
+            loading={loading}
           />
         )}
       </div>
