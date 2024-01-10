@@ -13,7 +13,10 @@ export const NavBar = () => {
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <Link to={`/`} className="btn btn-ghost text-xl">
-          MMITM
+          MMITM<img
+              src="mmitm-plane.png"
+              className="max-h-8"
+            />
         </Link>
         <a></a>
       </div>
