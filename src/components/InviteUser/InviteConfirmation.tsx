@@ -6,7 +6,7 @@ export const InviteConfirmation = ({chosenMeeting, timeStamp, foundUser, transpo
     const { user } = useContext(UserContext);
     const openingHours = chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
     const userName = foundUser[0].username
-    console.log(user, 'user')
+
     return <>
     <div>
         <div className="card w-96 bg-base-100 shadow-xl">
