@@ -150,12 +150,17 @@ export const areTheyOpen = (details, timeStamp) => {
           let convertedCloseTime 
           let openDate
           let closeDate
+          let openCloseSameDay = false 
           openingHours.periods.forEach((period) => {
             if (period.open.day === timeStamp.day.dayIndex) {
               convertedOpenTime = convertTime(period.open.time)
               convertedCloseTime = convertTime(period.close.time)
-              openDate = period.open.date
-              closeDate = period.close.date
+              if(period.open.date === period.close.date){
+                openDate = timeStamp.date
+                closeDate = timeStamp.date
+                openCloseSameDay = true
+              } 
+              
             }
           })
           
@@ -176,7 +181,7 @@ export const areTheyOpen = (details, timeStamp) => {
       
           } 
 
-      
+          openCloseSameDay = false
         }
       }
     }
