@@ -9,8 +9,8 @@ export const InviteUser = ({
   timeStamp,
 }) => {
   return (
-    <div className="container mx-auto mt-5">
-      <div className="mt-5 mb-10 w-2/3 mx-auto bg-base-300">
+    <div className="container mx-auto">
+      <div className="mt-5 mb-10 w-2/3 mx-auto flex flex-col md:flex-row justify-between">
         <InviteForm
           chosenMeeting={chosenMeeting}
           transportation={transportation}
