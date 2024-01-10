@@ -3,7 +3,7 @@ import { convertDateToDay } from "../../utils/utils";
 import { addressToCoord } from "../../utils/api-ma";
 import { Coordinates } from "../../types";
 import { MdErrorOutline } from "react-icons/md";
-import { Error } from "../error";
+import { Error } from "../Error";
 
 export const MeetingForm = ({
   setUserCoord,

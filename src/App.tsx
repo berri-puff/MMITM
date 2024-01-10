@@ -8,6 +8,7 @@ import { Invitations } from './components/Invitations';
 import { UserProvider } from './contexts/UserContext';
 import { Footer } from './components/Footer/Footer';
 import { CreateAccount } from './components/CreateAccount';
+import { Error } from './components/Error';
 
 function App() {
   return (
@@ -16,11 +17,13 @@ function App() {
         <div className="container mx-auto">
           <Header />
           <Routes>
+          
             <Route path="/" element={<Home />} />
             <Route path="/setup_meeting" element={<SetUpMeeting />} />
             <Route path="/invitations/:username" element={<Invitations />} />
             <Route path="/log_in" element={<LogIn />} />
             <Route path='/sign_up' element={<CreateAccount />} />
+            <Route path="/*" element={<Error/>} />
           </Routes>
         </div>
         <Footer />
