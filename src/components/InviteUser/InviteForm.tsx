@@ -18,9 +18,12 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
   const [searchInput, setSearchInput] = useState<string>("");
   
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [disableSearchBtn, setDisableSearchBtn] = useState<boolean>(false)
 
   const { user } = useContext(UserContext);
   const retrieveUsers = async (searchUser: string) => {
+    setDisableSearchBtn(true)
+
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
       const data: Users[] = querySnapshot.docs.map((person) => {
@@ -29,13 +32,13 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
       setFoundUser(
         data.filter((person) => {
           if (
-            person.first_name === searchUser ||
             person.username === searchUser
           ) {
             return { ...person };
           }
         })
       );
+      setDisableSearchBtn(false)
       setIsLoading(false);
     } catch (err: unknown) {
       console.log(err);
@@ -102,7 +105,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
               value={searchInput}
             />
           </label>
-          <button>Search</button>
+          <button disabled={disableSearchBtn}>Search</button>
         </form>
         <p>Loading!</p>
       </section>
@@ -112,12 +115,10 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
       
     
     return (
-      
       <section>
-        
         <form onSubmit={searchForUser}>
           <label htmlFor="invite-user">
-            Search by firstname or username:
+            Search by username:
             <input
               id="searchUserInput"
               type="text"
@@ -126,7 +127,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
               value={searchInput}
             />
           </label>
-          <button>Search</button>
+          <button disabled={disableSearchBtn}>Search</button>
         </form>
         {foundUser.length !== 0 ? (
           <>
@@ -138,15 +139,15 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
                       postItinerary(foundUser[0]);
                       setHasClicked(true)
                     }}
-                    disabled={disableButton}
+                   
                   >
                     Invite!
                   </button>
                 </ul>
           </>
-        ) : (
-          <p>Start inviting friends!</p>
-        )}
+        ) : 
+          null
+        }
       </section>
     );
   }

@@ -39,11 +39,21 @@ export const MeetingForm = ({
         setUserLocationBtn(true);
       })
       .catch((err) => {
-        setErrStatus(true);
-          setFeedbackMsg(`Error : ${err.response.status} Bad Request`);
+        if (err && err.response) {
+           setErrStatus(true);
+           setFeedbackMsg(`Error : ${err.response.status} Bad Request`);
       setTimeout(() => {
           setErrStatus(false);
         }, 3000);
+        }
+        else if (err){
+          setErrStatus(true)
+          setFeedbackMsg('Not a valid address')
+          setTimeout(() => {
+            setErrStatus(false);
+          }, 3000);
+        }
+         
       });
    
   }
@@ -55,11 +65,20 @@ export const MeetingForm = ({
         setFriendCoord(result);
       })
       .catch((err) => {
-        setErrStatus(true);
+        if (err && err.response) {
+          setErrStatus(true);
           setFeedbackMsg(`Error : ${err.response.status} Bad Request`);
-      setTimeout(() => {
-          setErrStatus(false);
-        }, 3000);
+     setTimeout(() => {
+         setErrStatus(false);
+       }, 3000);
+       }
+       else if (err){
+         setErrStatus(true)
+         setFeedbackMsg('Not a valid address')
+         setTimeout(() => {
+           setErrStatus(false);
+         }, 3000);
+       }
       });
     setFriendLocationBtn(true);
   }
