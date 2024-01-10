@@ -154,11 +154,11 @@ export const MeetingForm = ({
             Confirm Date and Time
           </button>
 
-          <label className="label">Your Location: </label>
+          <label className="label">Insert your location: </label>
           <input
             type="text"
             id="host-location"
-            placeholder="Manchester"
+            placeholder="Your address"
             onChange={handleUserLocation}
             value={userLocation}
             required
@@ -171,11 +171,11 @@ export const MeetingForm = ({
           >
             Confirm my place
           </button>
-          <label className="label">Friend's Location: </label>
+          <label className="label">Insert friend's location: </label>
           <input
             type="text"
             id="second-location"
-            placeholder="Leeds"
+            placeholder="Friend's address"
             onChange={handleFriendLocation}
             value={friendLocation}
             required

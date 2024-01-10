@@ -18,10 +18,8 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
   const [searchInput, setSearchInput] = useState<string>("");
   
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [disableButton, setDisableButton] = useState<boolean>(false);
 
   const { user } = useContext(UserContext);
-  console.log(chosenMeeting, 'Chosen Meeting<<<<')
   const retrieveUsers = async (searchUser: string) => {
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
@@ -58,7 +56,6 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
 
   const openingHours = chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[timeStamp.day.weekdayTextIndex]
   const postItinerary = (invitee: Users[]) => {
-    console.log(invitee, 'inviteeeeee')
     const itineraryBody = {
       attendees: {
         invitee_1: {
