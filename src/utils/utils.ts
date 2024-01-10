@@ -143,7 +143,7 @@ export const areTheyOpen = (details, timeStamp) => {
       
       if (openingHours.weekday_text[timeStamp.day.weekdayTextIndex] !== "Closed") {
         
-        const splitInfo = openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(':')
+        const splitInfo = openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(': ')
         if(splitInfo[1] !== 'Closed') {
           
           let convertedOpenTime
