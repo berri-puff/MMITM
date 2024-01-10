@@ -50,6 +50,7 @@ export const ItineraryView = ({ chosenMeeting, transportation, timeStamp }) => {
             <div className="travel-detail">
               <div className="divider">Your journey</div>
               <p>
+                <HiOutlineMap className="inline" />
                 {transportation === 'driving' ? (
                   <span> Driving </span>
                 ) : (
@@ -64,6 +65,7 @@ export const ItineraryView = ({ chosenMeeting, transportation, timeStamp }) => {
             <div className="travel-detail">
               <div className="divider">Guest journey</div>
               <p>
+                <HiOutlineMap className="inline" />
                 {transportation === 'driving' ? (
                   <span> Driving </span>
                 ) : (
