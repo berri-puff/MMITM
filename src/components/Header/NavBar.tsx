@@ -1,13 +1,13 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
-import { UserContext } from "../../contexts/UserContext";
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { UserContext } from '../../contexts/UserContext';
 
 export const NavBar = () => {
   const { user, setUser }: any = useContext(UserContext);
   const navigate = useNavigate();
   const handleLogout = () => {
     setUser(undefined);
-    navigate("/");
+    navigate('/');
   };
   return (
     <div className="navbar bg-base-100">
@@ -59,7 +59,7 @@ export const NavBar = () => {
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1">
             <li>
-              {" "}
+              {' '}
               <Link to={`/log_in`}>Log in</Link>
             </li>
           </ul>
