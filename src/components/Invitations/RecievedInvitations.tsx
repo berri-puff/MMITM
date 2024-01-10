@@ -1,129 +1,101 @@
-import { updateInviteeInvite } from "../../utils/api-ma";
-import { Invite, InvitationsProps } from "../../types";
+import { updateInviteeInvite } from '../../utils/api-ma';
+import { Invite, InvitationsProps } from '../../types';
+import { HiOutlineClock } from 'react-icons/hi';
+import { HiOutlineCalendar } from 'react-icons/hi';
+import { HiOutlineStar } from 'react-icons/hi2';
+import { HiOutlineMap } from 'react-icons/hi2';
+import { HiOutlineMapPin } from 'react-icons/hi2';
 
-export const RecievedInvitations: React.FC<InvitationsProps> = ({ invites, setSubmitted }) => {
+export const RecievedInvitations: React.FC<InvitationsProps> = ({
+  invites,
+  setSubmitted,
+}) => {
   const handleSubmit = async (id: string, accepted: boolean) => {
     await updateInviteeInvite(id, accepted);
     setSubmitted(`${accepted}`);
   };
+
   if (!invites.length) {
-    return <p>nothing here...</p>;
+    return (
+      <div className="bg-base-200 mx-auto w-2/3 mb-5 p-20">
+        <p className="text-xl">No invites here.</p>
+      </div>
+    );
   } else {
     return (
       <ul>
         {invites.map((invite: Invite) => {
-          if (invite.attendees.invitee_1.accepted !== true) {
-            return (
-              <li key={invite.id} className="meeting-card">
-                <div className="collapse bg-base-200 invitation-pending collapse-arrow">
-                  <input type="radio" name="my-accordion-1" />
-                  <div className="collapse-title text-xl font-medium non-collapsed-content">
-                    <p>
-                      Invitation from{" "}
+          return (
+            <li key={invite.id} className="meeting-card">
+              <div className="collapse bg-base-200 hover:bg-base-300 collapse-arrow mx-auto w-2/3 mb-5">
+                <input type="radio" name="my-accordion-1" />
+                <div className="collapse-title non-collapsed-content flex justify-between items-center">
+                  <p className="text-sm">
+                    <span className="text-xl">
                       {invite.attendees.meeting_creator.username}
-                    </p>
-                    <div className="badge badge-error gap-2">Not Accepted</div>
-                  </div>
-                  <div className="collapse-content">
-                    <p>
-                      {invite.attendees.meeting_creator.username} has invited
-                      you for a meet up, see below for details.
-                    </p>
-                    <h3 className="invitation-header">WHAT</h3>
-                    <p>
-                      Transportation:{" "}
-                      {invite.attendees.meeting_creator.transportation}
-                    </p>
-                    <p>
-                      {invite.attendees.meeting_creator.username} Travel Time:{" "}
-                      {invite.attendees.meeting_creator.travel_time}
-                    </p>
-                    <p>
-                      Your travel time: {invite.attendees.invitee_1.travel_time}
-                    </p>
-                    <h3 className="invitation-header">WHERE</h3>
-                    <p>
-                      Venue: {invite.venue.name} ({invite.venue.type})
-                    </p>
-                    <p>Location: {invite.venue.location}</p>
-                    <p>Rating: {invite.venue.rating}</p>
-                    <p>Opening Hours: {invite.venue.opening_hours}</p>
-                    <h3 className="invitation-header">WHEN</h3>
-
-                    <p>{invite.meeting_time.date}</p>
-                    <p>{invite.meeting_time.time}</p>
-
-                    <div className="invitation-button">
-                      <button
-                        className="btn btn-success"
-                        onClick={() => {
-                          handleSubmit(invite.id, true);
-                        }}
-                      >
-                        Accept
-                      </button>
-                    </div>
+                    </span>{' '}
+                    invited you to{' '}
+                    <span className="text-xl">{invite.venue.name}</span>
+                  </p>
+                  <div
+                    className={`badge ${
+                      invite.attendees.invitee_1.accepted
+                        ? 'badge-secondary'
+                        : 'badge-outline'
+                    }`}
+                  >
+                    {invite.attendees.invitee_1.accepted
+                      ? 'Accepted'
+                      : 'Not Accepted'}
                   </div>
                 </div>
-              </li>
-            );
-          } else {
-            return (
-              <li key={invite.id} className="meeting-card ">
-                <div className="collapse bg-base-200 collapse-arrow invitation-accepted">
-                  <input type="radio" name="my-accordion-1" />
-                  <div className="collapse-title text-xl font-medium non-collapsed-content">
-                    <p>
-                      {" "}
-                      Invitation from{" "}
-                      {invite.attendees.meeting_creator.username}
-                    </p>
-                    <div className="badge badge-success gap-2">Accepted</div>
-                  </div>
-                  <div className="collapse-content">
-                    <p>
-                      {invite.attendees.meeting_creator.username} has invited
-                      you for a meet up, see below for details.
-                    </p>
-                    <h3 className="invitation-header">WHAT</h3>
-                    <p>
-                      Transportation:{" "}
+                <div className="collapse-content">
+                  <div className="divider">Meeting</div>
+                  <p>
+                    <HiOutlineCalendar className="inline" />{' '}
+                    {invite.meeting_time.date}{' '}
+                    <HiOutlineClock className="inline" />{' '}
+                    {invite.meeting_time.time}
+                  </p>{' '}
+                  <p>
+                    <HiOutlineStar className="inline" /> {invite.venue.rating}
+                  </p>
+                  <p>
+                    <HiOutlineMapPin className="inline" />{' '}
+                    {invite.venue.location}
+                  </p>
+                  <p>
+                    <HiOutlineMap className="inline" />{' '}
+                    <span className="capitalize">
                       {invite.attendees.meeting_creator.transportation}
-                    </p>
-                    <p>
-                      {invite.attendees.meeting_creator.username} Travel Time:{" "}
-                      {invite.attendees.meeting_creator.travel_time}
-                    </p>
-                    <p>
-                      Your travel time: {invite.attendees.invitee_1.travel_time}
-                    </p>
-                    <h3 className="invitation-header">WHERE</h3>
-                    <p>
-                      Venue: {invite.venue.name} ({invite.venue.type})
-                    </p>
-                    <p>Location: {invite.venue.location}</p>
-                    <p>Rating: {invite.venue.rating}</p>
-                    <p>Opening Hours: {invite.venue.opening_hours}</p>
-                    <h3 className="invitation-header">WHEN</h3>
-
-                    <p>{invite.meeting_time.date}</p>
-                    <p>{invite.meeting_time.time}</p>
-
-                    <div className="invitation-button">
-                      <button
-                        className="btn btn-error"
-                        onClick={() => {
-                          handleSubmit(invite.id, false);
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    </div>
+                    </span>{' '}
+                    will take you {invite.attendees.invitee_1.travel_time} and{' '}
+                    {invite.attendees.meeting_creator.username}{' '}
+                    {invite.attendees.meeting_creator.travel_time}
+                  </p>
+                  <div className="card-actions justify-end mt-5">
+                    <button
+                      className={`btn ${
+                        invite.attendees.invitee_1.accepted
+                          ? 'btn-secondary'
+                          : 'btn-primary'
+                      }`}
+                      onClick={() =>
+                        handleSubmit(
+                          invite.id,
+                          !invite.attendees.invitee_1.accepted
+                        )
+                      }
+                    >
+                      {invite.attendees.invitee_1.accepted
+                        ? 'Cancel'
+                        : 'Accept'}
+                    </button>
                   </div>
                 </div>
-              </li>
-            );
-          }
+              </div>
+            </li>
+          );
         })}
       </ul>
     );
