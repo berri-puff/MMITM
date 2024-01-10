@@ -16,15 +16,11 @@ export const SuggestionCard = ({
     setChosenMeeting(destination);
   }
 
-  console.log(
-    destination.placeData.data.result.current_opening_hours,
-    '.................'
-  );
+
   const openingHours =
     destination.placeData.data.result.current_opening_hours.weekday_text[
       timeStamp.day.weekdayTextIndex
     ];
-  // console.log(openingHours, 'OPENINGHOURS')
 
   return (
     <>
@@ -37,13 +33,15 @@ export const SuggestionCard = ({
             <HiOutlineStar className="inline" />
             {destination.placeData.data.result.rating}
           </h2>
+          
           <h3>
             {' '}
             <HiOutlineMapPin className="inline" /> {destination.address}
           </h3>
+          <p>Opening Hours: {openingHours}</p>
           <div className="divider">Meeting</div>
           <p>
-            <HiOutlineCalendar className="inline" /> {timeStamp.date}{' '}
+            <HiOutlineCalendar className="inline" /> {timeStamp.day.dayName} {timeStamp.date}{' '}
             <HiOutlineClock className="inline" /> {timeStamp.time}
           </p>
           <div className="divider">Your journey</div>

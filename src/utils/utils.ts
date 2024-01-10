@@ -107,10 +107,11 @@ export const convertCrosshairToArray = (crosshair) => {
 };
 
 export const convertDateToDay = (date) => {
-  const dayObj = {weekdayTextIndex: 0, periodsDayIndex: 0, dayName: ""}
+  const dayObj = {weekdayTextIndex: 0, periodsDayIndex: 0, dayIndex: 0, dayName: ""}
   const dateToConvert = new Date (date)
   let weekdayTextIndex = dateToConvert.getDay() - 1
   const periodsDayIndex = dateToConvert.getDay()
+  let dayIndex = dateToConvert.getDay()
   const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
   if(weekdayTextIndex === -1) {
     weekdayTextIndex = 6
@@ -118,6 +119,10 @@ export const convertDateToDay = (date) => {
   if(weekdayTextIndex === 5){
     weekdayTextIndex = 0 
   }
+  if(dayIndex === 0) {
+    dayIndex = 7
+  }
+  dayObj.dayIndex = dayIndex
   dayObj.periodsDayIndex = periodsDayIndex
   dayObj.weekdayTextIndex = weekdayTextIndex
   dayObj.dayName = dayNames[weekdayTextIndex]
@@ -134,24 +139,49 @@ export const areTheyOpen = (details, timeStamp) => {
   details.forEach((detail) => {
 
     const openingHours = detail.data.result.current_opening_hours
-    if(openingHours && openingHours.weekday_text[timeStamp.day.weekdayIndex] !== "Closed") {
- 
-   
-   
-      const openTime = new Date(`${timeStamp.date}` + ` ${convertTime(openingHours.periods[timeStamp.day.periodsDayIndex].open.time)}`)
-      const closeTime = new Date(`${timeStamp.date}` + ` ${convertTime(openingHours.periods[timeStamp.day.periodsDayIndex].close.time)}`)
-      const meetingTime = new Date(`${timeStamp.date}` + ` ${timeStamp.time}`)
+    if(openingHours) {
       
-      if(openTime <= meetingTime && closeTime > meetingTime){
-        finalDetails.push(detail)
-  
-      } 
-      if(openingHours.periods[timeStamp.day.periodsDayIndex].open.date !== openingHours.periods[timeStamp.day.periodsDayIndex].close.date && meetingTime > openTime){
-        finalDetails.push(detail)
-      } 
+      if (openingHours.weekday_text[timeStamp.day.weekdayTextIndex] !== "Closed") {
+        
+        const splitInfo = openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(':')
+        if(splitInfo[1] !== 'Closed') {
+          
+          let convertedOpenTime
+          let convertedCloseTime 
+          let openDate
+          let closeDate
+          openingHours.periods.forEach((period) => {
+            if (period.open.day === timeStamp.day.dayIndex) {
+              convertedOpenTime = convertTime(period.open.time)
+              convertedCloseTime = convertTime(period.close.time)
+              openDate = period.open.date
+              closeDate = period.close.date
+            }
+          })
+          
+        // console.log(timeStamp, 'timestamp')
+        // console.log(convertedOpenTime, 'open time')
+        // console.log(convertedCloseTime, 'close time')
+        // console.log(openDate, 'open date')
+        // console.log(closeDate, 'close date ')
+        
+
+          const openTime = new Date(`${openDate}` + ` ${convertedOpenTime}`)
+          const closeTime = new Date(`${closeDate}` + ` ${convertedCloseTime}`)
+          const meetingTime = new Date(`${timeStamp.date}` + ` ${timeStamp.time}`)
+
+     
+          if(openTime <= meetingTime && closeTime > meetingTime){
+            finalDetails.push(detail)
       
+          } 
+
+      
+        }
+      }
     }
-    
-  })
+
+})
+console.log(finalDetails, 'FINAL DETAILS')
 return finalDetails
 }
