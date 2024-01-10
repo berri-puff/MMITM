@@ -12,12 +12,14 @@ import {
   GeoPoint,
 } from "@firebase/firestore";
 import { Users } from "../../types";
+import { InviteConfirmation } from "./InviteConfirmation";
 
-export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord, timeStamp}) => {
+export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, friendCoord, timeStamp, setHasClicked, foundUser, setFoundUser}) => {
   const [searchInput, setSearchInput] = useState<string>("");
-  const [foundUser, setFoundUser] = useState<Users[]>([]);
+  
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disableButton, setDisableButton] = useState<boolean>(false);
+
   const { user } = useContext(UserContext);
   console.log(chosenMeeting, 'Chosen Meeting<<<<')
   const retrieveUsers = async (searchUser: string) => {
@@ -88,7 +90,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
     const collectionData = collection(db, "itineraries");
     addDoc(collectionData, itineraryBody)
   };
-
+  
   if (isLoading) {
     return (
       <section>
@@ -137,6 +139,7 @@ export const InviteForm: React.FC = ({chosenMeeting, transportation, userCoord, 
                   <button
                     onClick={() => {
                       postItinerary(foundUser[0]);
+                      setHasClicked(true)
                     }}
                     disabled={disableButton}
                   >
