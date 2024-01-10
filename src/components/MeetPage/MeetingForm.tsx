@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { convertDateToDay, convertToNumberCoord } from '../../utils/utils';
+import { convertDateToDay } from '../../utils/utils';
 import { addressToCoord } from '../../utils/api-ma';
 import { Coordinates } from '../../types';
+import { MdErrorOutline } from "react-icons/md";
+
 
 
 
@@ -21,6 +23,7 @@ export const MeetingForm = ({
   const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false)
   const [timeStampBtn, setTimeStampBtn] = useState<boolean>(false)
   const [alerts, setAlerts] = useState<boolean>(false)
+  const [feedbackMsg, setFeedbackMsg] = useState<string>('')
   function handleUserLocation(event: any): void {
     setUserLocation(event.target.value);
   }
@@ -74,19 +77,24 @@ setUserCoord(result)
   
   }
   function confirmDateAndTime (event: any) {
+
     event.preventDefault()
     if(timeStamp.date.length> 0 && timeStamp.time.length > 0){
       const dayObj = convertDateToDay(timeStamp.date)
-      
       setTimeStamp((currTimeStamp) => {
         currTimeStamp.day = dayObj
         return currTimeStamp
       })
       setTimeStampBtn(true)
+      setFeedbackMsg('Time and Date added!')
       setAlerts(true)
       setTimeout(() => {
         setAlerts(false)
       }, 3000);
+    }
+    else if (timeStamp.date.length = 0) {
+      setAlerts(true)
+      setFeedbackMsg(`${MdErrorOutline}Please add date!`)
     }
   }
 
@@ -94,15 +102,15 @@ setUserCoord(result)
   return (
     <>
        {alerts ? <p className="toast toast-top toast-center max-w-fit alert alert-success">
- Time and Date added!
+{feedbackMsg}
           </p> : null}
     <section>
       <form onSubmit={handleSubmit}>
         <label>Date : </label>
-        <input required type="date" onBlur={handleDate} className='mr-3'></input>
+        <input required type="date" onChange={handleDate} className='mr-3'></input>
       
         <label>Time : </label>
-        <input required type="time" onBlur={handleTime} ></input>
+        <input required type="time" onChange={handleTime} ></input>
         <button onClick={confirmDateAndTime} className="btn btn-primary mx-5">
           Confirm Date and Time
         </button>
