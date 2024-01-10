@@ -246,7 +246,7 @@ export const MeetingForm = ({
           </>
         ) : (
           <p className="alert alert-error max-w-fit mt-5 font-bold">
-            Please confirm both locations!
+            Please confirm everything!
           </p>
         )}
       </section>
