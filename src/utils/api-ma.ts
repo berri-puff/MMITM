@@ -113,8 +113,10 @@ export const deleteInvite = async (id) => {
 export const createAccount = async (
   name: string,
   username: string,
+  avatarUrl: string,
   email: string,
-  password: string
+  password: string,
+  setUserCreated
 ) => {
   try {
     const auth = getAuth();
@@ -125,13 +127,20 @@ export const createAccount = async (
       first_name: name,
       username: username,
       preferences: [],
+      img_url: avatarUrl,
     });
+    setUserCreated(true);
   } catch (err) {
+    setUserCreated(false);
     console.log("unable to create account", err);
   }
 };
 
-export const logInAccount = async (email: string, password: string) => {
+export const logInAccount = async (
+  email: string,
+  password: string,
+  setIsError
+) => {
   try {
     const auth = getAuth();
     const {
@@ -139,12 +148,15 @@ export const logInAccount = async (email: string, password: string) => {
     } = await signInWithEmailAndPassword(auth, email, password);
     const userDoc = await getDoc(doc(db, "users", uid));
     const username = userDoc.data().username;
+    const imgUrl = userDoc.data().img_url;
 
     return {
       id: uid,
       username: username,
+      imgUrl: imgUrl,
     };
   } catch (err) {
     console.log("Could not sign in:", err);
+    setIsError(true);
   }
 };

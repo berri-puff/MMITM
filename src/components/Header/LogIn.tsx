@@ -4,13 +4,14 @@ import { useEffect, useState, useContext } from "react";
 import { UserCard } from "../UserCard";
 import { UserContext } from "../../contexts/UserContext";
 import { logInAccount } from "../../utils/api-ma";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const LogIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
   const { user, setUser } = useContext(UserContext);
+  const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export const LogIn: React.FC = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const loggedInUser = await logInAccount(email, password);
+      const loggedInUser = await logInAccount(email, password, setIsError);
       setUser(loggedInUser);
     } catch (err) {
       console.log(err);
@@ -56,9 +57,17 @@ export const LogIn: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <div className="label">
+            <span className="label-text-alt">
+              <Link to="/sign_up">Dont have an account? Sign up here!</Link>
+            </span>
+          </div>
+
           <div className="label"></div>
         </label>
-        <button className="btn btn-primary">Primary</button>
+
+        <button className="btn btn-primary mb-2">Log In</button>
+                {isError ? (<p className="text-error">Incorrect email or password</p>) : (" ")}
       </form>
     </>
   );
