@@ -1,17 +1,10 @@
 # Meet Me In The Middle
 
-## 🚀 Project Update: Fast-Paced Development 🚀
-**📌 Quick Overview:** This repository is being developed in a 7-day coding sprint as part of the Northcoders Bootcamp final project. Expect rapid updates and significant progress each day.
-
-**🔥 What's Happening:** We're in the midst of an intense development phase, with our team focused on delivering a functional MVP within this short timeframe.
-
-**📅 MVP Release:** Mark your calendar for Thursday, 11 January. We're launching our Minimum Viable Product (MVP) on this date, demonstrating the core features we've developed during this week-long coding challenge
-
-Fully hosted version of this project can be found [here](https://meet-me-in-the-middle-22a40.web.app/)
-
 ## Overview
 
 "Meet Me In The Middle" is a web app that helps friends find a central place to meet. It takes two locations, finds venues near the middle, calculates travel times, and creates itineraries.
+
+Hosted version can be found [here](https://meet-me-in-the-middle-22a40.web.app/)
 
 ## Description
 
