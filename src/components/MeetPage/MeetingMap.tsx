@@ -3,12 +3,13 @@ import { Coordinates, MeetingMapProps } from '../../types';
 import { Loading } from '../Loading';
 
 export const MeetingMap = (props: MeetingMapProps)=>{
+  
     const containerStyle = {
         width: '400px',
         height: '400px'
       };
       
-      let center : Coordinates= {
+      const defaultCenter : Coordinates= {
         lat: 53.80083232820499, 
         lng: -1.5491218869883503
       };
@@ -16,6 +17,7 @@ export const MeetingMap = (props: MeetingMapProps)=>{
     id : 'google-map-script',
     googleMapsApiKey:import.meta.env.VITE_GOOGLE_API_KEY
   })
+  const center: Coordinates = props.friendCoord.lat ? props.friendCoord : props.userCoord;
 
 if(!isLoaded){
   return <Loading/>
@@ -26,7 +28,7 @@ if(!isLoaded){
             <GoogleMap 
             mapContainerStyle={containerStyle}
             zoom={10}
-            center={props.userCoord.lat ? props.userCoord: center}>
+            center={center.length === 0 ? defaultCenter : center}>
              {props.userCoord.lat ? <Marker position={props.userCoord}/> : null}
              {props.friendCoord.lat ? <Marker position={props.friendCoord}/> : null}
             </GoogleMap>
