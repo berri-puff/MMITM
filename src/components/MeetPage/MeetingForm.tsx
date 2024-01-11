@@ -148,12 +148,12 @@ export const MeetingForm = ({
   return (
     <>
       {alerts ? (
-        <p className="toast toast-top toast-center max-w-fit alert alert-info">
+        <p className="toast toast-end toast-middle max-w-fit alert alert-info">
           {feedbackMsg}
         </p>
       ) : null}
       {errStatus ? (
-        <p className="toast toast-top toast-center max-w-fit alert alert-error">
+        <p className="toast toast-end toast-middle max-w-fit alert alert-error">
           {feedbackMsg}
         </p>
       ) : null}
