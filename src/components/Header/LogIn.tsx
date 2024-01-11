@@ -51,7 +51,7 @@ export const LogIn: React.FC = () => {
                 </div>
                 <input
                   type="email"
-                  placeholder="Type here"
+                  placeholder="Your email"
                   className="input input-bordered w-full max-w-xs mb-5"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -63,7 +63,7 @@ export const LogIn: React.FC = () => {
                 </div>
                 <input
                   type="password"
-                  placeholder="Type here"
+                  placeholder="Your password"
                   className="input input-bordered w-full max-w-xs mb-5"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -71,7 +71,7 @@ export const LogIn: React.FC = () => {
                 <div className="label">
                   <span className="label-text-alt">
                     <Link to="/sign_up">
-                      Dont have an account? Sign up here!
+                      Don't have an account? Sign up here.
                     </Link>
                   </span>
                 </div>

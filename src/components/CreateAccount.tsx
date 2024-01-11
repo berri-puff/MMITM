@@ -98,7 +98,7 @@ export const CreateAccount: React.FC = () => {
                   </div>
                   <input
                     type="password"
-                    placeholder="Your passowrd"
+                    placeholder="Your password"
                     className="input input-bordered w-full max-w-xs"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
