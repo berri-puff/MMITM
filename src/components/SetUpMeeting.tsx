@@ -47,7 +47,7 @@ export const SetUpMeeting: React.FC = () => {
       <>
         <div className="hero min-h-screen bg-base-200">
           <div className="hero-content flex-col-reverse lg:flex-row-reverse">
-            <div className="text-center bg-base-100 max-w-1xl p-5">
+            <div className="text-center max-w-1xl p-5">
               <MeetingMap userCoord={userCoord} friendCoord={friendCoord} />
             </div>
             <div className="card shrink-0 w-full max-w-xl shadow-2xl bg-base-100 p-10">
