@@ -46,7 +46,7 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({
                     <span className="text-xl">{invite.venue.name}</span>
                   </p>
                   <div
-                    className={`badge ${
+                    className={`badge min-w-32 ${
                       invite.attendees.invitee_1.accepted
                         ? 'badge-secondary'
                         : 'badge-outline'

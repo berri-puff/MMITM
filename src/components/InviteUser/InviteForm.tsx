@@ -108,16 +108,15 @@ export const InviteForm: React.FC = ({
     return (
       <section>
         <form onSubmit={searchForUser}>
-          <label htmlFor="invite-user">
-            Search by firstname:
-            <input
-              id="searchUserInput"
-              type="text"
-              placeholder="second"
-              onChange={handleSearchUser}
-              value={searchInput}
-            />
-          </label>
+          <label htmlFor="invite-user">Search by firstname: </label>
+          <input
+            id="searchUserInput"
+            type="text"
+            placeholder="second"
+            onChange={handleSearchUser}
+            value={searchInput}
+          />
+
           <button disabled={disableSearchBtn}>Search</button>
         </form>
         <Loading />
@@ -127,31 +126,42 @@ export const InviteForm: React.FC = ({
     return (
       <section>
         <form onSubmit={searchForUser}>
-          <label htmlFor="invite-user">
-            Search by username:
-            <input
-              id="searchUserInput"
-              type="text"
-              placeholder="second"
-              onChange={handleSearchUser}
-              value={searchInput}
-            />
+          <label htmlFor="invite-user" className="label label-text">
+            Search by username{' '}
           </label>
-          <button disabled={disableSearchBtn}>Search</button>
+          <input
+            id="searchUserInput"
+            type="text"
+            placeholder="Find your plus one"
+            onChange={handleSearchUser}
+            value={searchInput}
+            className="input input-bordered"
+          />
+
+          <button disabled={disableSearchBtn} className="btn btn-primary ml-5">
+            Search
+          </button>
         </form>
         {foundUser.length !== 0 ? (
           <>
             <ul key={foundUser[0].id}>
-              <p>Name: {foundUser[0].first_name}</p>
-              <p>Username: {foundUser[0].username}</p>
-              <button
-                onClick={() => {
-                  postItinerary(foundUser[0]);
-                  setHasClicked(true);
-                }}
-              >
-                Invite!
-              </button>
+              <div className="alert alert-success mt-10 justify-between">
+                <p>
+                  We found {foundUser[0].first_name}.
+                  {/* {foundUser[0].username} */}
+                </p>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    postItinerary(foundUser[0]);
+                    setHasClicked(true);
+                  }}
+                >
+                  Invite{' '}
+                  <span className="capitalize">{foundUser[0].first_name}</span>{' '}
+                  <img src="mmitm-plane.png" className="max-h-8" />
+                </button>
+              </div>
             </ul>
           </>
         ) : null}

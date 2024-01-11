@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
+import { Link } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext';
+import { useContext } from 'react';
 
 export const Home = () => {
   const { user } = useContext(UserContext);
@@ -10,10 +10,7 @@ export const Home = () => {
       <div className="container mx-auto mt-5">
         <div className="hero min-h-screen bg-base-200">
           <div className="hero-content flex-col lg:flex-row">
-            <img
-              src="mmitm-whitedark.png"
-              className="max-w-xs rounded-lg mr-"
-            />
+            <img src="mmitm-logo-webp.webp" className="max-w-sm" />
             <div>
               <h1 className="text-5xl font-bold">Meet Me in the Middle</h1>
               <p className="py-6 max-w-lg">
@@ -27,7 +24,7 @@ export const Home = () => {
                 </Link>
               ) : (
                 <Link to={`/Log_in`}>
-                  <button className="btn btn-primary">Log In</button>
+                  <button className="btn btn-primary">Log in</button>
                 </Link>
               )}
             </div>

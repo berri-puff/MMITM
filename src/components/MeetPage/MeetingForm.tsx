@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { convertDateToDay } from "../../utils/utils";
-import { addressToCoord } from "../../utils/api-ma";
-import { Coordinates } from "../../types";
-import { MdErrorOutline } from "react-icons/md";
-import { Error } from "../Error";
+import { useState } from 'react';
+import { convertDateToDay } from '../../utils/utils';
+import { addressToCoord } from '../../utils/api-ma';
+import { Coordinates } from '../../types';
 
 export const MeetingForm = ({
   setUserCoord,
@@ -13,16 +11,15 @@ export const MeetingForm = ({
   setTimeStamp,
   timeStamp,
 }) => {
-  const [value, setValue] = useState("Transportation...");
-  const [userLocation, setUserLocation] = useState<string[]>("");
-  const [friendLocation, setFriendLocation] = useState<string[]>("");
+  const [value, setValue] = useState('Transportation...');
+  const [userLocation, setUserLocation] = useState<string[]>('');
+  const [friendLocation, setFriendLocation] = useState<string[]>('');
   const [userLocationBtn, setUserLocationBtn] = useState<boolean>(false);
   const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false);
   const [timeStampBtn, setTimeStampBtn] = useState<boolean>(false);
   const [alerts, setAlerts] = useState<boolean>(false);
-  const [feedbackMsg, setFeedbackMsg] = useState<string>("");
+  const [feedbackMsg, setFeedbackMsg] = useState<string>('');
   const [errStatus, setErrStatus] = useState<boolean>(false);
- 
 
   function handleUserLocation(event: any): void {
     setUserLocation(event.target.value);
@@ -35,27 +32,24 @@ export const MeetingForm = ({
     event.preventDefault();
     addressToCoord(userLocation)
       .then((result: Coordinates) => {
-        setUserCoord(result); 
+        setUserCoord(result);
         setUserLocationBtn(true);
       })
       .catch((err) => {
         if (err && err.response) {
-           setErrStatus(true);
-           setFeedbackMsg(`Error : ${err.response.status} Bad Request`);
-      setTimeout(() => {
-          setErrStatus(false);
-        }, 3000);
-        }
-        else if (err){
-          setErrStatus(true)
-          setFeedbackMsg('Not a valid address')
+          setErrStatus(true);
+          setFeedbackMsg(`Error : ${err.response.status} Bad Request`);
+          setTimeout(() => {
+            setErrStatus(false);
+          }, 3000);
+        } else if (err) {
+          setErrStatus(true);
+          setFeedbackMsg('Not a valid address');
           setTimeout(() => {
             setErrStatus(false);
           }, 3000);
         }
-         
       });
-   
   }
 
   function confirmFriendPosition(event: any): void {
@@ -68,24 +62,23 @@ export const MeetingForm = ({
         if (err && err.response) {
           setErrStatus(true);
           setFeedbackMsg(`Error : ${err.response.status} Bad Request`);
-     setTimeout(() => {
-         setErrStatus(false);
-       }, 3000);
-       }
-       else if (err){
-         setErrStatus(true)
-         setFeedbackMsg('Not a valid address')
-         setTimeout(() => {
-           setErrStatus(false);
-         }, 3000);
-       }
+          setTimeout(() => {
+            setErrStatus(false);
+          }, 3000);
+        } else if (err) {
+          setErrStatus(true);
+          setFeedbackMsg('Not a valid address');
+          setTimeout(() => {
+            setErrStatus(false);
+          }, 3000);
+        }
       });
     setFriendLocationBtn(true);
   }
   function handleSubmit(event: any): void {
     event.preventDefault();
-    setUserLocation("");
-    setFriendLocation("");
+    setUserLocation('');
+    setFriendLocation('');
     setIsSubmitted(true);
   }
   function handleSortChange(event: any) {
@@ -116,28 +109,28 @@ export const MeetingForm = ({
         return currTimeStamp;
       });
       setTimeStampBtn(true);
-      setFeedbackMsg("Time and Date added!");
+      setFeedbackMsg('Time and date added');
       setAlerts(true);
       setTimeout(() => {
         setAlerts(false);
       }, 3000);
-    } else if (timeStamp.date === "" && timeStamp.time === "") {
+    } else if (timeStamp.date === '' && timeStamp.time === '') {
       setAlerts(true);
-      setFeedbackMsg("Please insert date and time!");
-      setAlerts(true);
-      setTimeout(() => {
-        setAlerts(false);
-      }, 3000);
-    } else if (timeStamp.date === "") {
-      setAlerts(true);
-      setFeedbackMsg("Please add date!");
+      setFeedbackMsg('Please insert date and time!');
       setAlerts(true);
       setTimeout(() => {
         setAlerts(false);
       }, 3000);
-    } else if (timeStamp.time === "") {
+    } else if (timeStamp.date === '') {
       setAlerts(true);
-      setFeedbackMsg("Please add time!");
+      setFeedbackMsg('Please add date!');
+      setAlerts(true);
+      setTimeout(() => {
+        setAlerts(false);
+      }, 3000);
+    } else if (timeStamp.time === '') {
+      setAlerts(true);
+      setFeedbackMsg('Please add time!');
       setAlerts(true);
       setTimeout(() => {
         setAlerts(false);
@@ -159,22 +152,26 @@ export const MeetingForm = ({
       ) : null}
       <section>
         <form onSubmit={handleSubmit}>
-          <p>Choose the meeting date and time: </p>
-          <label>Date : </label>
+          <label className="label label-text">Meeting date and time</label>
           <input
             required
             type="date"
             onChange={handleDate}
-            className="mr-3"
+            className="input input-bordered w-52 mb-5"
           ></input>
 
-          <label>Time : </label>
-          <input required type="time" onChange={handleTime}></input>
+          <label className="label-text"> </label>
+          <input
+            required
+            type="time"
+            onChange={handleTime}
+            className="input input-bordered"
+          ></input>
           <button onClick={confirmDateAndTime} className="btn btn-primary mx-5">
-            Confirm Date and Time
+            Confirm
           </button>
 
-          <label className="label">Insert your location: </label>
+          <label className="label label-text">Your starting point </label>
           <input
             type="text"
             id="host-location"
@@ -182,16 +179,16 @@ export const MeetingForm = ({
             onChange={handleUserLocation}
             value={userLocation}
             required
-            className="input input-bordered w-full max-w-xs mb-2 focus:input-primary"
+            className="input input-bordered w-full max-w-xs mb-5"
           />
 
           <button
             onClick={confirmUserPosition}
             className="btn btn-primary mx-5 input-primary"
           >
-            Confirm my place
+            Confirm
           </button>
-          <label className="label">Insert friend's location: </label>
+          <label className="label label-text">Guest starting point</label>
           <input
             type="text"
             id="second-location"
@@ -199,31 +196,30 @@ export const MeetingForm = ({
             onChange={handleFriendLocation}
             value={friendLocation}
             required
-            className="input input-bordered w-full max-w-xs mb-2 focus:input-primary"
+            className="input input-bordered w-full max-w-xs mb-5"
           />
 
           <button
             onClick={confirmFriendPosition}
             className="btn btn-primary mx-5"
           >
-            Confirm friend's place
+            Confirm
           </button>
-          <label htmlFor="Transportation" className="label">
-            Choose transportation:
+          <label htmlFor="Transportation" className="label label-text">
+            Transport type
           </label>
 
           <label htmlFor="Transportation">
-            <div className="ml-10">
-              <select
-                id="Transportation"
-                name="Transportation"
-                value={value}
-                onChange={handleSortChange}
-              >
-                <option value={"walking"}>Walking</option>
-                <option value={"driving"}>Driving</option>
-              </select>
-            </div>
+            <select
+              id="Transportation"
+              name="Transportation"
+              value={value}
+              onChange={handleSortChange}
+              className="select select-bordered w-full max-w-xs mb-5"
+            >
+              <option value={'walking'}>Walking</option>
+              <option value={'driving'}>Driving</option>
+            </select>
           </label>
         </form>
         {userLocationBtn &&
@@ -234,21 +230,23 @@ export const MeetingForm = ({
         timeStamp.date.length > 0 &&
         timeStamp.time.length > 0 ? (
           <>
-            <p className="py-5">
-              Click the button below to find meeting spots!
-            </p>
             <button
               onClick={handleSubmit}
               disabled={false}
-              className="btn btn-primary mx-5"
+              className="btn btn-primary mt-5"
             >
-              Find Meeting Spot!
+              Find the middle
             </button>
           </>
         ) : (
-          <p className="alert alert-error max-w-fit mt-5 font-bold">
-            Please confirm everything!
-          </p>
+          <button
+            className="btn btn-disabled"
+            tabIndex="-1"
+            role="button"
+            aria-disabled="true"
+          >
+            Confirm starting points
+          </button>
         )}
       </section>
     </>
