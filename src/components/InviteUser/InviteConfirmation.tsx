@@ -35,12 +35,12 @@ export const InviteConfirmation = ({
                     src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${apiKey}`}
                   />
                 </figure>
-                <div className="card-body">
+                <div className="card-body text-left">
                   <div className="flex justify-between">
                     <h2 className="card-title">
                       Invite to {chosenMeeting.placeData.data.result.name}
                     </h2>
-                    <h2>
+                    <h2 className="min-w-10">
                       <HiOutlineStar className="inline" />{' '}
                       {chosenMeeting.placeData.data.result.rating}
                     </h2>
@@ -103,7 +103,10 @@ export const InviteConfirmation = ({
               Invitations.
             </p>
             <div>
-              <Link className="btn btn-primary" to={`/invitations/${user}`}>
+              <Link
+                className="btn btn-primary"
+                to={`/invitations/${user.username}`}
+              >
                 Invitations
               </Link>
               <Link className="btn btn-primary mx-5" to={`/`}>

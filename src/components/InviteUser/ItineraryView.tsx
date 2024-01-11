@@ -27,7 +27,7 @@ export const ItineraryView = ({ chosenMeeting, transportation, timeStamp }) => {
               <h2 className="card-title">
                 Invite to {chosenMeeting.placeData.data.result.name}
               </h2>
-              <h2>
+              <h2 className="min-w-10">
                 <HiOutlineStar className="inline" />{' '}
                 {chosenMeeting.placeData.data.result.rating}
               </h2>

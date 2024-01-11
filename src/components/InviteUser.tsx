@@ -34,9 +34,9 @@ export const InviteUser = ({
             />
           </div>
           <div className="card shrink-0 w-full max-w-xl shadow-2xl bg-base-100 p-10">
-            <h3 className="text-5xl font-bold">Great Choice of Venue!</h3>
+            <h3 className="text-5xl font-bold">Invite your friend</h3>
             <p className="py-6">
-              Now, who's the lucky duck? Find your friend using their name or
+              Who's the lucky duck? Find your friend using their name or
               username and extend an invitation in just a few clicks.
             </p>
             <InviteForm

@@ -3318,6 +3318,10 @@ details.collapse summary::-webkit-details-marker {
   padding-right: 0.75rem;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-center {
   text-align: center;
 }
