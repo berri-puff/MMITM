@@ -1,5 +1,4 @@
 import { SuggestionsList } from './Suggestions/SuggestionsList';
-import { SuggestionsMap } from './Suggestions/SuggestionsMap';
 import { useEffect, useState } from 'react';
 import {
   areTheyOpen,
@@ -8,8 +7,7 @@ import {
   sortPlaces,
 } from '../utils/utils';
 import { Place, SuggestionsProps } from '../types';
-// import { getAllPlaces, getPlaces } from '../utils/api-ma';
-import { getOpeningHours } from '../utils/api-cm';
+
 import { Link } from 'react-router-dom';
 import { Loading } from './Loading';
 
@@ -20,7 +18,6 @@ export const Suggestions = (props: SuggestionsProps) => {
   const [isSorted, setIsSorted] = useState(false);
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const [loading, setLoading] = useState(true);
-  const [tempPlaces, setTempPlaces] = useState([]);
 
   const getPlaces = (coordinate, apiKey) => {
     return new Promise((resolve, reject) => {
@@ -73,8 +70,6 @@ export const Suggestions = (props: SuggestionsProps) => {
     }
   };
 
-  ////////////
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -89,11 +84,8 @@ export const Suggestions = (props: SuggestionsProps) => {
 
   useEffect(() => {
     if (places.length === 100) {
-      console.log(places, 'gets here <<<<<<<<');
       const sortedPlaces = sortPlaces(places);
-      console.log(sortedPlaces, 'sortedPLaces');
 
-      /////////////////
       const getOpeningHours = (places) => {
         const pendingPromises = places.map((place) => {
           return new Promise((resolve, reject) => {
@@ -126,14 +118,12 @@ export const Suggestions = (props: SuggestionsProps) => {
                 }
               });
             }
-
             initMap();
           });
         });
         return Promise.all(pendingPromises);
       };
 
-      //////////////
       getOpeningHours(sortedPlaces).then((details) => {
         console.log(details, 'DETAILS');
         setFinalPlaces(areTheyOpen(details, props.timeStamp));
@@ -143,14 +133,8 @@ export const Suggestions = (props: SuggestionsProps) => {
     }
   }, [places]);
 
-  //// for const loop of props and push each prop to new array
-  /// call function with array
-  /// Formatting for Matrix
   function formatOriginCoords(userCoord, friendCoord) {
-    const arrayToReturn = [];
-    arrayToReturn.push(userCoord);
-    arrayToReturn.push(friendCoord);
-    console.log(arrayToReturn, 'array to return');
+    const arrayToReturn = [userCoord, friendCoord];
     return arrayToReturn;
   }
 
@@ -183,14 +167,6 @@ export const Suggestions = (props: SuggestionsProps) => {
       </>
     );
   } else if (isSorted && !loading) {
-    // console.log(
-    //   places,
-    //   'places',
-    //   placesCoords,
-    //   'placesCoords',
-    //   finalCoordsOrigins,
-    //   'finalCoordsOrigins'
-    // );
     return (
       <div className="container mx-auto mt-5">
         <SuggestionsList

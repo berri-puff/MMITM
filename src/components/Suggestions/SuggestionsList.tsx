@@ -4,6 +4,7 @@ import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
 import { Element, scroller } from 'react-scroll';
 import LinkToTop from './LinkkToTop';
+import { SuggestionsMap } from './SuggestionsMap';
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
@@ -68,10 +69,6 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           .slice(0, 10);
         console.log(sortedDestinations, 'sorted');
         const detailedDestinations = sortedDestinations.map((dest) => {
-          console.log(dest, 'dest');
-          console.log(places, 'places');
-          console.log('hello111');
-
           console.log(data.destinationAddresses[8], 'address');
 
           const destinationDetails = {
@@ -114,12 +111,11 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   } else {
     return (
       <>
-        {/* <SuggestionsMap
+        <SuggestionsMap
           detailedTravelInfo={detailedTravelInfo}
           scrollToCard={scrollToCard}
-        /> */}
+        />
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-          {/* <div class="flex flex-col space-y-4 md:flex-row md:flex-wrap md:justify-between md:space-y-0"> */}
           {detailedTravelInfo.map((destination, index) => (
             <Element
               name={destination.placeData.place_id}
