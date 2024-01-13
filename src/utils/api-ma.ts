@@ -1,6 +1,6 @@
-import axios from "axios";
-import { Place, Invite, Coordinates } from "../types";
-import { convertCrosshairToArray } from "./utils";
+import axios from 'axios';
+import { Place, Invite, Coordinates } from '../types';
+import { convertCrosshairToArray } from './utils';
 import {
   collection,
   deleteDoc,
@@ -11,13 +11,13 @@ import {
   setDoc,
   updateDoc,
   where,
-} from "firebase/firestore";
-import db from "../lib/fireBaseConfig";
+} from 'firebase/firestore';
+import db from '../lib/fireBaseConfig';
 import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
-} from "firebase/auth";
+} from 'firebase/auth';
 
 export const getPlaces = async (coordinate, setPlaces, apiKey) => {
   let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coordinate}&type=cafe&rankby=distance&key=${apiKey}`;
@@ -42,8 +42,8 @@ export const getAllPlaces = async (crosshair, setPlaces, apiKey) => {
 export const getInvites = async (user: string) => {
   try {
     const q = query(
-      collection(db, "itineraries"),
-      where("attendees.invitee_1.username", "==", user)
+      collection(db, 'itineraries'),
+      where('attendees.invitee_1.username', '==', user)
     );
     const querySnapshot = await getDocs(q);
     const data: Invite[] = querySnapshot.docs.map((doc) => {
@@ -51,37 +51,37 @@ export const getInvites = async (user: string) => {
     });
     return data;
   } catch (err: any) {
-    console.log("Error fetching invites:", err);
+    console.log('Error fetching invites:', err);
   }
 };
 
 export const updateInviteeInvite = async (id: string, accepted: boolean) => {
-  const docRef = doc(db, "itineraries", id);
+  const docRef = doc(db, 'itineraries', id);
   try {
     await updateDoc(docRef, {
-      "attendees.invitee_1.accepted": accepted,
+      'attendees.invitee_1.accepted': accepted,
     });
   } catch (err) {
-    console.log("Error updating invite:", err);
+    console.log('Error updating invite:', err);
   }
 };
 
 export const updateCreatorInvite = async (id: string, accepted: boolean) => {
-  const docRef = doc(db, "itineraries", id);
+  const docRef = doc(db, 'itineraries', id);
   try {
     await updateDoc(docRef, {
-      "attendees.meeting_creator.accepted": accepted,
+      'attendees.meeting_creator.accepted': accepted,
     });
   } catch (err) {
-    console.log("Error updating invite:", err);
+    console.log('Error updating invite:', err);
   }
 };
 
 export const getCreatedInvites = async (user: string) => {
   try {
     const q = query(
-      collection(db, "itineraries"),
-      where("attendees.meeting_creator.username", "==", user)
+      collection(db, 'itineraries'),
+      where('attendees.meeting_creator.username', '==', user)
     );
     const querySnapshot = await getDocs(q);
     const data: Invite[] = querySnapshot.docs.map((doc) => {
@@ -89,7 +89,7 @@ export const getCreatedInvites = async (user: string) => {
     });
     return data;
   } catch (err: any) {
-    console.log("Error fetching invites:", err);
+    console.log('Error fetching invites:', err);
   }
 };
 
@@ -97,20 +97,18 @@ export const addressToCoord = async (
   userLocation: string[]
 ): Promise<Coordinates> => {
   try {
-     const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${userLocation}&key=${apiKey}`;
-  const { data } = await axios.get(url);
-  return data.results[0].geometry.location;
+    const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+    let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${userLocation}&key=${apiKey}`;
+    const { data } = await axios.get(url);
+    return data.results[0].geometry.location;
   } catch (err) {
-
-   throw err
+    throw err;
   }
- 
 };
 
 export const deleteInvite = async (id) => {
   try {
-    await deleteDoc(doc(db, "itineraries", id));
+    await deleteDoc(doc(db, 'itineraries', id));
   } catch (err) {
     console.log(err);
   }
@@ -129,7 +127,7 @@ export const createAccount = async (
     const {
       user: { uid },
     } = await createUserWithEmailAndPassword(auth, email, password);
-    await setDoc(doc(db, "users", uid), {
+    await setDoc(doc(db, 'users', uid), {
       first_name: name,
       username: username,
       preferences: [],
@@ -138,7 +136,7 @@ export const createAccount = async (
     setUserCreated(true);
   } catch (err) {
     setUserCreated(false);
-    console.log("unable to create account", err);
+    console.log('unable to create account', err);
   }
 };
 
@@ -152,7 +150,7 @@ export const logInAccount = async (
     const {
       user: { uid },
     } = await signInWithEmailAndPassword(auth, email, password);
-    const userDoc = await getDoc(doc(db, "users", uid));
+    const userDoc = await getDoc(doc(db, 'users', uid));
     const username = userDoc.data().username;
     const imgUrl = userDoc.data().img_url;
 
@@ -162,14 +160,14 @@ export const logInAccount = async (
       imgUrl: imgUrl,
     };
   } catch (err) {
-    console.log("Could not sign in:", err);
+    console.log('Could not sign in:', err);
     setIsError(true);
   }
 };
 
 export const checkUsernameExists = async (username) => {
   try {
-    const q = query(collection(db, "users"), where("username", "==", username));
+    const q = query(collection(db, 'users'), where('username', '==', username));
     const querySnapshot = await getDocs(q);
     const data = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };

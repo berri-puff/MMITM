@@ -18,32 +18,28 @@ export const SuggestionCard = ({
   }
 
   const openingHours =
-    destination.placeData.data.result.current_opening_hours.weekday_text[
+    destination.placeData.current_opening_hours.weekday_text[
       timeStamp.day.weekdayTextIndex
     ];
 
-  const photo = destination.placeData.data.result.photos[0].photo_reference;
-
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const firstPhoto = destination.placeData.photos[0].getUrl({ maxWidth: 400 });
 
   return (
     <>
       {/* {console.log(destination.placeData, 'place data')} */}
       <div className="card card-compact w-96 bg-base-200 shadow-2xl hover:bg-base-300 mb-10">
         <figure className="h-48 overflow-hidden">
-          <img
-            src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${apiKey}`}
-          />
+          <img src={`${firstPhoto}`} />
         </figure>
         <div className="card-body">
           <div className="flex justify-between">
             <h2 className="card-title">
               <span className="text-sm font-normal"> #{index + 1}</span>{' '}
-              {destination.placeData.data.result.name}{' '}
+              {destination.placeData.name}{' '}
             </h2>
             <h2 className="min-w-10">
               <HiOutlineStar className="inline" />{' '}
-              {destination.placeData.data.result.rating}
+              {destination.placeData.rating}
             </h2>
           </div>
           <h3>
