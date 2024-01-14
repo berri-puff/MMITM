@@ -22,14 +22,13 @@ export const SuggestionCard = ({
       timeStamp.day.weekdayTextIndex
     ];
 
-  const firstPhoto = destination.placeData.photos[0].getUrl({ maxWidth: 400 });
+  const placePhoto = destination.placeData.photos[0].getUrl();
 
   return (
     <>
-      {/* {console.log(destination.placeData, 'place data')} */}
       <div className="card card-compact w-96 bg-base-200 shadow-2xl hover:bg-base-300 mb-10">
         <figure className="h-48 overflow-hidden">
-          <img src={`${firstPhoto}`} />
+          <img src={`${placePhoto}`} />
         </figure>
         <div className="card-body">
           <div className="flex justify-between">

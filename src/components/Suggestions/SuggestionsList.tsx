@@ -5,6 +5,8 @@ import { InviteUser } from '../InviteUser';
 import { Element, scroller } from 'react-scroll';
 import LinkToTop from './LinkkToTop';
 import { SuggestionsMap } from './SuggestionsMap';
+import { Loading } from '../Loading';
+import { initGoogleMapsAPI } from '../../utils/GoogleMapsLoader';
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
@@ -22,34 +24,33 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   const [chosenMeeting, setChosenMeeting] = useState({});
 
   useEffect(() => {
-    const getDistance = (finalCoordsOrigins, placesCoords, transportation) => {
-      const initMap = () => {
-        return new Promise(async (resolve, reject) => {
-          const { DistanceMatrixService } = await google.maps.importLibrary(
-            'routes'
-          );
-          const originCoords = finalCoordsOrigins.map(
-            (coord) => new google.maps.LatLng(coord.lat, coord.lng)
-          );
-          const service = new google.maps.DistanceMatrixService();
-          service.getDistanceMatrix(
-            {
-              origins: originCoords,
-              destinations: placesCoords,
-              travelMode: 'DRIVING',
-            },
-            (response, status) => {
-              if (status === 'OK') {
-                resolve(response);
-              } else {
-                reject('DistanceMatrixService request failed');
-              }
-            }
-          );
-        });
-      };
+    const getDistance = async (
+      finalCoordsOrigins,
+      placesCoords,
+      transportation
+    ) => {
+      await initGoogleMapsAPI();
 
-      return initMap();
+      const originCoords = finalCoordsOrigins.map(
+        (coord) => new google.maps.LatLng(coord.lat, coord.lng)
+      );
+      const service = new google.maps.DistanceMatrixService();
+      return new Promise((resolve, reject) => {
+        service.getDistanceMatrix(
+          {
+            origins: originCoords,
+            destinations: placesCoords,
+            travelMode: google.maps.TravelMode[transportation.toUpperCase()],
+          },
+          (response, status) => {
+            if (status === 'OK') {
+              resolve(response);
+            } else {
+              reject('DistanceMatrixService request failed');
+            }
+          }
+        );
+      });
     };
 
     getDistance(finalCoordsOrigins, placesCoords, transportation)
@@ -108,13 +109,15 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         timeStamp={timeStamp}
       />
     );
-  } else {
+  } else if (detailedTravelInfo.length > 0) {
     return (
       <>
-        <SuggestionsMap
-          detailedTravelInfo={detailedTravelInfo}
-          scrollToCard={scrollToCard}
-        />
+        <div className="bg-base-100 max-h100">
+          <SuggestionsMap
+            detailedTravelInfo={detailedTravelInfo}
+            scrollToCard={scrollToCard}
+          />
+        </div>
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
           {detailedTravelInfo.map((destination, index) => (
             <Element
@@ -134,5 +137,5 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         <LinkToTop />
       </>
     );
-  }
+  } else return <Loading />;
 };

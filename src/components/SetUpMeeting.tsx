@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { MeetingForm } from './MeetPage/MeetingForm';
-// import { MeetingMap } from './MeetPage/MeetingMap';
+import { MeetingMap } from './MeetPage/MeetingMap';
 import { Suggestions } from './Suggestions';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
@@ -47,7 +47,7 @@ export const SetUpMeeting: React.FC = () => {
         <div className="hero min-h-screen bg-base-200">
           <div className="hero-content flex-col-reverse lg:flex-row-reverse">
             <div className="text-center max-w-1xl p-5">
-              {/* <MeetingMap userCoord={userCoord} friendCoord={friendCoord} /> */}
+              <MeetingMap userCoord={userCoord} friendCoord={friendCoord} />
             </div>
             <div className="card shrink-0 w-full max-w-xl shadow-2xl bg-base-100 p-10">
               <h3 className="text-5xl font-bold">Set up a meeting</h3>

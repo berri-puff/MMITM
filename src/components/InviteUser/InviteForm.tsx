@@ -65,7 +65,7 @@ export const InviteForm: React.FC = ({
   }
 
   const openingHours =
-    chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[
+    chosenMeeting.placeData.current_opening_hours.weekday_text[
       timeStamp.day.weekdayTextIndex
     ];
   const postItinerary = (invitee: Users[]) => {
@@ -90,12 +90,12 @@ export const InviteForm: React.FC = ({
 
       venue: {
         coordinates: new GeoPoint(
-          chosenMeeting.placeData.data.result.geometry.location.lat,
-          chosenMeeting.placeData.data.result.geometry.location.lng
+          chosenMeeting.placeData.geometry.location.lat(),
+          chosenMeeting.placeData.geometry.location.lng()
         ),
         location: chosenMeeting.address,
-        name: chosenMeeting.placeData.data.result.name,
-        rating: chosenMeeting.placeData.data.result.rating,
+        name: chosenMeeting.placeData.name,
+        rating: chosenMeeting.placeData.rating,
         type: 'Cafe',
         opening_hours: openingHours,
       },

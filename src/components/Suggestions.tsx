@@ -1,5 +1,5 @@
-import { SuggestionsList } from './Suggestions/SuggestionsList';
 import { useEffect, useState } from 'react';
+import { SuggestionsList } from './Suggestions/SuggestionsList';
 import {
   areTheyOpen,
   convertCoordsToCrosshair,
@@ -7,9 +7,9 @@ import {
   sortPlaces,
 } from '../utils/utils';
 import { Place, SuggestionsProps } from '../types';
-
 import { Link } from 'react-router-dom';
 import { Loading } from './Loading';
+import { initGoogleMapsAPI } from '../utils/GoogleMapsLoader';
 
 export const Suggestions = (props: SuggestionsProps) => {
   const crosshair = convertCoordsToCrosshair(props);
@@ -19,46 +19,37 @@ export const Suggestions = (props: SuggestionsProps) => {
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const [loading, setLoading] = useState(true);
 
-  const getPlaces = (coordinate, apiKey) => {
+  const getPlaces = async (coordinate) => {
+    await initGoogleMapsAPI();
+    const coordsArray = coordinate.split(', ').map(Number);
+
+    const map = new google.maps.Map(document.getElementById('map3'), {
+      center: { lat: coordsArray[0], lng: coordsArray[1] },
+      zoom: 15,
+    });
+
+    const request = {
+      location: new google.maps.LatLng(coordsArray[0], coordsArray[1]),
+      type: ['cafe'],
+      rankBy: google.maps.places.RankBy.DISTANCE,
+    };
+
     return new Promise((resolve, reject) => {
-      const coordsArray = coordinate.split(', ').map(Number);
-
-      async function initMap() {
-        const { Map } = (await google.maps.importLibrary(
-          'maps'
-        )) as google.maps.MapsLibrary;
-        const { Places } = (await google.maps.importLibrary(
-          'places'
-        )) as google.maps.MapsLibrary;
-
-        const map = new Map(document.getElementById('map3') as HTMLElement, {
-          zoom: 15,
-        });
-
-        const request = {
-          location: new google.maps.LatLng(coordsArray[0], coordsArray[1]),
-          type: ['cafe'],
-          rankBy: google.maps.places.RankBy.DISTANCE,
-        };
-
-        const service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(request, (results, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            resolve(results);
-          } else {
-            reject('Failed to fetch places');
-          }
-        });
-      }
-
-      initMap();
+      const service = new google.maps.places.PlacesService(map);
+      service.nearbySearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          resolve(results);
+        } else {
+          reject('Failed to fetch places');
+        }
+      });
     });
   };
 
-  const getAllPlaces = async (crosshair, apiKey) => {
+  const getAllPlaces = async (crosshair) => {
     const coordinates = convertCrosshairToArray(crosshair);
     const placesPromises = coordinates.map((coordinate) =>
-      getPlaces(coordinate, apiKey)
+      getPlaces(coordinate)
     );
 
     try {
@@ -73,7 +64,7 @@ export const Suggestions = (props: SuggestionsProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const placesData = await getAllPlaces(crosshair, apiKey);
+        const placesData = await getAllPlaces(crosshair);
         setPlaces(placesData);
       } catch (err) {
         console.log(err);
@@ -86,53 +77,44 @@ export const Suggestions = (props: SuggestionsProps) => {
     if (places.length === 100) {
       const sortedPlaces = sortPlaces(places);
 
-      const getOpeningHours = (places) => {
-        const pendingPromises = places.map((place) => {
+      const getOpeningHours = async (places) => {
+        await initGoogleMapsAPI();
+
+        const getPlaceDetails = (place) => {
           return new Promise((resolve, reject) => {
-            async function initMap() {
-              const { Map } = (await google.maps.importLibrary(
-                'maps'
-              )) as google.maps.MapsLibrary;
-              const { Places } = (await google.maps.importLibrary(
-                'places'
-              )) as google.maps.MapsLibrary;
+            const map = new google.maps.Map(document.getElementById('map3'), {
+              center: { lat: 0, lng: 0 }, // Dummy center
+              zoom: 15,
+            });
 
-              const map = new Map(
-                document.getElementById('map3') as HTMLElement,
-                {
-                  zoom: 15,
-                }
-              );
+            const request = {
+              placeId: place.place_id,
+            };
 
-              const request = {
-                placeId: place.place_id,
-              };
-
-              const service = new google.maps.places.PlacesService(map);
-              service.getDetails(request, (results, status) => {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                  console.log('resolved');
-                  resolve(results);
-                } else {
-                  reject('Failed to fetch places');
-                }
-              });
-            }
-            initMap();
+            const service = new google.maps.places.PlacesService(map);
+            service.getDetails(request, (result, status) => {
+              if (status === google.maps.places.PlacesServiceStatus.OK) {
+                resolve(result);
+              } else {
+                reject('Failed to fetch place details');
+              }
+            });
           });
-        });
-        return Promise.all(pendingPromises);
+        };
+
+        const detailsPromises = places.map((place) => getPlaceDetails(place));
+        return Promise.all(detailsPromises);
       };
 
-      getOpeningHours(sortedPlaces).then((details) => {
-        console.log(details, 'DETAILS');
-        setFinalPlaces(areTheyOpen(details, props.timeStamp));
-        setIsSorted(true);
-        setLoading(false);
-      });
+      getOpeningHours(sortedPlaces)
+        .then((details) => {
+          setFinalPlaces(areTheyOpen(details, props.timeStamp));
+          setIsSorted(true);
+          setLoading(false);
+        })
+        .catch((err) => console.error(err));
     }
   }, [places]);
-
   function formatOriginCoords(userCoord, friendCoord) {
     const arrayToReturn = [userCoord, friendCoord];
     return arrayToReturn;
@@ -148,15 +130,13 @@ export const Suggestions = (props: SuggestionsProps) => {
   if (loading) {
     return (
       <>
-        <div id="map3" className="hidden"></div>
         <Loading />
+        <div id="map3" className="hidden"></div>
       </>
     );
   } else if (finalPlaces.length === 0) {
     return (
       <>
-        {' '}
-        <div id="map3" className="hidden"></div>
         <h3>
           Unfortunatley, your search has not returned any results. It's possible
           that nothing is open at the time you have specified, please try again.
@@ -164,6 +144,7 @@ export const Suggestions = (props: SuggestionsProps) => {
         <Link className="btn btn-primary mx-5" to={`/`}>
           Try again
         </Link>
+        <div id="map3" className="hidden"></div>
       </>
     );
   } else if (isSorted && !loading) {

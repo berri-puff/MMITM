@@ -6,11 +6,12 @@ import { HiOutlineMapPin } from 'react-icons/hi2';
 import { HiOutlineHome } from 'react-icons/hi2';
 
 export const ItineraryView = ({ chosenMeeting, transportation, timeStamp }) => {
+  console.log(chosenMeeting, 'chosen');
   const openingHours =
-    chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[
+    chosenMeeting.placeData.current_opening_hours.weekday_text[
       timeStamp.day.weekdayTextIndex
     ];
-  const photo = chosenMeeting.placeData.data.result.photos[0].photo_reference;
+  const placePhoto = chosenMeeting.placeData.photos[0].getUrl();
 
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   return (
@@ -18,18 +19,16 @@ export const ItineraryView = ({ chosenMeeting, transportation, timeStamp }) => {
       <div>
         <div className="card card-compact w-96 bg-base-200 shadow-2xl mb-10">
           <figure className="h-48 overflow-hidden">
-            <img
-              src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${apiKey}`}
-            />
+            <img src={`${placePhoto}`} />
           </figure>
           <div className="card-body">
             <div className="flex justify-between">
               <h2 className="card-title">
-                Invite to {chosenMeeting.placeData.data.result.name}
+                Invite to {chosenMeeting.placeData.name}
               </h2>
               <h2 className="min-w-10">
                 <HiOutlineStar className="inline" />{' '}
-                {chosenMeeting.placeData.data.result.rating}
+                {chosenMeeting.placeData.rating}
               </h2>
             </div>
 
