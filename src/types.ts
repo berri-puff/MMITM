@@ -1,3 +1,5 @@
+import { ReactNode, SetStateAction, Dispatch } from "react";
+
 export interface Attendee {
   username: string;
   transportation: string;
@@ -131,4 +133,18 @@ export interface InviteFormProps {
   setHasClicked: React.Dispatch<React.SetStateAction<boolean>>;
   foundUser: Users[];
   setFoundUser: Users[];
+}
+
+export interface UserContextType {
+  user: User | undefined;
+  setUser: Dispatch<SetStateAction<User | undefined>>;
+}
+
+export interface User {
+  user: string | undefined;
+  username: string | undefined;
+}
+
+export interface UserProviderProps {
+  children: ReactNode;
 }

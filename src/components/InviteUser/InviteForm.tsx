@@ -1,9 +1,8 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
-
 import db from "../../lib/fireBaseConfig";
 import { collection, getDocs, addDoc, GeoPoint } from "@firebase/firestore";
-import { Users, InviteFormProps } from "../../types";
+import { Users, InviteFormProps, User } from "../../types";
 import { Loading } from "../Loading";
 
 export const InviteForm: React.FC<InviteFormProps> = ({
@@ -21,7 +20,7 @@ export const InviteForm: React.FC<InviteFormProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disableSearchBtn, setDisableSearchBtn] = useState<boolean>(false);
 
-  const { user } = useContext(UserContext);
+  const { user }: User = useContext(UserContext);
   const retrieveUsers = async (searchUser: string) => {
     setDisableSearchBtn(true);
 

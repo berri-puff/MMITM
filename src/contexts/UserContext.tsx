@@ -1,12 +1,19 @@
 import { createContext, useState } from "react";
+import { UserContextType, UserProviderProps, User } from "../types";
 
-export const UserContext = createContext({});
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined
+);
 
-export const UserProvider = ({ children }: any) => {
-  const [user, setUser] = useState(undefined);
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | undefined>(undefined);
+
+  const contextValue: UserContextType = {
+    user,
+    setUser,
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 };
