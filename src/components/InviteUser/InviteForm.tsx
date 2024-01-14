@@ -1,21 +1,12 @@
-import { useContext, useState } from 'react';
-import { UserContext } from '../../contexts/UserContext';
+import { useContext, useState } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
-import db from '../../lib/fireBaseConfig';
-import {
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  addDoc,
-  Timestamp,
-  GeoPoint,
-} from '@firebase/firestore';
-import { Users } from '../../types';
-import { InviteConfirmation } from './InviteConfirmation';
-import { Loading } from '../Loading';
+import db from "../../lib/fireBaseConfig";
+import { collection, getDocs, addDoc, GeoPoint } from "@firebase/firestore";
+import { Users, InviteFormProps } from "../../types";
+import { Loading } from "../Loading";
 
-export const InviteForm: React.FC = ({
+export const InviteForm: React.FC<InviteFormProps> = ({
   chosenMeeting,
   transportation,
   userCoord,
@@ -25,7 +16,7 @@ export const InviteForm: React.FC = ({
   foundUser,
   setFoundUser,
 }) => {
-  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchInput, setSearchInput] = useState<string>("");
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disableSearchBtn, setDisableSearchBtn] = useState<boolean>(false);
@@ -35,7 +26,7 @@ export const InviteForm: React.FC = ({
     setDisableSearchBtn(true);
 
     try {
-      const querySnapshot = await getDocs(collection(db, 'users'));
+      const querySnapshot = await getDocs(collection(db, "users"));
       const data: Users[] = querySnapshot.docs.map((person) => {
         return { ...person.data() };
       });
@@ -59,7 +50,7 @@ export const InviteForm: React.FC = ({
 
   function searchForUser(event: any): void {
     event.preventDefault();
-    setSearchInput('');
+    setSearchInput("");
     setIsLoading(true);
     retrieveUsers(searchInput);
   }
@@ -96,11 +87,11 @@ export const InviteForm: React.FC = ({
         location: chosenMeeting.address,
         name: chosenMeeting.placeData.data.result.name,
         rating: chosenMeeting.placeData.data.result.rating,
-        type: 'Cafe',
+        type: "Cafe",
         opening_hours: openingHours,
       },
     };
-    const collectionData = collection(db, 'itineraries');
+    const collectionData = collection(db, "itineraries");
     addDoc(collectionData, itineraryBody);
   };
 
@@ -127,7 +118,7 @@ export const InviteForm: React.FC = ({
       <section>
         <form onSubmit={searchForUser}>
           <label htmlFor="invite-user" className="label label-text">
-            Search by username{' '}
+            Search by username{" "}
           </label>
           <input
             id="searchUserInput"
@@ -157,8 +148,8 @@ export const InviteForm: React.FC = ({
                     setHasClicked(true);
                   }}
                 >
-                  Invite{' '}
-                  <span className="capitalize">{foundUser[0].first_name}</span>{' '}
+                  Invite{" "}
+                  <span className="capitalize">{foundUser[0].first_name}</span>{" "}
                   <img src="mmitm-plane.png" className="max-h-8" />
                 </button>
               </div>

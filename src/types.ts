@@ -3,6 +3,7 @@ export interface Attendee {
   transportation: string;
   travel_time: string;
   accepted: boolean;
+  start_location: Location;
 }
 
 export interface Venue {
@@ -10,6 +11,8 @@ export interface Venue {
   type: string;
   location: string;
   rating: string;
+  opening_hours: string;
+  coordinates: Location;
 }
 
 export interface Invite {
@@ -19,7 +22,20 @@ export interface Invite {
     invitee_1: Attendee;
   };
   venue: Venue;
-  meeting_time: number;
+  meeting_time: MeetingTime;
+}
+
+export interface MeetingTime {
+  date: string;
+  day: Day;
+  time: string;
+}
+
+export interface Day {
+  dayIndex: number;
+  dayName: string;
+  periodsDayIndex: number;
+  weekdayTextIndex: number;
 }
 
 export interface Place {
@@ -95,5 +111,24 @@ export type CrosshairProps = {
 
 export type InvitationsProps = {
   invites: Invite[];
-  setSubmitted: React.Dispatch<React.SetStateAction<string>>
+  setSubmitted: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export interface InviteUserProps {
+  chosenMeeting: Place;
+  transportation: string;
+  userCoord: Location;
+  friendCoord: Location;
+  timeStamp: MeetingTime;
+}
+
+export interface InviteFormProps {
+  chosenMeeting: Place;
+  transportation: string;
+  userCoord: Location;
+  friendCoord: Location;
+  timeStamp: MeetingTime;
+  setHasClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  foundUser: Users[];
+  setFoundUser: Users[];
 }
