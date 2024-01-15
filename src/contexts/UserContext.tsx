@@ -1,9 +1,18 @@
-import { createContext, useState } from "react";
+import React, { createContext, useState, ReactNode } from 'react';
+import { UserType, UserContextType } from '../types'; // Importing the interfaces
 
-export const UserContext = createContext({});
+export const UserContext = createContext<UserContextType>({
+  user: undefined,
+  setUser: () => {},
+});
 
-export const UserProvider = ({ children }: any) => {
-  const [user, setUser] = useState(undefined);
+interface UserProviderProps {
+  children: ReactNode;
+}
+
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<UserType | undefined>(undefined);
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

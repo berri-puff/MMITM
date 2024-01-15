@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { MeetingForm } from './MeetPage/MeetingForm';
 import { MeetingMap } from './MeetPage/MeetingMap';
 import { Suggestions } from './Suggestions';
@@ -19,17 +19,19 @@ export const SetUpMeeting: React.FC = () => {
     },
   });
 
-  const { user } = useContext(UserContext);
-
+  const { user } = useContext<UserContextType>(UserContext);
+  console.log(user, '<<<<<<<');
   if (!user) {
     return (
-      <p>
-        Please{' '}
-        <Link className="btn btn-primary mx-5" to={`/log_in`}>
-          Log in
-        </Link>{' '}
-        to set up a meeting.
-      </p>
+      <div className="hero min-h-screen bg-base-200">
+        <p>
+          Please{' '}
+          <Link className="btn btn-primary mx-5" to={`/log_in`}>
+            Log in
+          </Link>{' '}
+          to set up a meeting.
+        </p>
+      </div>
     );
   }
   if (isSubmitted) {
