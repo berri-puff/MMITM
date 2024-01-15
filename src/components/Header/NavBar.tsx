@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
+import { UserContextType } from '../../types';
 
 export const NavBar = () => {
-  const { user, setUser }: any = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext) as UserContextType;
   const navigate = useNavigate();
   const handleLogout = () => {
     setUser(undefined);
@@ -43,7 +44,6 @@ export const NavBar = () => {
                   Invitations
                 </Link>
               </li>
-              <li></li>
               <li>
                 <a
                   onClick={() => {

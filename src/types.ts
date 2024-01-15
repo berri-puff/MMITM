@@ -112,6 +112,12 @@ export type InvitationsProps = {
   loading: boolean;
 };
 
+export interface UserType {
+  id: string;
+  username: string;
+  imgUrl: string;
+}
+
 export interface InviteUserProps {
   chosenMeeting: ChosenMeeting;
   transportation: string;
@@ -193,4 +199,4 @@ export interface PostItineraryParams {
   transportation: string;
   chosenMeeting: ChosenMeeting;
   timeStamp: TimeStamp;
-}
+};

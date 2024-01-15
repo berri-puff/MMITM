@@ -42,7 +42,6 @@ export const InviteForm: React.FC<InviteFormProps> = ({
     setIsLoading(true);
     retrieveUser(searchInput);
   }
-
   if (isLoading) {
     return (
       <section className="flex">
