@@ -112,7 +112,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   } else if (detailedTravelInfo.length > 0) {
     return (
       <>
-        <div className="bg-base-100 max-h100">
+        <div className="bg-base-100">
           <SuggestionsMap
             detailedTravelInfo={detailedTravelInfo}
             scrollToCard={scrollToCard}

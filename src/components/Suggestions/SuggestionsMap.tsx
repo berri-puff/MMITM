@@ -42,7 +42,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
 
   return isApiLoaded ? (
     <>
-      <div className="bg-amber-50">
+      <div>
         <GoogleMap
           mapContainerStyle={containerStyle}
           zoom={13}

@@ -1,42 +1,33 @@
 import { useState, useEffect } from 'react';
 import { Link, animateScroll as scroll } from 'react-scroll';
 
-const LinkToTop = () => {
-  const [showTopBtn, setShowTopBtn] = useState(false);
+const LinkToTop: React.FC = () => {
+  const [showTopBtn, setShowTopBtn] = useState<boolean>(false);
 
   useEffect(() => {
     const checkScrollTop = () => {
-      if (!showTopBtn && window.pageYOffset > 500) {
-        setShowTopBtn(true);
-      } else if (showTopBtn && window.pageYOffset <= 500) {
-        setShowTopBtn(false);
-      }
+      setShowTopBtn(window.scrollY > 500);
     };
-
+    // Debounce function can be added here
     window.addEventListener('scroll', checkScrollTop);
-
     return () => {
-      // Cleanup the listener
       window.removeEventListener('scroll', checkScrollTop);
     };
-  }, [showTopBtn]);
+  }, []);
 
   return (
-    <div>
-      {/* Your content here */}
-
-      {/* Back to Top Link */}
+    <>
       {showTopBtn && (
         <Link
           to="top"
           onClick={() => scroll.scrollToTop()}
-          style={{ position: 'fixed', bottom: '20px', right: '20px' }}
-          className="cursor-pointer"
+          className="fixed right-5 bottom-5 cursor-pointer"
+          aria-label="Back to top"
         >
-          <button className="btn">Back to Top</button>
+          <button className="btn">Back to top</button>
         </Link>
       )}
-    </div>
+    </>
   );
 };
 

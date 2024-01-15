@@ -95,5 +95,16 @@ export type CrosshairProps = {
 
 export type InvitationsProps = {
   invites: Invite[];
-  setSubmitted: React.Dispatch<React.SetStateAction<string>>
+  setSubmitted: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export interface UserType {
+  id: string;
+  username: string;
+  imgUrl: string;
+}
+
+export interface UserContextType {
+  user: UserType | undefined;
+  setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
 }
