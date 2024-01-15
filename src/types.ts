@@ -155,20 +155,16 @@ export interface UserProviderProps {
 export interface ChosenMeeting {
   address: string;
   placeData: {
-    data: {
-      result: {
-        name: string;
-        rating: number;
-        geometry: {
-          location: {
-            lat: number;
-            lng: number;
-          };
-        };
-        current_opening_hours: {
-          weekday_text: string[];
-        };
+    name: string;
+    rating: number;
+    geometry: {
+      location: {
+        lat: any;
+        lng: any;
       };
+    };
+    current_opening_hours: {
+      weekday_text: string[];
     };
   };
   travelDetails: TravelDetails[];
@@ -199,4 +195,15 @@ export interface PostItineraryParams {
   transportation: string;
   chosenMeeting: ChosenMeeting;
   timeStamp: TimeStamp;
-};
+}
+
+export interface UserType {
+  id: string;
+  username: string;
+  imgUrl: string;
+}
+
+export interface UserContextType {
+  user: UserType | undefined;
+  setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
+}

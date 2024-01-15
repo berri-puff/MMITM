@@ -45,8 +45,8 @@ export const InviteForm: React.FC<InviteFormProps> = ({
   if (isLoading) {
     return (
       <section className="flex">
+        <p>Searching for user</p>
         <Loading />
-        <p>Searching</p>
       </section>
     );
   } else {
