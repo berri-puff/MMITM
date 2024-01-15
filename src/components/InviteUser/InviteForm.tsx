@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import db from "../../lib/fireBaseConfig";
-import { collection, addDoc, GeoPoint } from "@firebase/firestore";
-import { Users, InviteFormProps } from "../../types";
+import { InviteFormProps } from "../../types";
 import { Loading } from "../Loading";
 import { getUser, postItinerary } from "../../utils/api-ma";
 
@@ -47,20 +45,9 @@ export const InviteForm: React.FC<InviteFormProps> = ({
 
   if (isLoading) {
     return (
-      <section>
-        <form onSubmit={searchForUser}>
-          <label htmlFor="invite-user">Search by firstname: </label>
-          <input
-            id="searchUserInput"
-            type="text"
-            placeholder="second"
-            onChange={handleSearchUser}
-            value={searchInput}
-          />
-
-          <button disabled={disableSearchBtn}>Search</button>
-        </form>
+      <section className="flex">
         <Loading />
+        <p>Searching</p>
       </section>
     );
   } else {
@@ -89,20 +76,22 @@ export const InviteForm: React.FC<InviteFormProps> = ({
               <div className="alert alert-success mt-10 justify-between">
                 <p>
                   We found {foundUser[0].first_name}.
-                  {/* {foundUser[0].username} */}
                 </p>
                 <button
                   className="btn"
                   onClick={() => {
-                    postItinerary(
-                      foundUser[0],
-                      user,
-                      friendCoord,
-                      userCoord,
-                      transportation,
-                      chosenMeeting,
-                      timeStamp
-                    );
+                    if (user) {
+                      postItinerary(
+                        foundUser[0],
+                        user,
+                        friendCoord,
+                        userCoord,
+                        transportation,
+                        chosenMeeting,
+                        timeStamp
+                      );
+                    }
+
                     setHasClicked(true);
                   }}
                 >

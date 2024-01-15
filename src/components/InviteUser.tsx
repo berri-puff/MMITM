@@ -4,7 +4,6 @@ import { ItineraryView } from "./InviteUser/ItineraryView";
 import { useState } from "react";
 import { Users, InviteUserProps } from "../types";
 
-
 export const InviteUser: React.FC<InviteUserProps> = ({
   chosenMeeting,
   transportation,

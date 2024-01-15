@@ -102,14 +102,8 @@ export type MeetingMapProps = {
 };
 
 export type CrosshairProps = {
-  friendCoord: {
-    lat: number;
-    lng: number;
-  };
-  userCoord: {
-    lat: number;
-    lng: number;
-  };
+  friendCoord: Coord;
+  userCoord: Coord;
 };
 
 export type InvitationsProps = {
@@ -119,7 +113,7 @@ export type InvitationsProps = {
 };
 
 export interface InviteUserProps {
-  chosenMeeting: Place;
+  chosenMeeting: ChosenMeeting;
   transportation: string;
   userCoord: Location;
   friendCoord: Location;
@@ -134,7 +128,7 @@ export interface InviteFormProps {
   timeStamp: MeetingTime;
   setHasClicked: React.Dispatch<React.SetStateAction<boolean>>;
   foundUser: Users[];
-  setFoundUser: React.Dispatch<React.SetStateAction<Users[] | undefined>>;
+  setFoundUser: any;
 }
 
 export interface UserContextType {
@@ -184,4 +178,19 @@ export interface TimeStamp {
   day: {
     weekdayTextIndex: number;
   };
+}
+
+export interface Coord {
+  lat: number;
+  lng: number;
+}
+
+export interface PostItineraryParams {
+  invitee: Users;
+  user: User;
+  friendCoord: Coord;
+  userCoord: Coord;
+  transportation: string;
+  chosenMeeting: ChosenMeeting;
+  timeStamp: TimeStamp;
 }

@@ -1,5 +1,13 @@
 import axios from "axios";
-import { Invite, Coordinates, Users, User, ChosenMeeting, TimeStamp } from "../types";
+import {
+  Invite,
+  Coordinates,
+  Users,
+  User,
+  ChosenMeeting,
+  TimeStamp,
+  Coord,
+} from "../types";
 import { convertCrosshairToArray } from "./utils";
 import {
   GeoPoint,
@@ -207,8 +215,8 @@ export const getUser = async (username: string) => {
 export const postItinerary = (
   invitee: Users,
   user: User,
-  friendCoord: number,
-  userCoord: number,
+  friendCoord: Coord,
+  userCoord: Coord,
   transportation: string,
   chosenMeeting: ChosenMeeting,
   timeStamp: TimeStamp
