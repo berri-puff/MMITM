@@ -1,9 +1,10 @@
-import { InviteConfirmation } from './InviteUser/InviteConfirmation';
-import { InviteForm } from './InviteUser/InviteForm';
-import { ItineraryView } from './InviteUser/ItineraryView';
-import { useContext, useState } from 'react';
+import { InviteConfirmation } from "./InviteUser/InviteConfirmation";
+import { InviteForm } from "./InviteUser/InviteForm";
+import { ItineraryView } from "./InviteUser/ItineraryView";
+import { useState } from "react";
+import { Users, InviteUserProps } from "../types";
 
-export const InviteUser = ({
+export const InviteUser: React.FC<InviteUserProps> = ({
   chosenMeeting,
   transportation,
   userCoord,

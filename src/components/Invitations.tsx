@@ -1,20 +1,21 @@
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../contexts/UserContext';
-import { getCreatedInvites, getInvites } from '../utils/api-ma';
-import { Link } from 'react-router-dom';
-import { CreatedInvitations } from './Invitations/CreatedInvitations';
-import { Invite } from '../types';
-import { RecievedInvitations } from './Invitations/RecievedInvitations';
-import { Loading } from './Loading';
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
+import { getCreatedInvites, getInvites } from "../utils/api-ma";
+import { Link } from "react-router-dom";
+import { CreatedInvitations } from "./Invitations/CreatedInvitations";
+import { Invite } from "../types";
+import { RecievedInvitations } from "./Invitations/RecievedInvitations";
+import { Loading } from "./Loading";
 
 export const Invitations = () => {
-  const { user } = useContext(UserContext);
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
   const [recievedInvites, setRecievedInvites] = useState<Invite[]>([]);
   const [createdInvites, setCreatedInvites] = useState<Invite[]>([]);
   const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
-  const [submitted, setSubmitted] = useState('');
+  const [submitted, setSubmitted] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const handleToggle = () => {
     setIsChecked(!isChecked);
@@ -22,22 +23,24 @@ export const Invitations = () => {
 
   useEffect(() => {
     const fetchInvites = async () => {
-      const recievedInvitesData = await getInvites(user.username);
-      const createdInvitesData = await getCreatedInvites(user.username);
-      setRecievedInvites(recievedInvitesData as Invite[]);
-      setCreatedInvites(createdInvitesData as Invite[]);
-      setLoading(false)
+      if (user && user.username) {
+        const recievedInvitesData = await getInvites(user.username);
+        const createdInvitesData = await getCreatedInvites(user.username);
+        setRecievedInvites(recievedInvitesData as Invite[]);
+        setCreatedInvites(createdInvitesData as Invite[]);
+        setLoading(false);
+      }
     };
     fetchInvites();
     setHasFetchedInvites(true);
-    setSubmitted('');
+    setSubmitted("");
   }, [submitted]);
 
   if (!hasFetchedInvites) {
-         return <Loading/>;   
-  } else if (user.username === "Nobody" || user.username === undefined) {
+    return <Loading />;
+  } else if (!user || !user.username || user.username === "Nobody") {
     return (
-      <Link to={'/Log_in'}>
+      <Link to={"/Log_in"}>
         <p>Please log in to see your invites</p>
       </Link>
     );

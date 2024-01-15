@@ -1,7 +1,6 @@
-import { HiMap } from 'react-icons/hi2';
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub } from "react-icons/fa";
 
-export const Footer = () => {
+export const Footer: React.FC = () => {
   return (
     <footer className="footer footer-center p-10 bg-secondary text-secondary-content mt-20">
       <div className="container mx-auto">

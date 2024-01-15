@@ -1,7 +1,18 @@
-import axios from 'axios';
-import { Place, Invite, Coordinates } from '../types';
+
+import axios from "axios";
+import {
+  Invite,
+  Coordinates,
+  Users,
+  User,
+  ChosenMeeting,
+  TimeStamp,
+  Coord,
+} from "../types";
 import { convertCrosshairToArray } from './utils';
 import {
+  GeoPoint,
+  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -180,4 +191,73 @@ export const checkUsernameExists = async (username) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const getUser = async (username: string) => {
+  try {
+    const q = query(collection(db, "users"), where("username", "==", username));
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map((doc) => {
+      const userData = doc.data();
+      return {
+        id: doc.id,
+        username: userData.username || "",
+        img_url: userData.img_url || "",
+        first_name: userData.first_name || "",
+        preferences: userData.preferences || [],
+      };
+    });
+    return data;
+  } catch (err) {
+    console.error("Error retrieving users:", err);
+  }
+};
+
+export const postItinerary = (
+  invitee: Users,
+  user: User,
+  friendCoord: Coord,
+  userCoord: Coord,
+  transportation: string,
+  chosenMeeting: ChosenMeeting,
+  timeStamp: TimeStamp
+) => {
+  const openingHours =
+    chosenMeeting.placeData.current_opening_hours.weekday_text[
+      timeStamp.day.weekdayTextIndex
+    ];
+  console.log(chosenMeeting);
+  const itineraryBody = {
+    attendees: {
+      invitee_1: {
+        accepted: false,
+        start_location: new GeoPoint(friendCoord.lat, friendCoord.lng),
+        transportation: transportation,
+        travel_time: chosenMeeting.travelDetails[1].travelTime,
+        username: invitee.username,
+      },
+      meeting_creator: {
+        accepted: true,
+        start_location: new GeoPoint(userCoord.lat, userCoord.lng),
+        transportation: transportation,
+        travel_time: chosenMeeting.travelDetails[0].travelTime,
+        username: user?.username,
+      },
+    },
+    meeting_time: timeStamp,
+
+    venue: {
+      coordinates: new GeoPoint(
+        chosenMeeting.placeData.geometry.location.lat(),
+        chosenMeeting.placeData.geometry.location.lng()
+      ),
+      location: chosenMeeting.address,
+      name: chosenMeeting.placeData.name,
+      rating: chosenMeeting.placeData.rating,
+      type: "Cafe",
+      opening_hours: openingHours,
+    },
+  };
+  const collectionData = collection(db, "itineraries");
+  addDoc(collectionData, itineraryBody);
 };

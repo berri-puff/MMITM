@@ -1,21 +1,10 @@
-import { useContext, useState } from 'react';
-import { UserContext } from '../../contexts/UserContext';
+import { useContext, useState } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import { InviteFormProps } from "../../types";
+import { Loading } from "../Loading";
+import { getUser, postItinerary } from "../../utils/api-ma";
 
-import db from '../../lib/fireBaseConfig';
-import {
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  addDoc,
-  Timestamp,
-  GeoPoint,
-} from '@firebase/firestore';
-import { Users } from '../../types';
-import { InviteConfirmation } from './InviteConfirmation';
-import { Loading } from '../Loading';
-
-export const InviteForm: React.FC = ({
+export const InviteForm: React.FC<InviteFormProps> = ({
   chosenMeeting,
   transportation,
   userCoord,
@@ -25,31 +14,21 @@ export const InviteForm: React.FC = ({
   foundUser,
   setFoundUser,
 }) => {
-  const [searchInput, setSearchInput] = useState<string>('');
-
+  const [searchInput, setSearchInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disableSearchBtn, setDisableSearchBtn] = useState<boolean>(false);
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
 
-  const { user } = useContext(UserContext);
-  const retrieveUsers = async (searchUser: string) => {
-    setDisableSearchBtn(true);
-
+  const retrieveUser = async (searchUser: string) => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'users'));
-      const data: Users[] = querySnapshot.docs.map((person) => {
-        return { ...person.data() };
-      });
-      setFoundUser(
-        data.filter((person) => {
-          if (person.username === searchUser) {
-            return { ...person };
-          }
-        })
-      );
+      setDisableSearchBtn(true);
+      const invitedUser = await getUser(searchUser);
+      setFoundUser(invitedUser);
       setDisableSearchBtn(false);
       setIsLoading(false);
-    } catch (err: unknown) {
-      console.log(err);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -59,66 +38,14 @@ export const InviteForm: React.FC = ({
 
   function searchForUser(event: any): void {
     event.preventDefault();
-    setSearchInput('');
+    setSearchInput("");
     setIsLoading(true);
-    retrieveUsers(searchInput);
+    retrieveUser(searchInput);
   }
-
-  const openingHours =
-    chosenMeeting.placeData.current_opening_hours.weekday_text[
-      timeStamp.day.weekdayTextIndex
-    ];
-  const postItinerary = (invitee: Users[]) => {
-    const itineraryBody = {
-      attendees: {
-        invitee_1: {
-          accepted: false,
-          start_location: new GeoPoint(friendCoord.lat, friendCoord.lng),
-          transportation: transportation,
-          travel_time: chosenMeeting.travelDetails[1].travelTime,
-          username: invitee.username,
-        },
-        meeting_creator: {
-          accepted: true,
-          start_location: new GeoPoint(userCoord.lat, userCoord.lng),
-          transportation: transportation,
-          travel_time: chosenMeeting.travelDetails[0].travelTime,
-          username: user.username,
-        },
-      },
-      meeting_time: timeStamp,
-
-      venue: {
-        coordinates: new GeoPoint(
-          chosenMeeting.placeData.geometry.location.lat(),
-          chosenMeeting.placeData.geometry.location.lng()
-        ),
-        location: chosenMeeting.address,
-        name: chosenMeeting.placeData.name,
-        rating: chosenMeeting.placeData.rating,
-        type: 'Cafe',
-        opening_hours: openingHours,
-      },
-    };
-    const collectionData = collection(db, 'itineraries');
-    addDoc(collectionData, itineraryBody);
-  };
-
   if (isLoading) {
     return (
-      <section>
-        <form onSubmit={searchForUser}>
-          <label htmlFor="invite-user">Search by firstname: </label>
-          <input
-            id="searchUserInput"
-            type="text"
-            placeholder="second"
-            onChange={handleSearchUser}
-            value={searchInput}
-          />
-
-          <button disabled={disableSearchBtn}>Search</button>
-        </form>
+      <section className="flex">
+        <p>Searching for user</p>
         <Loading />
       </section>
     );
@@ -127,7 +54,7 @@ export const InviteForm: React.FC = ({
       <section>
         <form onSubmit={searchForUser}>
           <label htmlFor="invite-user" className="label label-text">
-            Search by username{' '}
+            Search by username{" "}
           </label>
           <input
             id="searchUserInput"
@@ -148,17 +75,27 @@ export const InviteForm: React.FC = ({
               <div className="alert alert-success mt-10 justify-between">
                 <p>
                   We found {foundUser[0].first_name}.
-                  {/* {foundUser[0].username} */}
                 </p>
                 <button
                   className="btn"
                   onClick={() => {
-                    postItinerary(foundUser[0]);
+                    if (user) {
+                      postItinerary(
+                        foundUser[0],
+                        user,
+                        friendCoord,
+                        userCoord,
+                        transportation,
+                        chosenMeeting,
+                        timeStamp
+                      );
+                    }
+
                     setHasClicked(true);
                   }}
                 >
-                  Invite{' '}
-                  <span className="capitalize">{foundUser[0].first_name}</span>{' '}
+                  Invite{" "}
+                  <span className="capitalize">{foundUser[0].first_name}</span>{" "}
                   <img src="mmitm-plane.png" className="max-h-8" />
                 </button>
               </div>
