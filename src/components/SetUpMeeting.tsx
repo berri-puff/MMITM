@@ -4,7 +4,6 @@ import { MeetingMap } from './MeetPage/MeetingMap';
 import { Suggestions } from './Suggestions';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
-import { FaInfoCircle } from 'react-icons/fa';
 
 export const SetUpMeeting: React.FC = () => {
   const [userCoord, setUserCoord] = useState<string[]>([]);

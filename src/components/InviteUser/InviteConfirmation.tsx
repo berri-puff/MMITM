@@ -16,12 +16,11 @@ export const InviteConfirmation = ({
 }) => {
   const { user } = useContext(UserContext);
   const openingHours =
-    chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[
+    chosenMeeting.placeData.current_opening_hours.weekday_text[
       timeStamp.day.weekdayTextIndex
     ];
   const userName = foundUser[0].username;
-  const photo = chosenMeeting.placeData.data.result.photos[0].photo_reference;
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const placePhoto = chosenMeeting.placeData.photos[0].getUrl();
 
   return (
     <>
@@ -31,18 +30,16 @@ export const InviteConfirmation = ({
             <div>
               <div className="card card-compact w-96 bg-base-200 shadow-2xl mb-10">
                 <figure className="h-48 overflow-hidden">
-                  <img
-                    src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo}&key=${apiKey}`}
-                  />
+                  <img src={`${placePhoto}`} />
                 </figure>
                 <div className="card-body text-left">
                   <div className="flex justify-between">
                     <h2 className="card-title">
-                      Invite to {chosenMeeting.placeData.data.result.name}
+                      Invite to {chosenMeeting.placeData.name}
                     </h2>
                     <h2 className="min-w-10">
                       <HiOutlineStar className="inline" />{' '}
-                      {chosenMeeting.placeData.data.result.rating}
+                      {chosenMeeting.placeData.rating}
                     </h2>
                   </div>
 

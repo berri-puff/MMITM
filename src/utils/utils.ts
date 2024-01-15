@@ -1,5 +1,4 @@
-
-import { Coordinates, CrosshairProps } from "../types";
+import { Coordinates, CrosshairProps } from '../types';
 
 export const sortPlaces = (places) => {
   const reviewedPlaces = places.filter((place) => {
@@ -9,17 +8,17 @@ export const sortPlaces = (places) => {
     return b.rating - a.rating;
   });
   const uniquePlaces = sortedPlaces.reduce((accumulator, current) => {
-    if(!accumulator.find((item) => item.place_id === current.place_id)) {
-      accumulator.push(current)
+    if (!accumulator.find((item) => item.place_id === current.place_id)) {
+      accumulator.push(current);
     }
-    return accumulator
-  }, [])
-  return uniquePlaces.slice(0, 25)
+    return accumulator;
+  }, []);
+  return uniquePlaces.slice(0, 25);
 };
 
 export const convertToNumberCoord = (coordInString: string): Coordinates => {
-  const latitude = coordInString.split(", ");
-  const longitude = coordInString.split(", ");
+  const latitude = coordInString.split(', ');
+  const longitude = coordInString.split(', ');
   const coordNums: Coordinates = {
     lat: Number(latitude[0]),
     lng: Number(longitude[1]),
@@ -92,101 +91,106 @@ export const convertCoordsToCrosshair = (props: CrosshairProps) => {
 
 export const convertCrosshairToArray = (crosshair) => {
   const coordinates = [];
-  let string = "";
-  string = crosshair.midpoint.lat + ", " + crosshair.midpoint.lng;
+  let string = '';
+  string = crosshair.midpoint.lat + ', ' + crosshair.midpoint.lng;
   coordinates.push(string);
-  string = crosshair.posNorth.lat + ", " + crosshair.posNorth.lng;
+  string = crosshair.posNorth.lat + ', ' + crosshair.posNorth.lng;
   coordinates.push(string);
-  string = crosshair.posEast.lat + ", " + crosshair.posEast.lng;
+  string = crosshair.posEast.lat + ', ' + crosshair.posEast.lng;
   coordinates.push(string);
-  string = crosshair.posSouth.lat + ", " + crosshair.posSouth.lng;
+  string = crosshair.posSouth.lat + ', ' + crosshair.posSouth.lng;
   coordinates.push(string);
-  string = crosshair.posWest.lat + ", " + crosshair.posWest.lng;
+  string = crosshair.posWest.lat + ', ' + crosshair.posWest.lng;
   coordinates.push(string);
   return coordinates;
 };
 
 export const convertDateToDay = (date) => {
-  const dayObj = {weekdayTextIndex: 0, periodsDayIndex: 0, dayIndex: 0, dayName: ""}
-  const dateToConvert = new Date (date)
-  let weekdayTextIndex = dateToConvert.getDay() - 1
-  const periodsDayIndex = dateToConvert.getDay()
-  let dayIndex = dateToConvert.getDay()
-  const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-  if(weekdayTextIndex === -1) {
-    weekdayTextIndex = 6
+  const dayObj = {
+    weekdayTextIndex: 0,
+    periodsDayIndex: 0,
+    dayIndex: 0,
+    dayName: '',
+  };
+  const dateToConvert = new Date(date);
+  let weekdayTextIndex = dateToConvert.getDay() - 1;
+  const periodsDayIndex = dateToConvert.getDay();
+  let dayIndex = dateToConvert.getDay();
+  const dayNames = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+  if (weekdayTextIndex === -1) {
+    weekdayTextIndex = 6;
   }
-  if(weekdayTextIndex === 5){
-    weekdayTextIndex = 0 
+  if (weekdayTextIndex === 5) {
+    weekdayTextIndex = 0;
   }
-  
-  dayObj.dayIndex = dayIndex
-  dayObj.periodsDayIndex = periodsDayIndex
-  dayObj.weekdayTextIndex = weekdayTextIndex
-  dayObj.dayName = dayNames[weekdayTextIndex]
-  return dayObj
-}
+
+  dayObj.dayIndex = dayIndex;
+  dayObj.periodsDayIndex = periodsDayIndex;
+  dayObj.weekdayTextIndex = weekdayTextIndex;
+  dayObj.dayName = dayNames[weekdayTextIndex];
+  return dayObj;
+};
 export const convertTime = (time) => {
-  const firstHalf = time.slice(0,2)
-  const secondHalf = time.slice(2)
-  return firstHalf + ':' + secondHalf
-}
+  const firstHalf = time.slice(0, 2);
+  const secondHalf = time.slice(2);
+  return firstHalf + ':' + secondHalf;
+};
 export const areTheyOpen = (details, timeStamp) => {
-
-  const finalDetails = []
+  const finalDetails = [];
   details.forEach((detail) => {
-
-    const openingHours = detail.data.result.current_opening_hours
-    if(detail.data.result.current_opening_hours) {
-      
-        if (openingHours.weekday_text) {
-         
-        
-        
-        const splitInfo = openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(': ')
-        if(splitInfo[1] !== 'Closed') {
-          
-          let convertedOpenTime
-          let convertedCloseTime 
-          let openDate
-          let closeDate
-          let openCloseSameDay = false 
+    console.log(detail);
+    const openingHours = detail.current_opening_hours;
+    if (detail.current_opening_hours) {
+      if (openingHours.weekday_text) {
+        const splitInfo =
+          openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(': ');
+        if (splitInfo[1] !== 'Closed') {
+          let convertedOpenTime;
+          let convertedCloseTime;
+          let openDate;
+          let closeDate;
+          let openCloseSameDay = false;
           openingHours.periods.forEach((period) => {
             if (period.open.day === timeStamp.day.dayIndex) {
-              convertedOpenTime = convertTime(period.open.time)
-              convertedCloseTime = convertTime(period.close.time)
-              if(period.open.date === period.close.date){
-                openDate = timeStamp.date
-                closeDate = timeStamp.date
-                openCloseSameDay = true
-              } 
-              
+              convertedOpenTime = convertTime(period.open.time);
+              convertedCloseTime = convertTime(period.close.time);
+              if (period.open.date === period.close.date) {
+                openDate = timeStamp.date;
+                closeDate = timeStamp.date;
+                openCloseSameDay = true;
+              }
             }
-          })
-          
-        // console.log(timeStamp, 'timestamp')
-        // console.log(convertedOpenTime, 'open time')
-        // console.log(convertedCloseTime, 'close time')
-        // console.log(openDate, 'open date')
-        // console.log(closeDate, 'close date ')
-        
+          });
 
-          const openTime = new Date(`${openDate}` + ` ${convertedOpenTime}`)
-          const closeTime = new Date(`${closeDate}` + ` ${convertedCloseTime}`)
-          const meetingTime = new Date(`${timeStamp.date}` + ` ${timeStamp.time}`)
+          // console.log(timeStamp, 'timestamp')
+          // console.log(convertedOpenTime, 'open time')
+          // console.log(convertedCloseTime, 'close time')
+          // console.log(openDate, 'open date')
+          // console.log(closeDate, 'close date ')
 
-     
-          if(openTime <= meetingTime && closeTime > meetingTime){
-            finalDetails.push(detail)
-      
-          } 
+          const openTime = new Date(`${openDate}` + ` ${convertedOpenTime}`);
+          const closeTime = new Date(`${closeDate}` + ` ${convertedCloseTime}`);
+          const meetingTime = new Date(
+            `${timeStamp.date}` + ` ${timeStamp.time}`
+          );
 
-          openCloseSameDay = false
+          if (openTime <= meetingTime && closeTime > meetingTime) {
+            finalDetails.push(detail);
+          }
+
+          openCloseSameDay = false;
         }
-        }
+      }
     }
-
-})
-console.log(finalDetails, 'FINAL DETAILS')
-return finalDetails
-}
+  });
+  console.log(finalDetails, 'FINAL DETAILS');
+  return finalDetails;
+};
