@@ -3285,6 +3285,19 @@ details.collapse summary::-webkit-details-marker {
   position: fixed;
 }
 
+.inset-y-20 {
+  top: 5rem;
+  bottom: 5rem;
+}
+
+.bottom-5 {
+  bottom: 1.25rem;
+}
+
+.right-5 {
+  right: 1.25rem;
+}
+
 .z-\[1\] {
   z-index: 1;
 }
