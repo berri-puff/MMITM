@@ -1,0 +1,3 @@
+[data-theme='ak'] ::-webkit-calendar-picker-indicator {
+  filter: invert(80%);
+}
