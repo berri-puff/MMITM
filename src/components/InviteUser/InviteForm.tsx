@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import db from "../../lib/fireBaseConfig";
-import { collection, getDocs, addDoc, GeoPoint } from "@firebase/firestore";
-import { Users, InviteFormProps, User } from "../../types";
+import { collection, addDoc, GeoPoint } from "@firebase/firestore";
+import { Users, InviteFormProps } from "../../types";
 import { Loading } from "../Loading";
+import { getUser, postItinerary } from "../../utils/api-ma";
 
 export const InviteForm: React.FC<InviteFormProps> = ({
   chosenMeeting,
@@ -16,30 +17,20 @@ export const InviteForm: React.FC<InviteFormProps> = ({
   setFoundUser,
 }) => {
   const [searchInput, setSearchInput] = useState<string>("");
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disableSearchBtn, setDisableSearchBtn] = useState<boolean>(false);
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
 
-  const { user }: User = useContext(UserContext);
-  const retrieveUsers = async (searchUser: string) => {
-    setDisableSearchBtn(true);
-
+  const retrieveUser = async (searchUser: string) => {
     try {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const data: Users[] = querySnapshot.docs.map((person) => {
-        return { ...person.data() };
-      });
-      setFoundUser(
-        data.filter((person) => {
-          if (person.username === searchUser) {
-            return { ...person };
-          }
-        })
-      );
+      setDisableSearchBtn(true);
+      const invitedUser = await getUser(searchUser);
+      setFoundUser(invitedUser);
       setDisableSearchBtn(false);
       setIsLoading(false);
-    } catch (err: unknown) {
-      console.log(err);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -51,48 +42,8 @@ export const InviteForm: React.FC<InviteFormProps> = ({
     event.preventDefault();
     setSearchInput("");
     setIsLoading(true);
-    retrieveUsers(searchInput);
+    retrieveUser(searchInput);
   }
-
-  const openingHours =
-    chosenMeeting.placeData.data.result.current_opening_hours.weekday_text[
-      timeStamp.day.weekdayTextIndex
-    ];
-  const postItinerary = (invitee: Users[]) => {
-    const itineraryBody = {
-      attendees: {
-        invitee_1: {
-          accepted: false,
-          start_location: new GeoPoint(friendCoord.lat, friendCoord.lng),
-          transportation: transportation,
-          travel_time: chosenMeeting.travelDetails[1].travelTime,
-          username: invitee.username,
-        },
-        meeting_creator: {
-          accepted: true,
-          start_location: new GeoPoint(userCoord.lat, userCoord.lng),
-          transportation: transportation,
-          travel_time: chosenMeeting.travelDetails[0].travelTime,
-          username: user.username,
-        },
-      },
-      meeting_time: timeStamp,
-
-      venue: {
-        coordinates: new GeoPoint(
-          chosenMeeting.placeData.data.result.geometry.location.lat,
-          chosenMeeting.placeData.data.result.geometry.location.lng
-        ),
-        location: chosenMeeting.address,
-        name: chosenMeeting.placeData.data.result.name,
-        rating: chosenMeeting.placeData.data.result.rating,
-        type: "Cafe",
-        opening_hours: openingHours,
-      },
-    };
-    const collectionData = collection(db, "itineraries");
-    addDoc(collectionData, itineraryBody);
-  };
 
   if (isLoading) {
     return (
@@ -143,7 +94,15 @@ export const InviteForm: React.FC<InviteFormProps> = ({
                 <button
                   className="btn"
                   onClick={() => {
-                    postItinerary(foundUser[0]);
+                    postItinerary(
+                      foundUser[0],
+                      user,
+                      friendCoord,
+                      userCoord,
+                      transportation,
+                      chosenMeeting,
+                      timeStamp
+                    );
                     setHasClicked(true);
                   }}
                 >

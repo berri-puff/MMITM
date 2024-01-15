@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 export const CreatedInvitations: React.FC<InvitationsProps> = ({
   invites,
   setSubmitted,
+  loading,
 }) => {
   const handleDelete = async (id: string) => {
     await deleteInvite(id);

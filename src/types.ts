@@ -77,6 +77,7 @@ export interface Users {
   first_name: string;
   preferences: string[];
   username: string;
+  img_url: string;
 }
 export type SuggestionsProps = {
   friendCoord: {
@@ -114,6 +115,7 @@ export type CrosshairProps = {
 export type InvitationsProps = {
   invites: Invite[];
   setSubmitted: React.Dispatch<React.SetStateAction<string>>;
+  loading: boolean;
 };
 
 export interface InviteUserProps {
@@ -125,14 +127,14 @@ export interface InviteUserProps {
 }
 
 export interface InviteFormProps {
-  chosenMeeting: Place;
+  chosenMeeting: ChosenMeeting;
   transportation: string;
   userCoord: Location;
   friendCoord: Location;
   timeStamp: MeetingTime;
   setHasClicked: React.Dispatch<React.SetStateAction<boolean>>;
   foundUser: Users[];
-  setFoundUser: Users[];
+  setFoundUser: React.Dispatch<React.SetStateAction<Users[] | undefined>>;
 }
 
 export interface UserContextType {
@@ -141,10 +143,45 @@ export interface UserContextType {
 }
 
 export interface User {
-  user: string | undefined;
+  id: string | undefined;
   username: string | undefined;
+  img_url: string | undefined;
 }
 
 export interface UserProviderProps {
   children: ReactNode;
+}
+
+export interface ChosenMeeting {
+  address: string;
+  placeData: {
+    data: {
+      result: {
+        name: string;
+        rating: number;
+        geometry: {
+          location: {
+            lat: number;
+            lng: number;
+          };
+        };
+        current_opening_hours: {
+          weekday_text: string[];
+        };
+      };
+    };
+  };
+  travelDetails: TravelDetails[];
+}
+
+export interface TravelDetails {
+  origin: string;
+  travelTime: string;
+  travelDistance: string;
+}
+
+export interface TimeStamp {
+  day: {
+    weekdayTextIndex: number;
+  };
 }
