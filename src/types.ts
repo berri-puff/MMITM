@@ -1,4 +1,4 @@
-import { ReactNode, SetStateAction, Dispatch } from "react";
+import { ReactNode, SetStateAction, Dispatch } from 'react';
 
 export interface Attendee {
   username: string;
@@ -79,6 +79,16 @@ export interface Users {
   username: string;
   img_url: string;
 }
+
+export interface Timestamp {
+  date: string;
+  time: string;
+  day: {
+    dayName: string;
+    dayIndex: string;
+  };
+}
+
 export type SuggestionsProps = {
   friendCoord: {
     lat: number;
@@ -89,6 +99,7 @@ export type SuggestionsProps = {
     lng: number;
   };
   transportation: string;
+  timeStamp: Timestamp;
 };
 export type MeetingMapProps = {
   friendCoord: {
@@ -201,9 +212,4 @@ export interface UserType {
   id: string;
   username: string;
   imgUrl: string;
-}
-
-export interface UserContextType {
-  user: UserType | undefined;
-  setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
 }

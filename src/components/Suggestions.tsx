@@ -16,7 +16,6 @@ export const Suggestions = (props: SuggestionsProps) => {
   const [places, setPlaces] = useState<Place[]>([]);
   const [finalPlaces, setFinalPlaces] = useState<Place[]>([]);
   const [isSorted, setIsSorted] = useState(false);
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const [loading, setLoading] = useState(true);
 
   const getPlaces = async (coordinate) => {
