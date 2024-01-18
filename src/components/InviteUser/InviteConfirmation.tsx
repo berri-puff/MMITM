@@ -10,11 +10,7 @@ import { HiOutlineHome } from 'react-icons/hi2';
 import { ConfirmedProps } from '../../types';
 
 
-export const InviteConfirmation: React.FC<ConfirmedProps> = ({
-  chosenMeeting,
-  timeStamp,
-  foundUser,
-  transportation,
+export const InviteConfirmation: React.FC<ConfirmedProps> = ({ chosenMeeting, timeStamp, foundUser, transportation
 }) => {
   const { user } = useContext(UserContext);
   const openingHours =

@@ -1,10 +1,8 @@
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { useContext, useEffect, useState } from 'react';
+
+import { useState } from 'react';
 import { checkUsernameExists, createAccount } from '../utils/api-ma';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../contexts/UserContext';
-import { IconH3 } from '@tabler/icons-preact';
-import { set } from 'firebase/database';
+
 
 export const CreateAccount: React.FC = () => {
   const [name, setName] = useState('');
@@ -16,8 +14,8 @@ export const CreateAccount: React.FC = () => {
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e : any) => {
+      e.preventDefault();
 
     const exists = await checkUsernameExists(username);
     if (exists === false) {

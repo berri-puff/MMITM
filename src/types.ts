@@ -186,6 +186,11 @@ export interface ChosenMeeting {
     current_opening_hours: {
       weekday_text: string[];
     };
+    photos: {
+      0: {
+        getUrl: Function
+      }
+    }
   };
   travelDetails: TravelDetails[];
 }
@@ -230,4 +235,10 @@ export interface ConfirmedProps {
   timeStamp: TimeStamp;
   foundUser: Users[];
   transportation: string;
+}
+
+export interface ItineraryProps {
+  chosenMeeting : ChosenMeeting;
+  transportation: String;
+  timeStamp: TimeStamp;
 }

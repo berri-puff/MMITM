@@ -4,16 +4,15 @@ import { HiOutlineStar } from 'react-icons/hi2';
 import { HiOutlineMap } from 'react-icons/hi2';
 import { HiOutlineMapPin } from 'react-icons/hi2';
 import { HiOutlineHome } from 'react-icons/hi2';
+import { ItineraryProps } from '../../types';
 
-export const ItineraryView = ({ chosenMeeting, transportation, timeStamp }) => {
-  console.log(chosenMeeting, 'chosen');
+export const ItineraryView: React.FC<ItineraryProps> = ({ chosenMeeting, transportation, timeStamp }) => {
+
   const openingHours =
     chosenMeeting.placeData.current_opening_hours.weekday_text[
       timeStamp.day.weekdayTextIndex
     ];
   const placePhoto = chosenMeeting.placeData.photos[0].getUrl();
-
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   return (
     <>
       <div>
