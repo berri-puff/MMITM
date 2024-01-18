@@ -224,3 +224,10 @@ export interface Crosshair {
   posSouth: Coord;
   posWest: Coord;
 }
+
+export interface ConfirmedProps {
+  chosenMeeting: ChosenMeeting;
+  timeStamp: TimeStamp;
+  foundUser: Users[];
+  transportation: string;
+}

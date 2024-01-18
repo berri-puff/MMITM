@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import React, { useState, useContext } from 'react';
+import React, {useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { HiOutlineClock } from 'react-icons/hi';
 import { HiOutlineCalendar } from 'react-icons/hi';
@@ -7,8 +7,10 @@ import { HiOutlineStar } from 'react-icons/hi2';
 import { HiOutlineMap } from 'react-icons/hi2';
 import { HiOutlineMapPin } from 'react-icons/hi2';
 import { HiOutlineHome } from 'react-icons/hi2';
+import { ConfirmedProps } from '../../types';
 
-export const InviteConfirmation = ({
+
+export const InviteConfirmation: React.FC<ConfirmedProps> = ({
   chosenMeeting,
   timeStamp,
   foundUser,
