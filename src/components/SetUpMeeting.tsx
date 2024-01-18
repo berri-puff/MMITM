@@ -4,19 +4,21 @@ import { MeetingMap } from './MeetPage/MeetingMap';
 import { Suggestions } from './Suggestions';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
-import { Coord, Timestamp } from '../types';
+import { Coord, TimeStamp } from '../types';
 
 export const SetUpMeeting: React.FC = () => {
   const [userCoord, setUserCoord] = useState<Coord>({ lat: 0, lng: 0 });
   const [friendCoord, setFriendCoord] = useState<Coord>({ lat: 0, lng: 0 });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [transportation, setTransportation] = useState<string>('walking');
-  const [timeStamp, setTimeStamp] = useState<Timestamp>({
+  const [timeStamp, setTimeStamp] = useState<TimeStamp>({
     date: '',
     time: '',
     day: {
+      weekdayTextIndex: 0,
+      periodsDayIndex: 0,
       dayName: '',
-      dayIndex: '',
+      dayIndex: 0,
     },
   });
 

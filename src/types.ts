@@ -47,6 +47,7 @@ export interface Place {
   rating: number;
   user_ratings_total: number;
   vicinity: string;
+  formatted_address: string;
 }
 
 export interface SuggestionsMapProps {
@@ -57,6 +58,12 @@ export interface SuggestionsMapProps {
 
 export interface SuggestionsListProps {
   places: Place[];
+  placesCoords: string[];
+  finalCoordsOrigins: Coord[];
+  transportation: string;
+  userCoord: Coord;
+  friendCoord: Coord;
+  timeStamp: TimeStamp;
 }
 
 export interface Geometry {
@@ -80,12 +87,14 @@ export interface Users {
   img_url: string;
 }
 
-export interface Timestamp {
+export interface TimeStamp {
   date: string;
   time: string;
   day: {
+    weekdayTextIndex: number;
+    periodsDayIndex: number;
+    dayIndex: number;
     dayName: string;
-    dayIndex: string;
   };
 }
 
@@ -99,7 +108,7 @@ export type SuggestionsProps = {
     lng: number;
   };
   transportation: string;
-  timeStamp: Timestamp;
+  timeStamp: TimeStamp;
 };
 export type MeetingMapProps = {
   friendCoord: {
@@ -187,12 +196,6 @@ export interface TravelDetails {
   travelDistance: string;
 }
 
-export interface TimeStamp {
-  day: {
-    weekdayTextIndex: number;
-  };
-}
-
 export interface Coord {
   lat: number;
   lng: number;
@@ -212,4 +215,12 @@ export interface UserType {
   id: string;
   username: string;
   imgUrl: string;
+}
+
+export interface Crosshair {
+  midpoint: Coord;
+  posNorth: Coord;
+  posEast: Coord;
+  posSouth: Coord;
+  posWest: Coord;
 }
