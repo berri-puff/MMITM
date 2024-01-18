@@ -17,6 +17,22 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   friendCoord,
   timeStamp,
 }) => {
+  console.log(
+    places,
+    'places',
+    placesCoords,
+    'placescoords',
+    finalCoordsOrigins,
+    'finalCoordsOrigins,',
+    transportation,
+    'transportation',
+    userCoord,
+    'userCoord',
+    friendCoord,
+    'riendCoord',
+    timeStamp,
+    'timeStamp'
+  );
   const [detailedTravelInfo, setDetailedTravelInfo] = useState<
     DetailedDestination[]
   >([]);
