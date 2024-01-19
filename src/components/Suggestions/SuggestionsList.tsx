@@ -1,4 +1,4 @@
-import { SuggestionsListProps } from '../../types';
+import { ChosenMeeting, Coordinates, DistanceData, SortProps, SuggestionsListProps } from '../../types';
 import { useEffect, useState } from 'react';
 import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
@@ -17,38 +17,20 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   friendCoord,
   timeStamp,
 }) => {
-  console.log(
-    places,
-    'places',
-    placesCoords,
-    'placescoords',
-    finalCoordsOrigins,
-    'finalCoordsOrigins,',
-    transportation,
-    'transportation',
-    userCoord,
-    'userCoord',
-    friendCoord,
-    'riendCoord',
-    timeStamp,
-    'timeStamp'
-  );
-  const [detailedTravelInfo, setDetailedTravelInfo] = useState<
-    DetailedDestination[]
-  >([]);
 
+  const [detailedTravelInfo, setDetailedTravelInfo] = useState<ChosenMeeting[]>([]);
   const [chosenMeeting, setChosenMeeting] = useState({});
 
   useEffect(() => {
     const getDistance = async (
-      finalCoordsOrigins,
-      placesCoords,
-      transportation
+      finalCoordsOrigins : Coordinates[],
+      placesCoords: string[],
+      transportation: string
     ) => {
       await initGoogleMapsAPI();
 
       const originCoords = finalCoordsOrigins.map(
-        (coord) => new google.maps.LatLng(coord.lat, coord.lng)
+        (coord : Coordinates) => new google.maps.LatLng(coord.lat, coord.lng)
       );
       const service = new google.maps.DistanceMatrixService();
       return new Promise((resolve, reject) => {
@@ -71,9 +53,9 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
 
     getDistance(finalCoordsOrigins, placesCoords, transportation)
       .then((data) => {
-        console.log('gets here data returned', data);
-        ///
-        const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
+    
+        const travelTimeDifferences = data.rows[0].elements.map((_ : DistanceData, index : number) => (
+          {
           index,
           difference: Math.abs(
             data.rows[0].elements[index].duration.value -
@@ -82,16 +64,16 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         }));
 
         const sortedDestinations = travelTimeDifferences
-          .sort((a, b) => a.difference - b.difference)
+          .sort((a: SortProps, b: SortProps) => a.difference - b.difference)
           .slice(0, 10);
-        console.log(sortedDestinations, 'sorted');
-        const detailedDestinations = sortedDestinations.map((dest) => {
-          console.log(data.destinationAddresses[8], 'address');
+       
+        const detailedDestinations = sortedDestinations.map((dest: SortProps) => {
 
           const destinationDetails = {
             address: data.destinationAddresses[dest.index],
             placeData: places[dest.index],
-            travelDetails: data.rows.map((row) => ({
+            travelDetails: data.rows.map((row) => (
+            {
               origin: data.originAddresses[data.rows.indexOf(row)],
               travelTime: row.elements[dest.index].duration.text,
               travelDistance: row.elements[dest.index].distance.text,
@@ -99,7 +81,6 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           };
           return destinationDetails;
         });
-        console.log(detailedDestinations, 'detailed dest');
         setDetailedTravelInfo(detailedDestinations);
       })
       .catch((error) => {
@@ -107,7 +88,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
       });
   }, []);
 
-  const scrollToCard = (placeId) => {
+  const scrollToCard = (placeId: string) => {
     scroller.scrollTo(placeId, {
       duration: 800,
       delay: 0,

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import React, {useContext } from 'react';
+import {useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { HiOutlineClock } from 'react-icons/hi';
 import { HiOutlineCalendar } from 'react-icons/hi';

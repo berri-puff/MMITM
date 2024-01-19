@@ -1,4 +1,4 @@
-import { ReactNode, SetStateAction, Dispatch } from 'react';
+import { ReactNode, SetStateAction, Dispatch } from "react";
 
 export interface Attendee {
   username: string;
@@ -188,9 +188,9 @@ export interface ChosenMeeting {
     };
     photos: {
       0: {
-        getUrl: Function
-      }
-    }
+        getUrl: Function;
+      };
+    };
   };
   travelDetails: TravelDetails[];
 }
@@ -238,7 +238,24 @@ export interface ConfirmedProps {
 }
 
 export interface ItineraryProps {
-  chosenMeeting : ChosenMeeting;
+  chosenMeeting: ChosenMeeting;
   transportation: String;
   timeStamp: TimeStamp;
+}
+
+export interface DistanceData {
+  distance: {
+    text: string;
+    value: number;
+  };
+  duration: {
+    text: string;
+    value: number;
+  };
+  status: string;
+}
+
+export interface SortProps {
+  difference: number;
+  index: number
 }
