@@ -23,7 +23,7 @@ export const Home = () => {
                   <button className="btn btn-primary">Set Up a Meeting</button>
                 </Link>
               ) : (
-                <Link to={`/Log_in`}>
+                <Link to={`/log-in`}>
                   <button className="btn btn-primary">Log in</button>
                 </Link>
               )}

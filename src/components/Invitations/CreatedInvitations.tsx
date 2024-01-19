@@ -84,7 +84,7 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                     <button
                       className="btn btn-primary"
                       onClick={() => {
-                        setInviteToDelete(invite.id)
+                        setInviteToDelete(invite.id);
                         const modal = document.getElementById(
                           "my_modal_1"
                         ) as HTMLDialogElement;
@@ -107,7 +107,9 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                           <button
                             className="btn btn-outline btn-primary mr-5"
                             onClick={() => {
-                              handleDelete(inviteToDelete);
+                              if (inviteToDelete) {
+                                handleDelete(inviteToDelete);
+                              }
                             }}
                           >
                             Confirm

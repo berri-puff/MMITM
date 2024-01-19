@@ -1,22 +1,18 @@
-import { collection, getDocs } from 'firebase/firestore';
-import db from '../../lib/fireBaseConfig';
-import { useEffect, useState, useContext } from 'react';
-import { UserCard } from '../UserCard';
-import { UserContext } from '../../contexts/UserContext';
-import { logInAccount } from '../../utils/api-ma';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import { logInAccount } from "../../utils/api-ma";
+import { Link, useNavigate } from "react-router-dom";
 
 export const LogIn: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { user, setUser } = useContext(UserContext);
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate("/");
     }
   }, [user]);
 
@@ -70,7 +66,7 @@ export const LogIn: React.FC = () => {
                 />
                 <div className="label">
                   <span className="label-text-alt">
-                    <Link to="/sign_up">
+                    <Link to="/sign-up">
                       Don't have an account? Sign up here.
                     </Link>
                   </span>
@@ -83,7 +79,7 @@ export const LogIn: React.FC = () => {
               {isError ? (
                 <p className="text-error">Incorrect email or password</p>
               ) : (
-                ' '
+                " "
               )}
             </form>
           </div>
