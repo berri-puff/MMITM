@@ -29,7 +29,7 @@ export const NavBar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img alt={`${user.username} avatar image`} src={user.imgUrl} />
+                <img alt={`${user.username} avatar image`} src={user.img_url} />
               </div>
             </div>
             <ul
@@ -61,7 +61,7 @@ export const NavBar = () => {
           <ul className="menu menu-horizontal px-1">
             <li>
               {' '}
-              <Link to={`/log_in`}>Log in</Link>
+              <Link to={`/log-in`}>Log in</Link>
             </li>
           </ul>
         </div>
