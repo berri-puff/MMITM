@@ -6,11 +6,14 @@ import { HiOutlineStar } from "react-icons/hi2";
 import { HiOutlineMap } from "react-icons/hi2";
 import { HiOutlineMapPin } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export const CreatedInvitations: React.FC<InvitationsProps> = ({
   invites,
   setSubmitted,
 }) => {
+  const [inviteToDelete, setInviteToDelete] = useState<string | null>(null);
+
   const handleDelete = async (id: string) => {
     await deleteInvite(id);
     setSubmitted(`${id}`);
@@ -81,6 +84,7 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                     <button
                       className="btn btn-primary"
                       onClick={() => {
+                        setInviteToDelete(invite.id)
                         const modal = document.getElementById(
                           "my_modal_1"
                         ) as HTMLDialogElement;
@@ -103,7 +107,7 @@ export const CreatedInvitations: React.FC<InvitationsProps> = ({
                           <button
                             className="btn btn-outline btn-primary mr-5"
                             onClick={() => {
-                              handleDelete(invite.id);
+                              handleDelete(inviteToDelete);
                             }}
                           >
                             Confirm
