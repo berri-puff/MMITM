@@ -12,7 +12,7 @@ export const InviteUser: React.FC<InviteUserProps> = ({
   timeStamp,
 }) => {
   const [hasClicked, setHasClicked] = useState(false);
-  const [foundUser, setFoundUser] = useState<Users[]>([]);
+  const [foundUser, setFoundUser] = useState<Users[] | null>(null);
   if (hasClicked === true) {
     return (
       <InviteConfirmation

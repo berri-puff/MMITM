@@ -30,7 +30,7 @@ export const SetUpMeeting: React.FC = () => {
       <div className="hero min-h-screen bg-base-200">
         <p>
           Please{' '}
-          <Link className="btn btn-primary mx-5" to={`/log_in`}>
+          <Link className="btn btn-primary mx-5" to={`/log-in`}>
             Log in
           </Link>{' '}
           to set up a meeting.

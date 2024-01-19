@@ -24,6 +24,7 @@ export const InviteForm: React.FC<InviteFormProps> = ({
     try {
       setDisableSearchBtn(true);
       const invitedUser = await getUser(searchUser);
+      console.log(invitedUser, "<<<<<<<<<<<<<<,invitedUser");
       setFoundUser(invitedUser);
       setDisableSearchBtn(false);
       setIsLoading(false);
@@ -69,13 +70,11 @@ export const InviteForm: React.FC<InviteFormProps> = ({
             Search
           </button>
         </form>
-        {foundUser.length !== 0 ? (
+        {foundUser !== null && foundUser.length !== 0 ? (
           <>
             <ul key={foundUser[0].id}>
               <div className="alert alert-success mt-10 justify-between">
-                <p>
-                  We found {foundUser[0].first_name}.
-                </p>
+                <p>We found {foundUser[0].first_name}.</p>
                 <button
                   className="btn"
                   onClick={() => {
@@ -98,6 +97,14 @@ export const InviteForm: React.FC<InviteFormProps> = ({
                   <span className="capitalize">{foundUser[0].first_name}</span>{" "}
                   <img src="mmitm-plane.png" className="max-h-8" />
                 </button>
+              </div>
+            </ul>
+          </>
+        ) : foundUser !== null && foundUser.length === 0 ? (
+          <>
+            <ul>
+              <div className="alert alert-error mt-10 justify-between">
+                <p>Username not found, please try again.</p>
               </div>
             </ul>
           </>
