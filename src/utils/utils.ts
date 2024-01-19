@@ -1,4 +1,5 @@
-import { Coordinates, CrosshairProps } from '../types';
+import { Coordinates, CrosshairProps, Crosshair, Place, Coord } from '../types';
+import { initGoogleMapsAPI } from './GoogleMapsLoader';
 
 export const sortPlaces = (places) => {
   const reviewedPlaces = places.filter((place) => {
@@ -89,7 +90,7 @@ export const convertCoordsToCrosshair = (props: CrosshairProps) => {
   };
 };
 
-export const convertCrosshairToArray = (crosshair) => {
+export const convertCrosshairToArray = (crosshair: Crosshair) => {
   const coordinates = [];
   let string = '';
   string = crosshair.midpoint.lat + ', ' + crosshair.midpoint.lng;
@@ -193,4 +194,88 @@ export const areTheyOpen = (details, timeStamp) => {
   });
   console.log(finalDetails, 'FINAL DETAILS');
   return finalDetails;
+};
+
+export const getPlaces = async (coordinate: string) => {
+  await initGoogleMapsAPI();
+  const coordsArray = coordinate.split(', ').map(Number);
+
+  const mapElement = document.getElementById('map3');
+  if (mapElement) {
+    const map = new google.maps.Map(mapElement, {
+      center: { lat: coordsArray[0], lng: coordsArray[1] },
+      zoom: 15,
+    });
+
+    const request = {
+      location: new google.maps.LatLng(coordsArray[0], coordsArray[1]),
+      type: 'cafe',
+      rankBy: google.maps.places.RankBy.DISTANCE,
+    };
+
+    return new Promise((resolve, reject) => {
+      const service = new google.maps.places.PlacesService(map);
+      service.nearbySearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          resolve(results);
+        } else {
+          reject('Failed to fetch places');
+        }
+      });
+    });
+  } else {
+    console.error('Map element not found');
+  }
+};
+
+export const getAllPlaces = async (crosshair: Crosshair) => {
+  const coordinates = convertCrosshairToArray(crosshair);
+  const placesPromises = coordinates.map((coordinate) => getPlaces(coordinate));
+
+  try {
+    const dataArr = await Promise.all(placesPromises);
+    return dataArr.flat() as Place[];
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+export const getOpeningHours = async (places: Place[]) => {
+  await initGoogleMapsAPI();
+
+  const getPlaceDetails = (place: Place) => {
+    return new Promise((resolve, reject) => {
+      const mapElement = document.getElementById('map3');
+      if (mapElement) {
+        const map = new google.maps.Map(mapElement, {
+          center: { lat: 0, lng: 0 },
+          zoom: 15,
+        });
+
+        const request = {
+          placeId: place.place_id,
+        };
+
+        const service = new google.maps.places.PlacesService(map);
+        service.getDetails(request, (result, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            resolve(result);
+          } else {
+            reject('Failed to fetch place details');
+          }
+        });
+      } else {
+        console.error('Map element not found');
+      }
+    });
+  };
+
+  const detailsPromises = places.map((place) => getPlaceDetails(place));
+  return Promise.all(detailsPromises);
+};
+
+export const formatOriginCoords = (userCoord: Coord, friendCoord: Coord) => {
+  const arrayToReturn = [userCoord, friendCoord];
+  return arrayToReturn;
 };

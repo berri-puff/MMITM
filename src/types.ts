@@ -1,4 +1,4 @@
-import { ReactNode, SetStateAction, Dispatch } from "react";
+import { ReactNode, SetStateAction, Dispatch } from 'react';
 
 export interface Attendee {
   username: string;
@@ -47,6 +47,7 @@ export interface Place {
   rating: number;
   user_ratings_total: number;
   vicinity: string;
+  formatted_address: string;
 }
 
 export interface SuggestionsMapProps {
@@ -57,6 +58,12 @@ export interface SuggestionsMapProps {
 
 export interface SuggestionsListProps {
   places: Place[];
+  placesCoords: string[];
+  finalCoordsOrigins: Coord[];
+  transportation: string;
+  userCoord: Coord;
+  friendCoord: Coord;
+  timeStamp: TimeStamp;
 }
 
 export interface Geometry {
@@ -79,6 +86,18 @@ export interface Users {
   username: string;
   img_url: string;
 }
+
+export interface TimeStamp {
+  date: string;
+  time: string;
+  day: {
+    weekdayTextIndex: number;
+    periodsDayIndex: number;
+    dayIndex: number;
+    dayName: string;
+  };
+}
+
 export type SuggestionsProps = {
   friendCoord: {
     lat: number;
@@ -89,6 +108,7 @@ export type SuggestionsProps = {
     lng: number;
   };
   transportation: string;
+  timeStamp: TimeStamp;
 };
 export type MeetingMapProps = {
   friendCoord: {
@@ -176,12 +196,6 @@ export interface TravelDetails {
   travelDistance: string;
 }
 
-export interface TimeStamp {
-  day: {
-    weekdayTextIndex: number;
-  };
-}
-
 export interface Coord {
   lat: number;
   lng: number;
@@ -203,7 +217,10 @@ export interface UserType {
   imgUrl: string;
 }
 
-export interface UserContextType {
-  user: UserType | undefined;
-  setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
+export interface Crosshair {
+  midpoint: Coord;
+  posNorth: Coord;
+  posEast: Coord;
+  posSouth: Coord;
+  posWest: Coord;
 }
