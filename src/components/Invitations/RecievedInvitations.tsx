@@ -1,10 +1,7 @@
 import { updateInviteeInvite } from '../../utils/api-ma';
 import { Invite, InvitationsProps } from '../../types';
-import { HiOutlineClock } from 'react-icons/hi';
-import { HiOutlineCalendar } from 'react-icons/hi';
-import { HiOutlineStar } from 'react-icons/hi2';
-import { HiOutlineMap } from 'react-icons/hi2';
-import { HiOutlineMapPin } from 'react-icons/hi2';
+import { HiOutlineClock, HiOutlineCalendar } from 'react-icons/hi';
+import { HiOutlineStar, HiOutlineMap, HiOutlineMapPin } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
 import { Loading } from '../Loading';
 
