@@ -1,4 +1,3 @@
-import { SuggestionsListProps } from '../../types';
 import { useEffect, useState } from 'react';
 import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
@@ -6,7 +5,15 @@ import { Element, scroller } from 'react-scroll';
 import LinkToTop from './LinkkToTop';
 import { SuggestionsMap } from './SuggestionsMap';
 import { Loading } from '../Loading';
-import { initGoogleMapsAPI } from '../../utils/GoogleMapsLoader';
+
+import {
+  DetailedDestination,
+  ChosenMeeting,
+  SuggestionsListProps,
+  DistanceMatrixResponse,
+  PlaceData,
+} from '../../types';
+import { getDistance } from '../../utils/utils';
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
@@ -17,62 +24,32 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   friendCoord,
   timeStamp,
 }) => {
-  console.log(
-    places,
-    'places',
-    placesCoords,
-    'placescoords',
-    finalCoordsOrigins,
-    'finalCoordsOrigins,',
-    transportation,
-    'transportation',
-    userCoord,
-    'userCoord',
-    friendCoord,
-    'riendCoord',
-    timeStamp,
-    'timeStamp'
-  );
   const [detailedTravelInfo, setDetailedTravelInfo] = useState<
     DetailedDestination[]
   >([]);
 
-  const [chosenMeeting, setChosenMeeting] = useState({});
+  const [chosenMeeting, setChosenMeeting] = useState<ChosenMeeting>({
+    address: '',
+    placeData: {
+      name: '',
+      rating: 0,
+      geometry: {
+        location: {
+          lat: 0,
+          lng: 0,
+        },
+      },
+      current_opening_hours: {
+        weekday_text: [],
+      },
+      photos: [],
+    },
+    travelDetails: [],
+  });
 
   useEffect(() => {
-    const getDistance = async (
-      finalCoordsOrigins,
-      placesCoords,
-      transportation
-    ) => {
-      await initGoogleMapsAPI();
-
-      const originCoords = finalCoordsOrigins.map(
-        (coord) => new google.maps.LatLng(coord.lat, coord.lng)
-      );
-      const service = new google.maps.DistanceMatrixService();
-      return new Promise((resolve, reject) => {
-        service.getDistanceMatrix(
-          {
-            origins: originCoords,
-            destinations: placesCoords,
-            travelMode: google.maps.TravelMode[transportation.toUpperCase()],
-          },
-          (response, status) => {
-            if (status === 'OK') {
-              resolve(response);
-            } else {
-              reject('DistanceMatrixService request failed');
-            }
-          }
-        );
-      });
-    };
-
     getDistance(finalCoordsOrigins, placesCoords, transportation)
-      .then((data) => {
-        console.log('gets here data returned', data);
-        ///
+      .then((data: DistanceMatrixResponse) => {
         const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
           index,
           difference: Math.abs(
@@ -84,13 +61,11 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         const sortedDestinations = travelTimeDifferences
           .sort((a, b) => a.difference - b.difference)
           .slice(0, 10);
-        console.log(sortedDestinations, 'sorted');
-        const detailedDestinations = sortedDestinations.map((dest) => {
-          console.log(data.destinationAddresses[8], 'address');
 
+        const detailedDestinations = sortedDestinations.map((dest) => {
           const destinationDetails = {
             address: data.destinationAddresses[dest.index],
-            placeData: places[dest.index],
+            placeData: places[dest.index] as PlaceData,
             travelDetails: data.rows.map((row) => ({
               origin: data.originAddresses[data.rows.indexOf(row)],
               travelTime: row.elements[dest.index].duration.text,
@@ -99,7 +74,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           };
           return destinationDetails;
         });
-        console.log(detailedDestinations, 'detailed dest');
+
         setDetailedTravelInfo(detailedDestinations);
       })
       .catch((error) => {
@@ -107,7 +82,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
       });
   }, []);
 
-  const scrollToCard = (placeId) => {
+  const scrollToCard = (placeId: string) => {
     scroller.scrollTo(placeId, {
       duration: 800,
       delay: 0,
@@ -115,7 +90,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
     });
   };
 
-  if (chosenMeeting.placeData) {
+  if (chosenMeeting.placeData.name.length > 0) {
     return (
       <InviteUser
         chosenMeeting={chosenMeeting}

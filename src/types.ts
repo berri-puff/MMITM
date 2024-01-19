@@ -66,6 +66,12 @@ export interface SuggestionsListProps {
   timeStamp: TimeStamp;
 }
 
+export interface ItineraryViewProps {
+  chosenMeeting: ChosenMeeting;
+  transportation: string;
+  timeStamp: TimeStamp;
+}
+
 export interface Geometry {
   location: Location;
 }
@@ -172,6 +178,13 @@ export interface UserProviderProps {
   children: ReactNode;
 }
 
+interface Photo {
+  height: number;
+  html_attributions: string[];
+  width: number;
+  getUrl: Function;
+}
+
 export interface ChosenMeeting {
   address: string;
   placeData: {
@@ -186,6 +199,7 @@ export interface ChosenMeeting {
     current_opening_hours: {
       weekday_text: string[];
     };
+    photos: Photo[];
   };
   travelDetails: TravelDetails[];
 }
@@ -223,4 +237,125 @@ export interface Crosshair {
   posEast: Coord;
   posSouth: Coord;
   posWest: Coord;
+}
+
+//////
+//DetailedDestination
+//////
+interface AddressComponent {
+  long_name: string;
+  short_name: string;
+  types: string[];
+}
+
+interface OpeningPeriod {
+  close?: {
+    day: number;
+    time: string;
+    hours?: number;
+    minutes?: number;
+  };
+  open: {
+    day: number;
+    time: string;
+    hours?: number;
+    minutes?: number;
+  };
+}
+
+interface OpeningHours {
+  open_now: boolean;
+  periods?: OpeningPeriod[];
+  weekday_text?: string[];
+}
+
+interface GeometryLocation {
+  lat: number;
+  lng: number;
+}
+
+interface GeometryDetailed {
+  location: GeometryLocation;
+  viewport: {
+    north: number;
+    east: number;
+    south: number;
+    west: number;
+  };
+}
+
+interface Photo {
+  height: number;
+  html_attributions: string[];
+  width: number;
+}
+
+interface Review {
+  author_name: string;
+  author_url: string;
+  language: string;
+  profile_photo_url: string;
+  rating: number;
+  relative_time_description: string;
+  text: string;
+  time: number;
+}
+
+export interface PlaceData {
+  address_components: AddressComponent[];
+  adr_address: string;
+  business_status: string;
+  current_opening_hours?: OpeningHours;
+  formatted_address: string;
+  geometry: GeometryDetailed;
+  icon: string;
+  icon_background_color: string;
+  icon_mask_base_uri: string;
+  name: string;
+  opening_hours?: OpeningHours;
+  photos?: Photo[];
+  place_id: string;
+  plus_code: {
+    compound_code: string;
+    global_code: string;
+  };
+  rating: number;
+  reference: string;
+  reviews?: Review[];
+  types: string[];
+  url: string;
+  user_ratings_total: number;
+  utc_offset: number;
+  vicinity: string;
+  html_attributions: string[];
+  utc_offset_minutes: number;
+}
+
+export interface TravelDetail {
+  origin: string;
+  travelTime: string;
+  travelDistance: string;
+}
+
+export interface DetailedDestination {
+  address: string;
+  placeData: PlaceData;
+  travelDetails: TravelDetail[];
+}
+
+export interface DistanceMatrixResponse {
+  rows: Array<{
+    elements: Array<{
+      distance: {
+        text: string;
+        value: number;
+      };
+      duration: {
+        text: string;
+        value: number;
+      };
+    }>;
+  }>;
+  originAddresses: string[];
+  destinationAddresses: string[];
 }
