@@ -1,4 +1,11 @@
-import { Coordinates, CrosshairProps, Crosshair, Place, Coord } from '../types';
+import {
+  Coordinates,
+  CrosshairProps,
+  Crosshair,
+  Place,
+  Coord,
+  DistanceMatrixResponse,
+} from '../types';
 import { initGoogleMapsAPI } from './GoogleMapsLoader';
 
 export const sortPlaces = (places) => {
@@ -147,7 +154,6 @@ export const convertTime = (time) => {
 export const areTheyOpen = (details, timeStamp) => {
   const finalDetails = [];
   details.forEach((detail) => {
-    console.log(detail);
     const openingHours = detail.current_opening_hours;
     if (detail.current_opening_hours) {
       if (openingHours.weekday_text) {
@@ -278,4 +284,33 @@ export const getOpeningHours = async (places: Place[]) => {
 export const formatOriginCoords = (userCoord: Coord, friendCoord: Coord) => {
   const arrayToReturn = [userCoord, friendCoord];
   return arrayToReturn;
+};
+
+export const getDistance = async (
+  finalCoordsOrigins: Coord[],
+  placesCoords: string[],
+  transportation: string
+): Promise<DistanceMatrixResponse> => {
+  await initGoogleMapsAPI();
+
+  const originCoords = finalCoordsOrigins.map(
+    (coord) => new google.maps.LatLng(coord.lat, coord.lng)
+  );
+  const service = new google.maps.DistanceMatrixService();
+  return new Promise((resolve, reject) => {
+    service.getDistanceMatrix(
+      {
+        origins: originCoords,
+        destinations: placesCoords,
+        travelMode: google.maps.TravelMode[transportation.toUpperCase()],
+      },
+      (response, status) => {
+        if (status === 'OK') {
+          resolve(response as DistanceMatrixResponse);
+        } else {
+          reject('DistanceMatrixService request failed');
+        }
+      }
+    );
+  });
 };
