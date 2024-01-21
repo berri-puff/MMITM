@@ -109,7 +109,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
             scrollToCard={scrollToCard}
           />
         </div>
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {detailedTravelInfo.map((destination, index) => (
             <Element
               name={destination.placeData.place_id}

@@ -27,14 +27,14 @@ export const InviteUser: React.FC<InviteUserProps> = ({
     <>
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col-reverse lg:flex-row-reverse">
-          <div className="max-w-1xl p-5">
+          <div className="p-5">
             <ItineraryView
               chosenMeeting={chosenMeeting}
               transportation={transportation}
               timeStamp={timeStamp}
             />
           </div>
-          <div className="card shrink-0 w-full max-w-xl shadow-2xl bg-base-100 p-10">
+          <div className="card shrink-0 w-full max-w-xl shadow-2xl bg-base-100 p-5 md:p-10">
             <h3 className="text-5xl font-bold">Invite your friend</h3>
             <p className="py-6">
               Who's the lucky duck? Find your friend using their name or

@@ -19,7 +19,7 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({
   }
   if (!invites.length) {
     return (
-      <div className="bg-base-200 mx-auto w-2/3 mb-5 p-20 rounded-xl">
+      <div className="bg-base-200 mx-auto w-full lg:w-2/3 mb-5 p-20 rounded-xl">
         <p className="text-xl">You haven't received any invites.</p>
         <Link to={`/setup_meeting`}>
           <button className="btn btn-primary my-10">Set up a meeting</button>
@@ -32,9 +32,9 @@ export const RecievedInvitations: React.FC<InvitationsProps> = ({
         {invites.map((invite: Invite) => {
           return (
             <li key={invite.id} className="meeting-card">
-              <div className="collapse bg-base-200 hover:bg-base-300 collapse-arrow mx-auto w-2/3 mb-5">
+              <div className="collapse bg-base-200 hover:bg-base-300 collapse-arrow mx-auto w-full lg:w-3/4 mb-5">
                 <input type="radio" name="my-accordion-1" />
-                <div className="collapse-title non-collapsed-content flex justify-between items-center">
+                <div className="collapse-title non-collapsed-content md:flex justify-between items-center">
                   <p className="text-sm">
                     <span className="text-xl">
                       {invite.attendees.meeting_creator.username}

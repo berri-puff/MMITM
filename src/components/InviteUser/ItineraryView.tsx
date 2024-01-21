@@ -26,7 +26,7 @@ export const ItineraryView: React.FC<ItineraryViewProps> = ({
   return (
     <>
       <div>
-        <div className="card card-compact w-96 bg-base-200 shadow-2xl mb-10">
+        <div className="card card-compact w-full bg-base-200 shadow-2xl mb-10">
           <figure className="h-48 overflow-hidden">
             <img src={`${placePhoto}`} />
           </figure>
