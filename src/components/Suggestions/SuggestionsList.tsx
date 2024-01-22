@@ -95,7 +95,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
       smooth: 'easeInOutQuart',
     });
   };
-
+console.log(detailedTravelInfo, 'here')
   if (chosenMeeting.placeData) {
     return (
       <InviteUser

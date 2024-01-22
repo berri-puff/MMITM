@@ -147,7 +147,6 @@ export const convertTime = (time) => {
 export const areTheyOpen = (details, timeStamp) => {
   const finalDetails = [];
   details.forEach((detail) => {
-    console.log(detail);
     const openingHours = detail.current_opening_hours;
     if (detail.current_opening_hours) {
       if (openingHours.weekday_text) {
@@ -192,7 +191,7 @@ export const areTheyOpen = (details, timeStamp) => {
       }
     }
   });
-  console.log(finalDetails, 'FINAL DETAILS');
+
   return finalDetails;
 };
 

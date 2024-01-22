@@ -268,3 +268,8 @@ export interface SuggestCardProps {
   setChosenMeeting: React.Dispatch<React.SetStateAction<{}>>;
   timeStamp: MeetingTime
 }
+
+ export interface SuggestionsMapProps {
+  detailedTravelInfo: ChosenMeeting[];
+  scrollToCard: Function
+ }

@@ -25,7 +25,7 @@ export const SuggestionCard: React.FC<SuggestCardProps> = ({
     ];
 
   const placePhoto = destination.placeData.photos[0].getUrl();
-console.log(timeStamp, 'in the card folder')
+
   return (
     <>
       <div className="card card-compact w-96 bg-base-200 shadow-2xl hover:bg-base-300 mb-10">
