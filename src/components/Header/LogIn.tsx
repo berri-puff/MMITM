@@ -1,7 +1,5 @@
-import { collection, getDocs } from 'firebase/firestore';
-import db from '../../lib/fireBaseConfig';
+
 import { useEffect, useState, useContext } from 'react';
-import { UserCard } from '../UserCard';
 import { UserContext } from '../../contexts/UserContext';
 import { logInAccount } from '../../utils/api-ma';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 export const LogIn: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(true);
   const { user, setUser } = useContext(UserContext);
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +17,7 @@ export const LogIn: React.FC = () => {
     }
   }, [user]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : any) => {
     e.preventDefault();
     try {
       const loggedInUser = await logInAccount(email, password, setIsError);

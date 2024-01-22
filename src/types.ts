@@ -165,7 +165,7 @@ export interface UserContextType {
 export interface User {
   id: string | undefined;
   username: string | undefined;
-  img_url: string | undefined;
+  imgUrl: string | undefined;
 }
 
 export interface UserProviderProps {
@@ -177,6 +177,7 @@ export interface ChosenMeeting {
   placeData: {
     name: string;
     rating: number;
+    place_id: number;
     geometry: {
       location: {
         lat: any;
@@ -189,8 +190,8 @@ export interface ChosenMeeting {
     photos: {
       0: {
         getUrl: Function;
-      };
     };
+    } 
   };
   travelDetails: TravelDetails[];
 }
@@ -258,4 +259,12 @@ export interface DistanceData {
 export interface SortProps {
   difference: number;
   index: number
+}
+
+export interface SuggestCardProps {
+  destination: ChosenMeeting;
+  index: number;
+  transportation: string;
+  setChosenMeeting: React.Dispatch<React.SetStateAction<{}>>;
+  timeStamp: MeetingTime
 }

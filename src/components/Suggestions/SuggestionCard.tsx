@@ -1,11 +1,13 @@
+import * as React from 'react';
 import { HiOutlineClock } from 'react-icons/hi';
 import { HiOutlineCalendar } from 'react-icons/hi';
 import { HiOutlineStar } from 'react-icons/hi2';
 import { HiOutlineMap } from 'react-icons/hi2';
 import { HiOutlineMapPin } from 'react-icons/hi2';
 import { HiOutlineHome } from 'react-icons/hi2';
+import { SuggestCardProps } from '../../types';
 
-export const SuggestionCard = ({
+export const SuggestionCard: React.FC<SuggestCardProps> = ({
   destination,
   index,
   transportation,
@@ -23,7 +25,7 @@ export const SuggestionCard = ({
     ];
 
   const placePhoto = destination.placeData.photos[0].getUrl();
-
+console.log(timeStamp, 'in the card folder')
   return (
     <>
       <div className="card card-compact w-96 bg-base-200 shadow-2xl hover:bg-base-300 mb-10">

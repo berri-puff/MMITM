@@ -12,10 +12,10 @@ export const Invitations = () => {
   const user = userContext?.user;
   const [recievedInvites, setRecievedInvites] = useState<Invite[]>([]);
   const [createdInvites, setCreatedInvites] = useState<Invite[]>([]);
-  const [hasFetchedInvites, setHasFetchedInvites] = useState(false);
-  const [submitted, setSubmitted] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [hasFetchedInvites, setHasFetchedInvites] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<string>("");
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handleToggle = () => {
     setIsChecked(!isChecked);
