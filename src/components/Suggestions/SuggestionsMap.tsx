@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import { initGoogleMapsAPI } from '../../utils/GoogleMapsLoader';
+import { Coordinates, SuggestionsMapProps } from '../../types';
 
 export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
   detailedTravelInfo,
   scrollToCard,
 }) => {
   const [selectedPlace, setSelectedPlace] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+  const [mapCenter, setMapCenter] = useState<Coordinates>({ lat: 0, lng: 0 });
   const [isApiLoaded, setIsApiLoaded] = useState(false);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
     });
   };
 
-  const onInfoWindowClick = (placeId) => {
+  const onInfoWindowClick = (placeId: number) => {
     scrollToCard(placeId);
   };
 

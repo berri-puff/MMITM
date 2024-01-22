@@ -198,7 +198,7 @@ export const areTheyOpen = (details, timeStamp) => {
       }
     }
   });
-  console.log(finalDetails, 'FINAL DETAILS');
+
   return finalDetails;
 };
 

@@ -3,17 +3,17 @@ import { checkUsernameExists, createAccount } from "../utils/api-ma";
 import { useNavigate } from "react-router-dom";
 
 export const CreateAccount: React.FC = () => {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [userCreated, setUserCreated] = useState(false);
-  const [userExists, setUserExists] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [userCreated, setUserCreated] = useState<boolean>(false);
+  const [userExists, setUserExists] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e : any) => {
+      e.preventDefault();
     if (name && username && email && password && !userExists) {
       const exists = await checkUsernameExists(username);
       if (exists === false) {

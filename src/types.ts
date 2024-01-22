@@ -1,4 +1,4 @@
-import { ReactNode, SetStateAction, Dispatch } from 'react';
+import { ReactNode, SetStateAction, Dispatch } from "react";
 
 export interface Attendee {
   username: string;
@@ -50,11 +50,11 @@ export interface Place {
   formatted_address: string;
 }
 
-export interface SuggestionsMapProps {
-  lat: string;
-  lng: string;
-  places: Place[];
-}
+// export interface SuggestionsMapProps {
+//   lat: string;
+//   lng: string;
+//   places: Place[];
+// }
 
 export interface SuggestionsListProps {
   places: Place[];
@@ -171,7 +171,7 @@ export interface UserContextType {
 export interface User {
   id: string | undefined;
   username: string | undefined;
-  img_url: string | undefined;
+  imgUrl: string | undefined;
 }
 
 export interface UserProviderProps {
@@ -190,6 +190,7 @@ export interface ChosenMeeting {
   placeData: {
     name: string;
     rating: number;
+    place_id: number;
     geometry: {
       location: {
         lat: any;
@@ -238,6 +239,49 @@ export interface Crosshair {
   posSouth: Coord;
   posWest: Coord;
 }
+
+export interface ConfirmedProps {
+  chosenMeeting: ChosenMeeting;
+  timeStamp: TimeStamp;
+  foundUser: Users[];
+  transportation: string;
+}
+
+export interface ItineraryProps {
+  chosenMeeting: ChosenMeeting;
+  transportation: String;
+  timeStamp: TimeStamp;
+}
+
+export interface DistanceData {
+  distance: {
+    text: string;
+    value: number;
+  };
+  duration: {
+    text: string;
+    value: number;
+  };
+  status: string;
+}
+
+export interface SortProps {
+  difference: number;
+  index: number
+}
+
+export interface SuggestCardProps {
+  destination: DetailedDestination;
+  index: number;
+  transportation: string;
+  setChosenMeeting: React.Dispatch<React.SetStateAction<ChosenMeeting>>;
+  timeStamp: MeetingTime
+}
+
+ export interface SuggestionsMapProps {
+  detailedTravelInfo: DetailedDestination[];
+  scrollToCard: Function
+ }
 
 //////
 //DetailedDestination

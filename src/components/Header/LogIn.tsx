@@ -16,7 +16,7 @@ export const LogIn: React.FC = () => {
     }
   }, [user]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : any) => {
     e.preventDefault();
     try {
       const loggedInUser = await logInAccount(email, password, setIsError);

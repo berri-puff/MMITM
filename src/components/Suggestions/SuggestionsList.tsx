@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
@@ -12,6 +13,7 @@ import {
   SuggestionsListProps,
   DistanceMatrixResponse,
   PlaceData,
+  SortProps
 } from '../../types';
 import { getDistance } from '../../utils/utils';
 
@@ -33,6 +35,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
     placeData: {
       name: '',
       rating: 0,
+      place_id: 0,
       geometry: {
         location: {
           lat: 0,
@@ -59,7 +62,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         }));
 
         const sortedDestinations = travelTimeDifferences
-          .sort((a, b) => a.difference - b.difference)
+          .sort((a: SortProps, b: SortProps) => a.difference - b.difference)
           .slice(0, 10);
 
         const detailedDestinations = sortedDestinations.map((dest) => {
@@ -74,7 +77,6 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           };
           return destinationDetails;
         });
-
         setDetailedTravelInfo(detailedDestinations);
       })
       .catch((error) => {
