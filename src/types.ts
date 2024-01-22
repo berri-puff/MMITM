@@ -271,15 +271,15 @@ export interface SortProps {
 }
 
 export interface SuggestCardProps {
-  destination: ChosenMeeting;
+  destination: DetailedDestination;
   index: number;
   transportation: string;
-  setChosenMeeting: React.Dispatch<React.SetStateAction<{}>>;
+  setChosenMeeting: React.Dispatch<React.SetStateAction<ChosenMeeting>>;
   timeStamp: MeetingTime
 }
 
  export interface SuggestionsMapProps {
-  detailedTravelInfo: ChosenMeeting[];
+  detailedTravelInfo: DetailedDestination[];
   scrollToCard: Function
  }
 
