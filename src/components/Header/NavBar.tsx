@@ -61,7 +61,7 @@ export const NavBar = () => {
           <ul className="menu menu-horizontal px-1">
             <li>
               {' '}
-              <Link to={`/log_in`}>Log in</Link>
+              <Link to={`/log-in`}>Log in</Link>
             </li>
           </ul>
         </div>

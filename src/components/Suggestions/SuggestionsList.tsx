@@ -1,4 +1,4 @@
-import { ChosenMeeting, Coordinates, DistanceData, SortProps, SuggestionsListProps } from '../../types';
+
 import { useEffect, useState } from 'react';
 import { SuggestionCard } from './SuggestionCard';
 import { InviteUser } from '../InviteUser';
@@ -6,7 +6,16 @@ import { Element, scroller } from 'react-scroll';
 import LinkToTop from './LinkkToTop';
 import { SuggestionsMap } from './SuggestionsMap';
 import { Loading } from '../Loading';
-import { initGoogleMapsAPI } from '../../utils/GoogleMapsLoader';
+
+import {
+  DetailedDestination,
+  ChosenMeeting,
+  SuggestionsListProps,
+  DistanceMatrixResponse,
+  PlaceData,
+  SortProps
+} from '../../types';
+import { getDistance } from '../../utils/utils';
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   places,
@@ -17,45 +26,34 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
   friendCoord,
   timeStamp,
 }) => {
+  const [detailedTravelInfo, setDetailedTravelInfo] = useState<
+    DetailedDestination[]
+  >([]);
 
-  const [detailedTravelInfo, setDetailedTravelInfo] = useState<ChosenMeeting[]>([]);
-  const [chosenMeeting, setChosenMeeting] = useState({});
+  const [chosenMeeting, setChosenMeeting] = useState<ChosenMeeting>({
+    address: '',
+    placeData: {
+      name: '',
+      rating: 0,
+      place_id: 0,
+      geometry: {
+        location: {
+          lat: 0,
+          lng: 0,
+        },
+      },
+      current_opening_hours: {
+        weekday_text: [],
+      },
+      photos: [],
+    },
+    travelDetails: [],
+  });
 
   useEffect(() => {
-    const getDistance = async (
-      finalCoordsOrigins : Coordinates[],
-      placesCoords: string[],
-      transportation: string
-    ) => {
-      await initGoogleMapsAPI();
-
-      const originCoords = finalCoordsOrigins.map(
-        (coord : Coordinates) => new google.maps.LatLng(coord.lat, coord.lng)
-      );
-      const service = new google.maps.DistanceMatrixService();
-      return new Promise((resolve, reject) => {
-        service.getDistanceMatrix(
-          {
-            origins: originCoords,
-            destinations: placesCoords,
-            travelMode: google.maps.TravelMode[transportation.toUpperCase()],
-          },
-          (response, status) => {
-            if (status === 'OK') {
-              resolve(response);
-            } else {
-              reject('DistanceMatrixService request failed');
-            }
-          }
-        );
-      });
-    };
-
     getDistance(finalCoordsOrigins, placesCoords, transportation)
-      .then((data) => {
-    
-        const travelTimeDifferences = data.rows[0].elements.map((_ : DistanceData, index : number) => (
-          {
+      .then((data: DistanceMatrixResponse) => {
+        const travelTimeDifferences = data.rows[0].elements.map((_, index) => ({
           index,
           difference: Math.abs(
             data.rows[0].elements[index].duration.value -
@@ -66,14 +64,12 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         const sortedDestinations = travelTimeDifferences
           .sort((a: SortProps, b: SortProps) => a.difference - b.difference)
           .slice(0, 10);
-       
-        const detailedDestinations = sortedDestinations.map((dest: SortProps) => {
 
+        const detailedDestinations = sortedDestinations.map((dest) => {
           const destinationDetails = {
             address: data.destinationAddresses[dest.index],
-            placeData: places[dest.index],
-            travelDetails: data.rows.map((row) => (
-            {
+            placeData: places[dest.index] as PlaceData,
+            travelDetails: data.rows.map((row) => ({
               origin: data.originAddresses[data.rows.indexOf(row)],
               travelTime: row.elements[dest.index].duration.text,
               travelDistance: row.elements[dest.index].distance.text,
@@ -95,8 +91,8 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
       smooth: 'easeInOutQuart',
     });
   };
-console.log(detailedTravelInfo, 'here')
-  if (chosenMeeting.placeData) {
+
+  if (chosenMeeting.placeData.name.length > 0) {
     return (
       <InviteUser
         chosenMeeting={chosenMeeting}
@@ -115,7 +111,7 @@ console.log(detailedTravelInfo, 'here')
             scrollToCard={scrollToCard}
           />
         </div>
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {detailedTravelInfo.map((destination, index) => (
             <Element
               name={destination.placeData.place_id}

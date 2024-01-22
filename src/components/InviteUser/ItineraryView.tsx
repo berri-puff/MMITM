@@ -1,22 +1,32 @@
-import { HiOutlineClock } from 'react-icons/hi';
-import { HiOutlineCalendar } from 'react-icons/hi';
-import { HiOutlineStar } from 'react-icons/hi2';
-import { HiOutlineMap } from 'react-icons/hi2';
-import { HiOutlineMapPin } from 'react-icons/hi2';
-import { HiOutlineHome } from 'react-icons/hi2';
-import { ItineraryProps } from '../../types';
+import { HiOutlineClock, HiOutlineCalendar } from 'react-icons/hi';
 
-export const ItineraryView: React.FC<ItineraryProps> = ({ chosenMeeting, transportation, timeStamp }) => {
+import {
+  HiOutlineStar,
+  HiOutlineMap,
+  HiOutlineMapPin,
+  HiOutlineHome,
+} from 'react-icons/hi2';
 
+import { ItineraryViewProps } from '../../types';
+
+export const ItineraryView: React.FC<ItineraryViewProps> = ({
+  chosenMeeting,
+  transportation,
+  timeStamp,
+}) => {
   const openingHours =
     chosenMeeting.placeData.current_opening_hours.weekday_text[
       timeStamp.day.weekdayTextIndex
     ];
-  const placePhoto = chosenMeeting.placeData.photos[0].getUrl();
+  let placePhoto;
+  if (chosenMeeting.placeData.photos[0]) {
+    placePhoto = chosenMeeting.placeData.photos[0].getUrl();
+  } else placePhoto = 'mmitm-plane.png';
+
   return (
     <>
       <div>
-        <div className="card card-compact w-96 bg-base-200 shadow-2xl mb-10">
+        <div className="card card-compact w-full bg-base-200 shadow-2xl mb-10">
           <figure className="h-48 overflow-hidden">
             <img src={`${placePhoto}`} />
           </figure>

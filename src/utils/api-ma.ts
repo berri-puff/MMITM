@@ -117,7 +117,7 @@ export const addressToCoord = async (
   }
 };
 
-export const deleteInvite = async (id) => {
+export const deleteInvite = async (id: string) => {
   try {
     await deleteDoc(doc(db, 'itineraries', id));
   } catch (err) {

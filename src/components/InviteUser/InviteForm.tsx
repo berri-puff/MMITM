@@ -1,8 +1,8 @@
-import { useContext, useState } from "react";
-import { UserContext } from "../../contexts/UserContext";
-import { InviteFormProps } from "../../types";
-import { Loading } from "../Loading";
-import { getUser, postItinerary } from "../../utils/api-ma";
+import { useContext, useState } from 'react';
+import { UserContext } from '../../contexts/UserContext';
+import { InviteFormProps } from '../../types';
+import { Loading } from '../Loading';
+import { getUser, postItinerary } from '../../utils/api-ma';
 
 export const InviteForm: React.FC<InviteFormProps> = ({
   chosenMeeting,
@@ -14,7 +14,7 @@ export const InviteForm: React.FC<InviteFormProps> = ({
   foundUser,
   setFoundUser,
 }) => {
-  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disableSearchBtn, setDisableSearchBtn] = useState<boolean>(false);
   const userContext = useContext(UserContext);
@@ -24,6 +24,7 @@ export const InviteForm: React.FC<InviteFormProps> = ({
     try {
       setDisableSearchBtn(true);
       const invitedUser = await getUser(searchUser);
+
       setFoundUser(invitedUser);
       setDisableSearchBtn(false);
       setIsLoading(false);
@@ -38,7 +39,7 @@ export const InviteForm: React.FC<InviteFormProps> = ({
 
   function searchForUser(event: any): void {
     event.preventDefault();
-    setSearchInput("");
+    setSearchInput('');
     setIsLoading(true);
     retrieveUser(searchInput);
   }
@@ -54,7 +55,7 @@ export const InviteForm: React.FC<InviteFormProps> = ({
       <section>
         <form onSubmit={searchForUser}>
           <label htmlFor="invite-user" className="label label-text">
-            Search by username{" "}
+            Search by username{' '}
           </label>
           <input
             id="searchUserInput"
@@ -65,17 +66,18 @@ export const InviteForm: React.FC<InviteFormProps> = ({
             className="input input-bordered"
           />
 
-          <button disabled={disableSearchBtn} className="btn btn-primary ml-5">
+          <button
+            disabled={disableSearchBtn}
+            className="btn btn-primary md:ml-5 mt-5 md:mt-0"
+          >
             Search
           </button>
         </form>
-        {foundUser.length !== 0 ? (
+        {foundUser !== null && foundUser.length !== 0 ? (
           <>
             <ul key={foundUser[0].id}>
               <div className="alert alert-success mt-10 justify-between">
-                <p>
-                  We found {foundUser[0].first_name}.
-                </p>
+                <p>We found {foundUser[0].first_name}.</p>
                 <button
                   className="btn"
                   onClick={() => {
@@ -94,10 +96,18 @@ export const InviteForm: React.FC<InviteFormProps> = ({
                     setHasClicked(true);
                   }}
                 >
-                  Invite{" "}
-                  <span className="capitalize">{foundUser[0].first_name}</span>{" "}
+                  Invite{' '}
+                  <span className="capitalize">{foundUser[0].first_name}</span>{' '}
                   <img src="mmitm-plane.png" className="max-h-8" />
                 </button>
+              </div>
+            </ul>
+          </>
+        ) : foundUser !== null && foundUser.length === 0 ? (
+          <>
+            <ul>
+              <div className="alert alert-error mt-10 justify-between">
+                <p>Username not found, please try again.</p>
               </div>
             </ul>
           </>

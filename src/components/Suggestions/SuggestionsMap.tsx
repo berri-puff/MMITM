@@ -23,7 +23,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
     }
   }, [detailedTravelInfo]);
 
-  const onMarkerClick = (place) => {console.log(place, 'in the click'),
+  const onMarkerClick = (place) => {
     setSelectedPlace(place);
     setMapCenter({
       lat: place.placeData.geometry.location.lat(),

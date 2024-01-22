@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import {useContext } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { HiOutlineClock } from 'react-icons/hi';
 import { HiOutlineCalendar } from 'react-icons/hi';
@@ -24,9 +24,9 @@ export const InviteConfirmation: React.FC<ConfirmedProps> = ({ chosenMeeting, ti
     <>
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col-reverse lg:flex-row-reverse">
-          <div className="text-center max-w-1xl p-5">
+          <div className="text-center p-5">
             <div>
-              <div className="card card-compact w-96 bg-base-200 shadow-2xl mb-10">
+              <div className="card card-compact w-full bg-base-200 shadow-2xl mb-10">
                 <figure className="h-48 overflow-hidden">
                   <img src={`${placePhoto}`} />
                 </figure>
@@ -104,16 +104,13 @@ export const InviteConfirmation: React.FC<ConfirmedProps> = ({ chosenMeeting, ti
               >
                 Invitations
               </Link>
-              <Link className="btn btn-primary mx-5" to={`/`}>
+              <Link className="btn btn-primary ml-2 md:mx-5" to={`/`}>
                 Set Up Another Meeting
               </Link>
             </div>
           </div>
         </div>
       </div>
-
-      {/* mmm */}
-      <div></div>
     </>
   );
 };

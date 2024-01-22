@@ -28,7 +28,7 @@ export const SuggestionCard: React.FC<SuggestCardProps> = ({
 
   return (
     <>
-      <div className="card card-compact w-96 bg-base-200 shadow-2xl hover:bg-base-300 mb-10">
+      <div className="card card-compact w-full bg-base-200 shadow-2xl hover:bg-base-300 mb-10">
         <figure className="h-48 overflow-hidden">
           <img src={`${placePhoto}`} />
         </figure>

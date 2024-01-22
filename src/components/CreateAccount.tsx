@@ -1,28 +1,43 @@
-
-import { useState } from 'react';
-import { checkUsernameExists, createAccount } from '../utils/api-ma';
-import { useNavigate } from 'react-router-dom';
-
+import { useState } from "react";
+import { checkUsernameExists, createAccount } from "../utils/api-ma";
+import { useNavigate } from "react-router-dom";
 
 export const CreateAccount: React.FC = () => {
-  const [name, setName] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
-  const [avatarUrl, setAvatarUrl] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [userCreated, setUserCreated] = useState<boolean>(false);
   const [userExists, setUserExists] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e : any) => {
       e.preventDefault();
+    if (name && username && email && password && !userExists) {
+      const exists = await checkUsernameExists(username);
+      if (exists === false) {
+        createAccount(
+          name,
+          username,
+          avatarUrl,
+          email,
+          password,
+          setUserCreated
+        );
+        navigate("/log-in");
+      } else {
+        setUserExists(true);
+      }
+    }
+  };
 
+  const handleBlur = async () => {
     const exists = await checkUsernameExists(username);
-    if (exists === false) {
-      createAccount(name, username, avatarUrl, email, password, setUserCreated);
-      navigate('/Log_in');
-    } else {
+    if (exists) {
       setUserExists(true);
+    } else {
+      setUserExists(false);
     }
   };
 
@@ -64,6 +79,7 @@ export const CreateAccount: React.FC = () => {
                     className="input input-bordered w-full max-w-xs"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    onBlur={handleBlur}
                   />
                 </label>
                 <label className="form-control w-full max-w-xs">
@@ -107,7 +123,7 @@ export const CreateAccount: React.FC = () => {
                 {userExists ? (
                   <h3 className="text-error">Username already exists</h3>
                 ) : (
-                  ''
+                  ""
                 )}
               </form>
             </div>

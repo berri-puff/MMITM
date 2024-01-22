@@ -4,7 +4,7 @@ import { Loading } from '../Loading';
 
 export const MeetingMap = (props: MeetingMapProps) => {
   const containerStyle = {
-    width: '400px',
+    width: '100%',
     height: '400px',
     borderRadius: '1rem',
   };
