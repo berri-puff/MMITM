@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { convertDateToDay } from '../../utils/utils';
 import { addressToCoord } from '../../utils/api-ma';
-import { Coordinates } from '../../types';
+import { Coordinates, MeetingFormProps } from '../../types';
 
 export const MeetingForm = ({
   setUserCoord,
@@ -10,10 +10,10 @@ export const MeetingForm = ({
   setTransportation,
   setTimeStamp,
   timeStamp,
-}) => {
-  const [value, setValue] = useState('Transportation...');
-  const [userLocation, setUserLocation] = useState<string[]>('');
-  const [friendLocation, setFriendLocation] = useState<string[]>('');
+}: MeetingFormProps) => {
+  const [value, setValue] = useState<string>('Transportation...');
+  const [userLocation, setUserLocation] = useState<string>('');
+  const [friendLocation, setFriendLocation] = useState<string>('');
   const [userLocationBtn, setUserLocationBtn] = useState<boolean>(false);
   const [friendLocationBtn, setFriendLocationBtn] = useState<boolean>(false);
   const [timeStampBtn, setTimeStampBtn] = useState<boolean>(false);
@@ -21,14 +21,16 @@ export const MeetingForm = ({
   const [feedbackMsg, setFeedbackMsg] = useState<string>('');
   const [errStatus, setErrStatus] = useState<boolean>(false);
 
-  function handleUserLocation(event: any): void {
-    setUserLocation(event.target.value);
+  function handleUserLocation(event: React.FormEvent<HTMLInputElement>) {
+    const newValue = event.currentTarget.value
+    setUserLocation(newValue);
   }
 
-  function handleFriendLocation(event: any): void {
-    setFriendLocation(event.target.value);
+  function handleFriendLocation(event: React.FormEvent<HTMLInputElement>) {
+    const newValue = event.currentTarget.value
+    setFriendLocation(newValue);
   }
-  function confirmUserPosition(event: any): void {
+  function confirmUserPosition(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     addressToCoord(userLocation)
       .then((result: Coordinates) => {
@@ -52,7 +54,7 @@ export const MeetingForm = ({
       });
   }
 
-  function confirmFriendPosition(event: any): void {
+  function confirmFriendPosition(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     addressToCoord(friendLocation)
       .then((result: Coordinates) => {
@@ -75,32 +77,34 @@ export const MeetingForm = ({
       });
     setFriendLocationBtn(true);
   }
-  function handleSubmit(event: any): void {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setUserLocation('');
     setFriendLocation('');
     setIsSubmitted(true);
   }
-  function handleSortChange(event: any) {
+  function handleSortChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setValue(event.target.value);
     setTransportation(event.target.value);
   }
 
-  function handleDate(event: any) {
+  function handleDate(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
+    const newValue = event.currentTarget.value
     setTimeStamp((currTimeStamp) => {
-      currTimeStamp.date = event.target.value;
+      currTimeStamp.date = newValue;
       return currTimeStamp;
     });
   }
-  function handleTime(event: any) {
+  function handleTime(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
+    const newValue = event.currentTarget.value
     setTimeStamp((currTimeStamp) => {
-      currTimeStamp.time = event.target.value;
+      currTimeStamp.time = newValue;
       return currTimeStamp;
     });
   }
-  function confirmDateAndTime(event: any) {
+  function confirmDateAndTime(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     if (timeStamp.date.length > 0 && timeStamp.time.length > 0) {
       const dayObj = convertDateToDay(timeStamp.date);
@@ -221,7 +225,7 @@ export const MeetingForm = ({
               <option value={'driving'}>Driving</option>
             </select>
           </label>
-        </form>
+        
         {userLocationBtn &&
         friendLocationBtn &&
         timeStampBtn &&
@@ -231,7 +235,7 @@ export const MeetingForm = ({
         timeStamp.time.length > 0 ? (
           <>
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={false}
               className="btn btn-primary mt-5"
             >
@@ -239,15 +243,17 @@ export const MeetingForm = ({
             </button>
           </>
         ) : (
+          <>
           <button
             className="btn btn-disabled"
-            tabIndex="-1"
             role="button"
             aria-disabled="true"
           >
             Confirm starting points
           </button>
+          </>
         )}
+        </form>
       </section>
     </>
   );

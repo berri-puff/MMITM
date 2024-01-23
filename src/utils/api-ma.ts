@@ -105,7 +105,7 @@ export const getCreatedInvites = async (user: string) => {
 };
 
 export const addressToCoord = async (
-  userLocation: string[]
+  userLocation: string
 ): Promise<Coordinates> => {
   try {
     const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;

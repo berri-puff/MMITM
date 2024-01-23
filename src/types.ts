@@ -403,3 +403,14 @@ export interface DistanceMatrixResponse {
   originAddresses: string[];
   destinationAddresses: string[];
 }
+
+export type MeetingFormProps = {
+  setUserCoord:  Dispatch<SetStateAction<Coord>>,
+  setFriendCoord: Dispatch<SetStateAction<Coord>>,
+  setIsSubmitted: Dispatch<SetStateAction<boolean>>,
+  setTransportation: Dispatch<SetStateAction<string>>,
+  setTimeStamp: Dispatch<SetStateAction<TimeStamp>>,
+  timeStamp: TimeStamp,
+}
+ 
+
