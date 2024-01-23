@@ -10,8 +10,8 @@ export const MeetingMap = (props: MeetingMapProps) => {
   };
 
   const defaultCenter: Coordinates = {
-    lat: 53.80083232820499,
-    lng: -1.5491218869883503,
+    lat: 55,
+    lng: -4,
   };
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -29,8 +29,8 @@ export const MeetingMap = (props: MeetingMapProps) => {
       <div>
         <GoogleMap
           mapContainerStyle={containerStyle}
-          zoom={10}
-          center={center.length === 0 ? defaultCenter : center}
+          zoom={center.lat === 0 ? 5 : 10}
+          center={center.lat === 0 ? defaultCenter : center}
         >
           {props.userCoord.lat ? <Marker position={props.userCoord} /> : null}
           {props.friendCoord.lat ? (
