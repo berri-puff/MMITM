@@ -8,14 +8,14 @@ import {
   getOpeningHours,
   formatOriginCoords,
 } from '../utils/utils';
-import { Place, SuggestionsProps } from '../types';
+import { Place, PlaceData, SuggestionsProps } from '../types';
 import { Link } from 'react-router-dom';
 import { Loading } from './Loading';
 
 export const Suggestions = (props: SuggestionsProps) => {
   const crosshair = convertCoordsToCrosshair(props);
   const [places, setPlaces] = useState<Place[]>([]);
-  const [finalPlaces, setFinalPlaces] = useState<Place[]>([]);
+  const [finalPlaces, setFinalPlaces] = useState<PlaceData[]>([]);
   const [isSorted, setIsSorted] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -40,6 +40,7 @@ export const Suggestions = (props: SuggestionsProps) => {
           setFinalPlaces(areTheyOpen(details, props.timeStamp));
           setIsSorted(true);
           setLoading(false);
+          
         })
         .catch((err) => console.error(err));
     }
@@ -51,7 +52,7 @@ export const Suggestions = (props: SuggestionsProps) => {
   );
 
   let placesCoords = finalPlaces.map((item) => item.formatted_address);
-
+  console.log(finalPlaces, 'finalPlaces')
   if (loading) {
     return (
       <>

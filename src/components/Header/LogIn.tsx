@@ -1,13 +1,16 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, SetStateAction, Dispatch } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { logInAccount } from "../../utils/api-ma";
 import { Link, useNavigate } from "react-router-dom";
+import { User, UserContextType, UserType } from "../../types";
 
 export const LogIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, setUser } = useContext(UserContext);
-  const [isError, setIsError] = useState(false);
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
+  const setUser: Dispatch<SetStateAction<User | undefined>> | undefined = userContext?.setUser
+  const [isError, setIsError] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,8 +22,11 @@ export const LogIn: React.FC = () => {
   const handleSubmit = async (e : any) => {
     e.preventDefault();
     try {
-      const loggedInUser = await logInAccount(email, password, setIsError);
-      setUser(loggedInUser);
+      const loggedInUser: User | undefined = await logInAccount(email, password, setIsError);
+      if(loggedInUser && setUser){
+        setUser(loggedInUser);
+      }
+      
     } catch (err) {
       console.log(err);
     }

@@ -19,7 +19,7 @@ export const SetUpMeeting: React.FC = () => {
       periodsDayIndex: 0,
       dayName: '',
       dayIndex: 0,
-    },
+    }
   });
 
   const userContext = useContext(UserContext);

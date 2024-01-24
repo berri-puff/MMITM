@@ -9,8 +9,10 @@ import {
   TimeStamp,
   Coord,
 } from "../types";
-import { convertCrosshairToArray } from './utils';
+
 import {
+  DocumentData,
+  DocumentSnapshot,
   GeoPoint,
   addDoc,
   collection,
@@ -29,26 +31,9 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import { Dispatch, SetStateAction } from "react";
 
-export const getPlaces = async (coordinate, setPlaces, apiKey) => {
-  let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coordinate}&type=cafe&rankby=distance&key=${apiKey}`;
-  const { data } = await axios.get(url);
-  return data;
-};
 
-export const getAllPlaces = async (crosshair, setPlaces, apiKey) => {
-  const coordinates = convertCrosshairToArray(crosshair);
-  const placesPromises = [];
-  await coordinates.map((coordinate) => {
-    placesPromises.push(getPlaces(coordinate, setPlaces, apiKey));
-  });
-  try {
-    const dataArr = await Promise.all(placesPromises);
-    return dataArr;
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 export const getInvites = async (user: string) => {
   try {
@@ -131,7 +116,7 @@ export const createAccount = async (
   avatarUrl: string,
   email: string,
   password: string,
-  setUserCreated
+  setUserCreated: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     const auth = getAuth();
@@ -154,29 +139,34 @@ export const createAccount = async (
 export const logInAccount = async (
   email: string,
   password: string,
-  setIsError
+  setIsError: Dispatch<SetStateAction<boolean>>,
+
 ) => {
   try {
     const auth = getAuth();
     const {
       user: { uid },
     } = await signInWithEmailAndPassword(auth, email, password);
-    const userDoc = await getDoc(doc(db, 'users', uid));
-    const username = userDoc.data().username;
-    const imgUrl = userDoc.data().img_url;
-
-    return {
-      id: uid,
-      username: username,
-      imgUrl: imgUrl,
-    };
+    const userDoc: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(doc(db, 'users', uid));
+    const document = userDoc.data()
+    if (document) {
+      const username = document.username;
+      const imgUrl = document.img_url;
+      return {
+        id: uid,
+        username: username,
+        imgUrl: imgUrl,
+      };
+    }
+    
+    
   } catch (err) {
     console.log('Could not sign in:', err);
     setIsError(true);
   }
 };
 
-export const checkUsernameExists = async (username) => {
+export const checkUsernameExists = async (username: string) => {
   try {
     const q = query(collection(db, 'users'), where('username', '==', username));
     const querySnapshot = await getDocs(q);
