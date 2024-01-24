@@ -165,7 +165,7 @@ export interface InviteFormProps {
 
 export interface UserContextType {
   user: User | undefined;
-  setUser: Dispatch<SetStateAction<User | undefined>>;
+  setUser: Dispatch<SetStateAction<User | undefined>> | undefined;
 }
 
 export interface User {
@@ -293,17 +293,15 @@ interface AddressComponent {
 }
 
 interface OpeningPeriod {
-  close?: {
+  close: {
     day: number;
     time: string;
-    hours?: number;
-    minutes?: number;
+    date: string;
   };
   open: {
     day: number;
     time: string;
-    hours?: number;
-    minutes?: number;
+    date: string;
   };
 }
 
@@ -346,25 +344,25 @@ interface Review {
 }
 
 export interface PlaceData {
-  address_components: AddressComponent[];
-  adr_address: string;
-  business_status: string;
+  address_components?: AddressComponent[];
+  adr_address?: string;
+  business_status?: string;
   current_opening_hours?: OpeningHours;
-  formatted_address: string;
-  geometry: GeometryDetailed;
-  icon: string;
-  icon_background_color: string;
-  icon_mask_base_uri: string;
-  name: string;
+  formatted_address?: string;
+  geometry?: GeometryDetailed;
+  icon?: string;
+  icon_background_color?: string;
+  icon_mask_base_uri?: string;
+  name?: string;
   opening_hours?: OpeningHours;
   photos?: Photo[];
-  place_id: string;
+  place_id?: string;
   plus_code: {
     compound_code: string;
     global_code: string;
   };
   rating: number;
-  reference: string;
+  reference?: string;
   reviews?: Review[];
   types: string[];
   url: string;
@@ -414,3 +412,4 @@ export type MeetingFormProps = {
 }
  
 
+export type PlaceResult = PlaceData

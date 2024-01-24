@@ -5,17 +5,20 @@ import {
   Place,
   Coord,
   DistanceMatrixResponse,
+  TimeStamp,
+  PlaceData,
+  PlaceResult,
 } from '../types';
 import { initGoogleMapsAPI } from './GoogleMapsLoader';
 
-export const sortPlaces = (places) => {
+export const sortPlaces = (places: Place[]) => {
   const reviewedPlaces = places.filter((place) => {
     return place.user_ratings_total >= 5;
   });
   const sortedPlaces = reviewedPlaces.sort((a, b) => {
     return b.rating - a.rating;
   });
-  const uniquePlaces = sortedPlaces.reduce((accumulator, current) => {
+  const uniquePlaces: Place[] = sortedPlaces.reduce((accumulator, current) => {
     if (!accumulator.find((item) => item.place_id === current.place_id)) {
       accumulator.push(current);
     }
@@ -113,7 +116,7 @@ export const convertCrosshairToArray = (crosshair: Crosshair) => {
   return coordinates;
 };
 
-export const convertDateToDay = (date) => {
+export const convertDateToDay = (date: string) => {
   const dayObj = {
     weekdayTextIndex: 0,
     periodsDayIndex: 0,
@@ -146,54 +149,57 @@ export const convertDateToDay = (date) => {
   dayObj.dayName = dayNames[weekdayTextIndex];
   return dayObj;
 };
-export const convertTime = (time) => {
+export const convertTime = (time: string) => {
   const firstHalf = time.slice(0, 2);
   const secondHalf = time.slice(2);
   return firstHalf + ':' + secondHalf;
 };
-export const areTheyOpen = (details, timeStamp) => {
-  const finalDetails = [];
-  details.forEach((detail) => {
+export const areTheyOpen = (details: PlaceData[], timeStamp: TimeStamp) => {
+  const finalDetails: PlaceData[] = [];
+  details.forEach((detail: PlaceData) => {
     const openingHours = detail.current_opening_hours;
     if (detail.current_opening_hours) {
-      if (openingHours.weekday_text) {
-        const splitInfo =
-          openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(': ');
-        if (splitInfo[1] !== 'Closed') {
-          let convertedOpenTime;
-          let convertedCloseTime;
-          let openDate;
-          let closeDate;
-          let openCloseSameDay = false;
-          openingHours.periods.forEach((period) => {
-            if (period.open.day === timeStamp.day.dayIndex) {
-              convertedOpenTime = convertTime(period.open.time);
-              convertedCloseTime = convertTime(period.close.time);
-              if (period.open.date === period.close.date) {
-                openDate = timeStamp.date;
-                closeDate = timeStamp.date;
-                openCloseSameDay = true;
-              }
+      if(openingHours) {
+        if (openingHours.weekday_text) {
+          const splitInfo =
+            openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(': ');
+          if (splitInfo[1] !== 'Closed') {
+            let convertedOpenTime;
+            let convertedCloseTime;
+            let openDate;
+            let closeDate;
+            let openCloseSameDay = false;
+            if(openingHours.periods){
+              openingHours.periods.forEach((period) => {
+                if (period.open.day === timeStamp.day.dayIndex) {
+                  convertedOpenTime = convertTime(period.open.time);
+                  convertedCloseTime = convertTime(period.close.time);
+                  if (period.open.date === period.close.date) {
+                    openDate = timeStamp.date;
+                    closeDate = timeStamp.date;
+                    openCloseSameDay = true;
+                  }
+                }
+              });
             }
-          });
+            // console.log(timeStamp, 'timestamp')
+            // console.log(convertedOpenTime, 'open time')
+            // console.log(convertedCloseTime, 'close time')
+            // console.log(openDate, 'open date')
+            // console.log(closeDate, 'close date ')
 
-          // console.log(timeStamp, 'timestamp')
-          // console.log(convertedOpenTime, 'open time')
-          // console.log(convertedCloseTime, 'close time')
-          // console.log(openDate, 'open date')
-          // console.log(closeDate, 'close date ')
+            const openTime = new Date(`${openDate}` + ` ${convertedOpenTime}`);
+            const closeTime = new Date(`${closeDate}` + ` ${convertedCloseTime}`);
+            const meetingTime = new Date(
+              `${timeStamp.date}` + ` ${timeStamp.time}`
+            );
 
-          const openTime = new Date(`${openDate}` + ` ${convertedOpenTime}`);
-          const closeTime = new Date(`${closeDate}` + ` ${convertedCloseTime}`);
-          const meetingTime = new Date(
-            `${timeStamp.date}` + ` ${timeStamp.time}`
-          );
+            if (openTime <= meetingTime && closeTime > meetingTime) {
+              finalDetails.push(detail);
+            }
 
-          if (openTime <= meetingTime && closeTime > meetingTime) {
-            finalDetails.push(detail);
+            openCloseSameDay = false;
           }
-
-          openCloseSameDay = false;
         }
       }
     }
@@ -264,7 +270,8 @@ export const getOpeningHours = async (places: Place[]) => {
         };
 
         const service = new google.maps.places.PlacesService(map);
-        service.getDetails(request, (result, status) => {
+        service.getDetails(request, (result: PlaceData | null, status) => {
+          console.log(result, 'result')
           if (status === google.maps.places.PlacesServiceStatus.OK) {
             resolve(result);
           } else {
