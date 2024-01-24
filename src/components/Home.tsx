@@ -3,7 +3,8 @@ import { UserContext } from '../contexts/UserContext';
 import { useContext } from 'react';
 
 export const Home = () => {
-  const { user } = useContext(UserContext);
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
 
   return (
     <>
