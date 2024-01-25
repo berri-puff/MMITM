@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { getCreatedInvites, getInvites } from "../utils/api-ma";
-import { Link } from "react-router-dom";
 import { CreatedInvitations } from "./Invitations/CreatedInvitations";
 import { Invite } from "../types";
 import { RecievedInvitations } from "./Invitations/RecievedInvitations";
@@ -40,9 +39,11 @@ export const Invitations = () => {
     return <Loading />;
   } else if (!user || !user.username || user.username === "Nobody") {
     return (
-      <Link to={"/Log_in"}>
-        <p>Please log in to see your invites</p>
-      </Link>
+      <div className="container mx-auto min-h-screen flex justify-center items-center">
+        <div className="mx-auto alert alert-error mt-10 flex justify-center w-2/5 min-h-32">
+          <h2 className="text-2xl">You do not have permission to view this page</h2>
+        </div>
+      </div>
     );
   } else {
     return (
