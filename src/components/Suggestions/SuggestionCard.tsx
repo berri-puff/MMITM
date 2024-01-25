@@ -24,7 +24,10 @@ export const SuggestionCard: React.FC<SuggestCardProps> = ({
       timeStamp.day.weekdayTextIndex
     ];
 
-  const placePhoto = destination.placeData.photos[0].getUrl();
+  let placePhoto: string = 'mmitm_plane.png';
+  if (destination.placeData.photos[0]) {
+    placePhoto = destination.placeData.photos[0].getUrl();
+  }
 
   return (
     <>
