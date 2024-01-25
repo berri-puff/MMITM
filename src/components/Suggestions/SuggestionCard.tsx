@@ -6,6 +6,7 @@ import { HiOutlineMap } from 'react-icons/hi2';
 import { HiOutlineMapPin } from 'react-icons/hi2';
 import { HiOutlineHome } from 'react-icons/hi2';
 import { SuggestCardProps } from '../../types';
+import { animateScroll as scroll } from 'react-scroll';
 
 export const SuggestionCard: React.FC<SuggestCardProps> = ({
   destination,
@@ -17,6 +18,7 @@ export const SuggestionCard: React.FC<SuggestCardProps> = ({
   function handleClick(event: any): void {
     event.preventDefault();
     setChosenMeeting(destination);
+    scroll.scrollToTop({ duration: 0 });
   }
 
   const openingHours =
