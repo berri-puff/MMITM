@@ -154,12 +154,12 @@ export const convertTime = (time: string) => {
   const secondHalf = time.slice(2);
   return firstHalf + ':' + secondHalf;
 };
-export const areTheyOpen = (details: PlaceData[], timeStamp: TimeStamp) => {
-  const finalDetails: PlaceData[] = [];
-  details.forEach((detail: PlaceData) => {
-    const openingHours = detail.current_opening_hours;
-    if (detail.current_opening_hours) {
-      if(openingHours) {
+export const areTheyOpen = (details: (google.maps.places.PlaceResult)[], timeStamp: TimeStamp) => {
+  const finalDetails: google.maps.places.PlaceResult[] = [];
+  details.forEach((detail: google.maps.places.PlaceResult ) => {
+    
+    if (detail.opening_hours) {
+      const openingHours: google.maps.places.PlaceOpeningHours = detail.opening_hours;
         if (openingHours.weekday_text) {
           const splitInfo =
             openingHours.weekday_text[timeStamp.day.weekdayTextIndex].split(': ');
@@ -170,11 +170,11 @@ export const areTheyOpen = (details: PlaceData[], timeStamp: TimeStamp) => {
             let closeDate;
             let openCloseSameDay = false;
             if(openingHours.periods){
-              openingHours.periods.forEach((period) => {
-                if (period.open.day === timeStamp.day.dayIndex) {
+              openingHours.periods.forEach((period: google.maps.places.PlaceOpeningHoursPeriod) => {
+                if (period.open.day === timeStamp.day.dayIndex && period.close) {
                   convertedOpenTime = convertTime(period.open.time);
                   convertedCloseTime = convertTime(period.close.time);
-                  if (period.open.date === period.close.date) {
+                  if (period.open.day === period.close.day) {
                     openDate = timeStamp.date;
                     closeDate = timeStamp.date;
                     openCloseSameDay = true;
@@ -201,7 +201,7 @@ export const areTheyOpen = (details: PlaceData[], timeStamp: TimeStamp) => {
             openCloseSameDay = false;
           }
         }
-      }
+      
     }
   });
 
@@ -256,7 +256,9 @@ export const getAllPlaces = async (crosshair: Crosshair) => {
 export const getOpeningHours = async (places: Place[]) => {
   await initGoogleMapsAPI();
 
-  const getPlaceDetails = (place: Place) => {
+  const getPlaceDetails = (
+    place: Place
+  ): Promise<google.maps.places.PlaceResult> => {
     return new Promise((resolve, reject) => {
       const mapElement = document.getElementById('map3');
       if (mapElement) {
@@ -264,16 +266,17 @@ export const getOpeningHours = async (places: Place[]) => {
           center: { lat: 0, lng: 0 },
           zoom: 15,
         });
-
         const request = {
           placeId: place.place_id,
         };
-
         const service = new google.maps.places.PlacesService(map);
-        service.getDetails(request, (result: PlaceData | null, status) => {
-          console.log(result, 'result')
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            resolve(result);
+        service.getDetails(request, (result: google.maps.places.PlaceResult | null, status: google.maps.places.PlacesServiceStatus) => {
+          
+          if (status === google.maps.places.PlacesServiceStatus.OK && result !== null) {
+            
+              resolve(result);
+  
+            
           } else {
             reject('Failed to fetch place details');
           }
@@ -284,7 +287,7 @@ export const getOpeningHours = async (places: Place[]) => {
     });
   };
 
-  const detailsPromises = places.map((place) => getPlaceDetails(place));
+  const detailsPromises = places.map((place: Place) => getPlaceDetails(place));
   return Promise.all(detailsPromises);
 };
 
@@ -295,7 +298,7 @@ export const formatOriginCoords = (userCoord: Coord, friendCoord: Coord) => {
 
 export const getDistance = async (
   finalCoordsOrigins: Coord[],
-  placesCoords: string[],
+  placesCoords: (string|undefined)[],
   transportation: string
 ): Promise<DistanceMatrixResponse> => {
   await initGoogleMapsAPI();
@@ -305,6 +308,7 @@ export const getDistance = async (
   );
   const service = new google.maps.DistanceMatrixService();
   return new Promise((resolve, reject) => {
+
     service.getDistanceMatrix(
       {
         origins: originCoords,

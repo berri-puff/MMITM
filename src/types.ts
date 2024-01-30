@@ -57,8 +57,8 @@ export interface Place {
 // }
 
 export interface SuggestionsListProps {
-  places: Place[];
-  placesCoords: string[];
+  places: google.maps.places.PlaceResult[];
+  placesCoords: (string|undefined)[];
   finalCoordsOrigins: Coord[];
   transportation: string;
   userCoord: Coord;
@@ -187,21 +187,7 @@ interface Photo {
 
 export interface ChosenMeeting {
   address: string;
-  placeData: {
-    name: string;
-    rating: number;
-    place_id: number;
-    geometry: {
-      location: {
-        lat: any;
-        lng: any;
-      };
-    };
-    current_opening_hours: {
-      weekday_text: string[];
-    };
-    photos: Photo[];
-  };
+  placeData: google.maps.places.PlaceResult
   travelDetails: TravelDetails[];
 }
 
@@ -312,8 +298,8 @@ interface OpeningHours {
 }
 
 interface GeometryLocation {
-  lat: number;
-  lng: number;
+  lat: () => void;
+  lng: () => void;
 }
 
 interface GeometryDetailed {
@@ -348,7 +334,7 @@ export interface PlaceData {
   adr_address?: string;
   business_status?: string;
   current_opening_hours?: OpeningHours;
-  formatted_address?: string;
+  formatted_address: string;
   geometry?: GeometryDetailed;
   icon?: string;
   icon_background_color?: string;
@@ -356,7 +342,7 @@ export interface PlaceData {
   name?: string;
   opening_hours?: OpeningHours;
   photos?: Photo[];
-  place_id?: string;
+  place_id: string;
   plus_code: {
     compound_code: string;
     global_code: string;
@@ -381,7 +367,7 @@ export interface TravelDetail {
 
 export interface DetailedDestination {
   address: string;
-  placeData: PlaceData;
+  placeData: google.maps.places.PlaceResult;
   travelDetails: TravelDetail[];
 }
 

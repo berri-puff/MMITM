@@ -8,12 +8,12 @@ import { SuggestionsMap } from './SuggestionsMap';
 import { Loading } from '../Loading';
 
 import {
-  DetailedDestination,
-  ChosenMeeting,
+
+
   SuggestionsListProps,
   DistanceMatrixResponse,
-  PlaceData,
-  SortProps
+  SortProps,
+  DetailedDestination
 } from '../../types';
 import { getDistance } from '../../utils/utils';
 
@@ -30,16 +30,16 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
     DetailedDestination[]
   >([]);
 
-  const [chosenMeeting, setChosenMeeting] = useState<ChosenMeeting>({
+  const [chosenMeeting, setChosenMeeting] = useState<DetailedDestination>({
     address: '',
     placeData: {
       name: '',
       rating: 0,
-      place_id: 0,
+      place_id: '',
       geometry: {
         location: {
-          lat: 0,
-          lng: 0,
+          lat: () => 0,
+          lng: () => 0,
         },
       },
       current_opening_hours: {
@@ -68,7 +68,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         const detailedDestinations = sortedDestinations.map((dest) => {
           const destinationDetails = {
             address: data.destinationAddresses[dest.index],
-            placeData: places[dest.index] as PlaceData,
+            placeData: places[dest.index] as google.maps.places.PlaceResult,
             travelDetails: data.rows.map((row) => ({
               origin: data.originAddresses[data.rows.indexOf(row)],
               travelTime: row.elements[dest.index].duration.text,
@@ -102,7 +102,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
         timeStamp={timeStamp}
       />
     );
-  } else if (detailedTravelInfo.length > 0) {
+  } else if (detailedTravelInfo.length > 0 && detailedTravelInfo) {
     return (
       <>
         <div className="bg-base-100">

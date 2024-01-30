@@ -8,21 +8,22 @@ import {
   getOpeningHours,
   formatOriginCoords,
 } from '../utils/utils';
-import { Place, PlaceData, SuggestionsProps } from '../types';
+import { Place, SuggestionsProps } from '../types';
 import { Link } from 'react-router-dom';
 import { Loading } from './Loading';
 
 export const Suggestions = (props: SuggestionsProps) => {
   const crosshair = convertCoordsToCrosshair(props);
   const [places, setPlaces] = useState<Place[]>([]);
-  const [finalPlaces, setFinalPlaces] = useState<PlaceData[]>([]);
+  const [finalPlaces, setFinalPlaces] = useState<google.maps.places.PlaceResult[]>([]);
   const [isSorted, setIsSorted] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const placesData = await getAllPlaces(crosshair);
+        const placesData: Place[] = await getAllPlaces(crosshair);
+        console.log(placesData, 'placesData')
         setPlaces(placesData);
       } catch (err) {
         console.log(err);
@@ -37,7 +38,9 @@ export const Suggestions = (props: SuggestionsProps) => {
 
       getOpeningHours(sortedPlaces)
         .then((details) => {
-          setFinalPlaces(areTheyOpen(details, props.timeStamp));
+          console.log(details, 'details')
+          const openPlaces = areTheyOpen(details, props.timeStamp)
+          setFinalPlaces(openPlaces);
           setIsSorted(true);
           setLoading(false);
           
@@ -50,8 +53,8 @@ export const Suggestions = (props: SuggestionsProps) => {
     props.userCoord,
     props.friendCoord
   );
-
-  let placesCoords = finalPlaces.map((item) => item.formatted_address);
+  
+  let placesCoords: (string|undefined)[] = finalPlaces.map((item) => item.formatted_address);
   console.log(finalPlaces, 'finalPlaces')
   if (loading) {
     return (
@@ -74,7 +77,7 @@ export const Suggestions = (props: SuggestionsProps) => {
         <div id="map3" className="hidden"></div>
       </>
     );
-  } else if (isSorted && !loading) {
+  } else if (isSorted && !loading && placesCoords) {
     return (
       <div className="container mx-auto mt-5">
         <SuggestionsList

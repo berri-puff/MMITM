@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import { initGoogleMapsAPI } from '../../utils/GoogleMapsLoader';
-import { Coordinates, SuggestionsMapProps } from '../../types';
+import { Coordinates, DetailedDestination, SuggestionsMapProps } from '../../types';
 
 export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
   detailedTravelInfo,
   scrollToCard,
 }) => {
-  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState<DetailedDestination | null>(null);
   const [mapCenter, setMapCenter] = useState<Coordinates>({ lat: 0, lng: 0 });
   const [isApiLoaded, setIsApiLoaded] = useState(false);
 
@@ -15,7 +15,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
     initGoogleMapsAPI().then(() => {
       setIsApiLoaded(true);
     });
-    if (detailedTravelInfo && detailedTravelInfo.length > 0) {
+    if (detailedTravelInfo[0].placeData && detailedTravelInfo[0].placeData.geometry && detailedTravelInfo[0].placeData.geometry.location && detailedTravelInfo.length > 0) {
       setMapCenter({
         lat: detailedTravelInfo[0].placeData.geometry.location.lat(),
         lng: detailedTravelInfo[0].placeData.geometry.location.lng(),
@@ -23,7 +23,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
     }
   }, [detailedTravelInfo]);
 
-  const onMarkerClick = (place) => {
+  const onMarkerClick = (place: DetailedDestination) => {
     setSelectedPlace(place);
     setMapCenter({
       lat: place.placeData.geometry.location.lat(),
@@ -31,7 +31,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
     });
   };
 
-  const onInfoWindowClick = (placeId: number) => {
+  const onInfoWindowClick = (placeId: string | undefined) => {
     scrollToCard(placeId);
   };
 
@@ -40,7 +40,7 @@ export const SuggestionsMap: React.FC<SuggestionsMapProps> = ({
     height: '400px',
     borderRadius: '1rem',
   };
-
+console.log(selectedPlace, 'selected place')
   return isApiLoaded ? (
     <>
       <div>
